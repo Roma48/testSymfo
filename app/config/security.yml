@@ -6,7 +6,7 @@ security:
         CTO\AppBundle\Entity\AdminUser:
             algorithm: bcrypt
             cost: 12
-        Dash\AppBundle\Entity\CTOUser:
+        CTO\AppBundle\Entity\CTOUser:
             algorithm: bcrypt
             cost: 12
 
@@ -18,7 +18,7 @@ security:
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         dashboard:
-            entity: {class: CTO\AppBundle\Entity\AdminUser, property: username }
+            entity: {class: CTO\AppBundle\Entity\BaseUser, property: email }
 
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
@@ -30,10 +30,10 @@ security:
             pattern: ^/
             anonymous: ~
             form_login:
-#                provider: dashboard
+                provider: dashboard
                 login_path: /
                 check_path: /login_check
-                default_target_path: after_login_switch_route
+                default_target_path: login_home
                 username_parameter: login_form[email]
                 password_parameter: login_form[password]
             logout:

@@ -2,6 +2,8 @@
 
 namespace CTO\AppBundle\Controller;
 
+use CTO\AppBundle\Entity\AdminUser;
+use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -19,30 +21,39 @@ class DefaultController extends Controller
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 
-            $a = 1;
-            $b = 2;
+            $user = $this->getUser();
+            if ($user instanceof AdminUser) {
 
-            return $this->redirect($this->generateUrl('after_login_switch_route'));
+                return $this->redirectToRoute('adminUser_home');
+            } elseif ($user instanceof CtoUser) {
+
+                return $this->redirectToRoute('ctoUser_home');
+            }
         }
 
         return [];
     }
 
     /**
-     * @Route("/admin/", name="after_login_switch_route")
+     * @Route("/dashboard/", name="after_login_switch_route")
      */
     public function defaultAction()
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 
-            $a = 1;
-            $b = 2;
+            $user = $this->getUser();
+            if ($user instanceof AdminUser) {
 
-            return [];
-//            return $this->redirect($this->generateUrl('admin_apps_list'));
+                return $this->redirectToRoute('adminUser_home');
+            } elseif ($user instanceof CtoUser) {
+
+                return $this->redirectToRoute('ctoUser_home');
+            }
+
+            return $this->redirect('/logout');
         }
 
-        return [];
+        return $this->redirect('/logout');
     }
 
     /**
