@@ -4,7 +4,7 @@ app:
 dashboard:
     resource: "@CTOAppBundle/Controller/DashboardControllers/"
     type:     annotation
-    prefix:   "admin"
+    prefix:   "dashboard"
 api:
     resource: "@CTOAppBundle/Controller/ApiControllers/"
     type:     annotation
@@ -14,3 +14,6 @@ login_check:
     path: /login_check
 logout:
     path: /logout
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
