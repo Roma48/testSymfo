@@ -44,6 +44,11 @@ class Notification
     protected $whenSend;
 
     /**
+     * @ORM\Column(name="smsId", type="string", length=255, nullable=true)
+     */
+    protected $smsId;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="notifications")
      */
     protected $clientCto;
@@ -158,6 +163,25 @@ class Notification
     public function setCarJob(CarJob $carJob)
     {
         $this->carJob = $carJob;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSmsId()
+    {
+        return $this->smsId;
+    }
+
+    /**
+     * @param mixed $smsId
+     * @return Notification
+     */
+    public function setSmsId($smsId)
+    {
+        $this->smsId = $smsId;
 
         return $this;
     }
