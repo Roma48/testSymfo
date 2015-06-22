@@ -57,7 +57,6 @@ class BaseUser implements UserInterface
     protected $phone;
 
     /**
-     * @var string
      *
      * @ORM\Column(name="roles", type="string", length=255)
      */

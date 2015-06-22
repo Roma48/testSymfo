@@ -2,6 +2,8 @@
 
 namespace CTO\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -31,14 +33,6 @@ class CtoUser extends BaseUser
     protected $ctoName;
 
     /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="This field can’t be blank")
-     * @ORM\Column(name="city", type="string", length=255)
-     */
-    protected $city;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="blocked", type="boolean")
@@ -52,11 +46,23 @@ class CtoUser extends BaseUser
      */
     protected $publicProfile;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CtoClient", mappedBy="cto")
+     */
+    protected $clients;
+
+    /**
+     * @Assert\NotBlank(message="This field can’t be blank")
+     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\City")
+     */
+    protected $city;
+
     public function __construct()
     {
         parent::__construct();
         $this->setRoles(self::ROLE_CTO_USER);
         $this->setBlocked(false);
+        $this->clients = new ArrayCollection();
     }
 
     /**
@@ -152,5 +158,24 @@ class CtoUser extends BaseUser
         $this->publicProfile = $publicProfile;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    public function addClient(CtoClient $client)
+    {
+        $client->setCto($this);
+        $this->clients->add($client);
+    }
+
+    public function removeClient(CtoClient $client)
+    {
+        $this->clients->removeElement($client);
     }
 }
