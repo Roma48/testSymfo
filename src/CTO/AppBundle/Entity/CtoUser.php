@@ -45,6 +45,13 @@ class CtoUser extends BaseUser
      */
     protected $blocked;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="publicProfile", type="boolean")
+     */
+    protected $publicProfile;
+
     public function __construct()
     {
         parent::__construct();
@@ -124,6 +131,25 @@ class CtoUser extends BaseUser
     public function setBlocked($blocked)
     {
         $this->blocked = $blocked;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPublicProfile()
+    {
+        return $this->publicProfile;
+    }
+
+    /**
+     * @param boolean $publicProfile
+     * @return CtoUser
+     */
+    public function setPublicProfile($publicProfile)
+    {
+        $this->publicProfile = $publicProfile;
 
         return $this;
     }
