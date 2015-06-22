@@ -59,6 +59,11 @@ class CarJob
     protected $jobCategory;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="carJob")
+     */
+    protected $notifications;
+
+    /**
      * @return string
      */
     public function getFirstName()

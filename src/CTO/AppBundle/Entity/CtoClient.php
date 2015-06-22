@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,13 +70,19 @@ class CtoClient
      */
     protected $cto;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="clientCto")
+     */
+    protected $notifications;
+
     public function __construct()
     {
         $this->cars = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
-     * @return mixed
+     * @return CtoUser
      */
     public function getCto()
     {
@@ -83,7 +90,7 @@ class CtoClient
     }
 
     /**
-     * @param mixed $cto
+     * @param CtoUser $cto
      * @return CtoClient
      */
     public function setCto(CtoUser $cto)
@@ -103,10 +110,13 @@ class CtoClient
 
     /**
      * @param string $firstName
+     * @return CtoClient
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
@@ -119,10 +129,13 @@ class CtoClient
 
     /**
      * @param string $lastName
+     * @return CtoClient
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     /**
@@ -135,14 +148,17 @@ class CtoClient
 
     /**
      * @param string $phone
+     * @return CtoClient
      */
     public function setPhone($phone)
     {
         $this->phone = $phone;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return DateTime
      */
     public function getLastVisitDate()
     {
@@ -150,11 +166,14 @@ class CtoClient
     }
 
     /**
-     * @param mixed $lastVisitDate
+     * @param DateTime $lastVisitDate
+     * @return CtoClient
      */
-    public function setLastVisitDate($lastVisitDate)
+    public function setLastVisitDate(DateTime $lastVisitDate)
     {
         $this->lastVisitDate = $lastVisitDate;
+
+        return $this;
     }
 
     /**
@@ -199,7 +218,7 @@ class CtoClient
     }
 
     /**
-     * @return mixed
+     * @return City
      */
     public function getCity()
     {
@@ -207,10 +226,33 @@ class CtoClient
     }
 
     /**
-     * @param mixed $city
+     * @param City $city
+     * @return CtoClient
      */
-    public function setCity($city)
+    public function setCity(City $city)
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param Notification $notification
+     * @return CtoClient
+     */
+    public function addNotification(Notification $notification)
+    {
+        $notification->setClientCto($this);
+        $this->notifications->add($notification);
+
+        return $this;
     }
 }
