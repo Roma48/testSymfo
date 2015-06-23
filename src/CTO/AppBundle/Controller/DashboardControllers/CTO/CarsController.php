@@ -5,6 +5,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 use CTO\AppBundle\Entity\Car;
 use CTO\AppBundle\Entity\Model;
 use CTO\AppBundle\Form\CarType;
+use CTO\AppBundle\Form\ModelType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -55,7 +56,7 @@ class CarsController extends Controller
                 $em->persist($car);
                 $em->flush();
 
-                $this->addFlash('success', "{$car->getName()} успішно створений.");
+                $this->addFlash('success', "{$car->getName()} успішно створено.");
 
                 return $this->redirect($this->generateUrl('cto_cars_home'));
             }
@@ -67,15 +68,34 @@ class CarsController extends Controller
     }
 
     /**
-     * @Route("/models/new/{slug}", name="cto_cars_models_new")
+     * @Route("/models/new/{slug}", name="cto_cars_models_new", options={"expose"=true})
      * @Method({"GET", "POST"})
      * @Template()
      * @ParamConverter("car", class="CTOAppBundle:Car", options={"slug" = "slug"})
-     * @param Car $car
      */
-    public function newModelAction(Car $car)
+    public function newModelAction(Request $request, Car $car)
     {
+        $model = new Model();
+        $form = $this->createForm(new ModelType(), $model);
 
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $model->setCar($car);
+                $em->persist($model);
+                $em->flush();
+
+                $this->addFlash('success', "{$model->getName()} успішно створено.");
+
+                return $this->redirect($this->generateUrl('cto_cars_home'));
+            }
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
 
     }
 
@@ -88,7 +108,6 @@ class CarsController extends Controller
      */
     public function getModelsByCarAction(Car $car)
     {
-
         return new JsonResponse($car->getModels()->getValues());
     }
 
@@ -100,10 +119,26 @@ class CarsController extends Controller
      * @param Car $car
      * @return array
      */
-    public function editCarAction(Car $car)
+    public function editCarAction(Request $request, Car $car)
     {
+        $form = $this->createForm(new CarType(), $car);
+
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($car);
+                $em->flush();
+
+                $this->addFlash('success', "{$car->getName()} успішно відредаговано.");
+
+                return $this->redirect($this->generateUrl('cto_cars_home'));
+            }
+        }
+
         return [
-            "car" => $car
+            'form' => $form->createView()
         ];
     }
 
@@ -116,9 +151,9 @@ class CarsController extends Controller
     public function editModelByCarAction(Model $model)
     {
 
-        $z = $model;
-
-        return [];
+        return [
+            'model' => $model
+        ];
     }
 
 
