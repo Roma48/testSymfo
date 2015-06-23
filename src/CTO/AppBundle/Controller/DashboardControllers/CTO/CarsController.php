@@ -4,6 +4,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use CTO\AppBundle\Entity\Car;
 use CTO\AppBundle\Entity\Model;
+use CTO\AppBundle\Form\CarType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/cto/cars")
@@ -40,10 +42,28 @@ class CarsController extends Controller
      * @Method({"GET", "POST"})
      * @Template()
      */
-    public function newCarAction()
+    public function newCarAction(Request $request)
     {
+        $car = new Car();
+        $form = $this->createForm(new CarType(), $car);
 
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($car);
+                $em->flush();
 
+                $this->addFlash('success', "{$car->getName()} успішно створений.");
+
+                return $this->redirect($this->generateUrl('cto_cars_home'));
+            }
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
     }
 
     /**
