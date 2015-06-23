@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="models")
  * @ORM\Entity()
  */
-class Model 
+class Model implements \JsonSerializable
 {
     use CreateUpdateTrait;
 
@@ -36,6 +36,22 @@ class Model
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="models")
      */
     protected $car;
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return [
+            "slugCar" => $this->getCar()->getSlug(),
+            "slugModel" => $this->getSlug(),
+            "name" => $this->getName()
+        ];
+    }
 
     /**
      * @return string
@@ -73,7 +89,7 @@ class Model
     }
 
     /**
-     * @return mixed
+     * @return Car
      */
     public function getCar()
     {
@@ -81,10 +97,10 @@ class Model
     }
 
     /**
-     * @param mixed $car
+     * @param Car $car
      * @return Model
      */
-    public function setCar($car)
+    public function setCar(Car $car)
     {
         $this->car = $car;
 

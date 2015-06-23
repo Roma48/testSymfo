@@ -9,6 +9,7 @@
     "jquery": "~2",
     "bootstrap": "~3",
     "moment": "~2",
-    "font-awesome": "~4"
+    "font-awesome": "~4",
+    "bootstrap-select": "~1.7.2"
   }
 }

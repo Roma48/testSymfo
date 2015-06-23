@@ -11,7 +11,8 @@ gulp.task('vendors-css', function () {
     gulp.src([
         'web_src/frontend-vendors/bootstrap/dist/css/bootstrap.css',
         'web_src/frontend-vendors/bootstrap/dist/css/bootstrap-theme.css',
-        'web_src/frontend-vendors/font-awesome/css/font-awesome.css'
+        'web_src/frontend-vendors/font-awesome/css/font-awesome.css',
+        'web_src/frontend-vendors/bootstrap-select/dist/css/bootstrap-select.css'
     ])
         .pipe(concat('vendors.min.css'))
         .pipe(uglifycss())
@@ -32,7 +33,8 @@ gulp.task('vendors-js', function() {
     gulp.src([
         'web_src/frontend-vendors/jquery/dist/jquery.js',
         'web_src/frontend-vendors/bootstrap/dist/js/bootstrap.js',
-        'web_src/frontend-vendors/moment/moment.js'
+        'web_src/frontend-vendors/moment/moment.js',
+        'web_src/frontend-vendors/bootstrap-select/dist/js/bootstrap-select.js'
     ])
         .pipe(concat('vendors-js.min.js'))
         .pipe(minifyJs())
@@ -79,5 +81,6 @@ gulp.task('default', ['clean'], function () {
 
 gulp.task('watch', function () {
     var css = gulp.watch('web_src/css/*.css', ['custom-css']),
+        less = gulp.watch('web_src/css/*.less', ['custom-css']),
         js = gulp.watch('web_src/js/**/*.js', ['custom-js']);
 });
