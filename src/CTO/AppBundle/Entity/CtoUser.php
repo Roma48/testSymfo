@@ -27,7 +27,7 @@ class CtoUser extends BaseUser
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="ctoName", type="string", length=255)
      */
     protected $ctoName;
@@ -52,7 +52,6 @@ class CtoUser extends BaseUser
     protected $clients;
 
     /**
-     * @Assert\NotBlank(message="This field can’t be blank")
      * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\City")
      */
     protected $city;

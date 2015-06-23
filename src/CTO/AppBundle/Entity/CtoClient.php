@@ -22,7 +22,7 @@ class CtoClient
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="firstName", type="string", length=255)
      */
     protected $firstName;
@@ -37,7 +37,7 @@ class CtoClient
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="phone", type="string", length=255)
      */
     protected $phone;

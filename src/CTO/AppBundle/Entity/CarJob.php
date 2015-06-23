@@ -19,7 +19,7 @@ class CarJob
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="firstName", type="string", length=255)
      */
     protected $firstName;

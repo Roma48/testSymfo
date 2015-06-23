@@ -27,8 +27,8 @@ class BaseUser implements UserInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
-     * @Assert\Email(message="Email is not valid")
+     * @Assert\NotBlank(message="Обов'язкове поле")
+     * @Assert\Email(message="Некоректна імейл-адреса")
      * @ORM\Column(name="email", type="string", length=255)
      */
     protected $email;
@@ -36,7 +36,7 @@ class BaseUser implements UserInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="firstName", type="string", length=255)
      */
     protected $firstName;
@@ -51,7 +51,7 @@ class BaseUser implements UserInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="phone", type="string", length=255)
      */
     protected $phone;

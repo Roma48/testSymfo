@@ -19,7 +19,7 @@ class Model implements \JsonSerializable
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="This field can’t be blank")
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;

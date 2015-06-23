@@ -89,7 +89,7 @@ class CarsController extends Controller
 
                 $this->addFlash('success', "{$model->getName()} успішно створено.");
 
-                return $this->redirect($this->generateUrl('cto_cars_home'));
+                return $this->redirect($this->generateUrl('cto_cars_home', ['tabName' => 'models']));
             }
         }
 
@@ -128,7 +128,6 @@ class CarsController extends Controller
             if ($form->isValid()) {
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($car);
                 $em->flush();
 
                 $this->addFlash('success', "{$car->getName()} успішно відредаговано.");
@@ -148,13 +147,25 @@ class CarsController extends Controller
      * @ParamConverter("model", class="CTOAppBundle:Model", options={"slug" = "slug"})
      * @Template()
      */
-    public function editModelByCarAction(Model $model)
+    public function editModelByCarAction(Request $request, Model $model)
     {
+        $form = $this->createForm(new ModelType(), $model);
+
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->addFlash('success', "{$model->getName()} успішно відредаговано.");
+
+                return $this->redirect($this->generateUrl('cto_cars_home', ['tabName' => 'models']));
+            }
+        }
 
         return [
-            'model' => $model
+            'form' => $form->createView()
         ];
     }
-
-
 }
