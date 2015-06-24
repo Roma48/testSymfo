@@ -31,7 +31,6 @@ class CarsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $cars = $em->getRepository('CTOAppBundle:Car')->findAll();
 
-
         return [
             "cars" => $cars,
             "tabName" => $tabName
@@ -96,7 +95,6 @@ class CarsController extends Controller
         return [
             'form' => $form->createView()
         ];
-
     }
 
     /**
