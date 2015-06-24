@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/cto/clients")
@@ -36,10 +37,24 @@ class ClientsController extends Controller
      * @Method({"GET", "POST"})
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         $client = new CtoClient();
         $form = $this->createForm(new CtoClientType(), $client);
+
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($client);
+                $em->flush();
+
+                $this->addFlash('success', "{$client->getFirstName()} {$client->getLastName()} успішно створено.");
+
+                return $this->redirect($this->generateUrl('cto_cars_home'));
+            }
+        }
 
         return [
             'form' => $form->createView()
