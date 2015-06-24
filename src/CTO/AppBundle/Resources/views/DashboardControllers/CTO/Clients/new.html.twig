@@ -1,0 +1,118 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>
+                Новий Клієнт:
+                <div class="pull-right">
+                    <a href="{{ path('cto_clients_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                </div>
+            </h3>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            {#{{ form(form) }}#}
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div>
+                    {{ form_label(form.firstName) }}
+                    {{ form_widget(form.firstName) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+                <div>
+                    {{ form_label(form.lastName) }}
+                    {{ form_widget(form.lastName) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+                <div>
+                    {{ form_label(form.phone) }}
+                    {{ form_widget(form.phone) }}
+                    {{ form_errors(form.phone) }}
+                </div>
+                <br>
+                <div id="client_cars_collection">
+                    <ul class="client-cars-ul" data-prototype="{{ form_widget(form.cars.vars.prototype)|e }}">
+                        {% for car in form.cars %}
+                            <li>
+                                <div>
+                                    {{ form_label(car.model) }}
+                                    {{ form_widget(car.model) }}
+                                    {{ form_errors(car.model) }}
+                                </div>
+                                <div>
+                                    {{ form_label(car.carNumber) }}
+                                    {{ form_widget(car.carNumber) }}
+                                    {{ form_errors(car.carNumber) }}
+                                </div>
+                                <div>
+                                    {{ form_label(car.Color) }}
+                                    {{ form_widget(car.Color) }}
+                                    {{ form_errors(car.Color) }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Створити клієнта</button>
+                </div>
+                <div class="hidden">
+                    {{ form_rest(form) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        jQuery(function ($) {
+            var $collectionHolder;
+            var $addTagLink = $('<br><a href="#" class="bnt btn-sm btn-info">Додати автомобіль</a>');
+            var $newLinkLi = $('<li></li>').append($addTagLink);
+
+            $collectionHolder = $('#client_cars_collection ul.client-cars-ul');
+            $collectionHolder.append($newLinkLi);
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            $collectionHolder.find('li').each(function() {
+                addCarFormDeleteLink($(this));
+            });
+            $addTagLink.on('click', function(e) {
+                e.preventDefault();
+                addCarForm($collectionHolder, $newLinkLi);
+            });
+
+            function addCarFormDeleteLink($tagFormLi) {
+                var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити</a>');
+                $tagFormLi.append($removeFormA);
+
+                $removeFormA.on('click', function(e) {
+                    e.preventDefault();
+                    $tagFormLi.remove();
+                });
+            }
+
+            function addCarForm($collectionHolder, $newLinkLi) {
+                var prototype = $collectionHolder.data('prototype');
+                var index = $collectionHolder.data('index');
+                var newForm = prototype.replace(/__name__/g, index);
+                $collectionHolder.data('index', index + 1);
+                var $newFormLi = $('<li></li>').append(newForm);
+                $newLinkLi.before($newFormLi);
+
+                addCarFormDeleteLink($newFormLi);
+
+                $(".selectpicker").selectpicker();
+            }
+
+        });
+    </script>
+{% endblock javascripts %}
+

@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class ClientCars
+ * Class ClientCar
  *
  * @ORM\Table(name="clientCars")
  * @ORM\Entity(repositoryClass="CTO\AppBundle\Entity\Repository\ClientCarsRepository")
  */
-class ClientCars 
+class ClientCar
 {
     use CreateUpdateTrait;
 
@@ -82,7 +82,7 @@ class ClientCars
 
     /**
      * @param mixed $carNumber
-     * @return ClientCars
+     * @return ClientCar
      */
     public function setCarNumber($carNumber)
     {
@@ -101,7 +101,7 @@ class ClientCars
 
     /**
      * @param mixed $carColor
-     * @return ClientCars
+     * @return ClientCar
      */
     public function setCarColor($carColor)
     {
@@ -111,7 +111,7 @@ class ClientCars
     }
 
     /**
-     * @return mixed
+     * @return Car
      */
     public function getCarBrand()
     {
@@ -120,7 +120,7 @@ class ClientCars
 
     /**
      * @param Car $car
-     * @return ClientCars
+     * @return ClientCar
      */
     public function setCarBrand(Car $car)
     {
@@ -139,7 +139,7 @@ class ClientCars
 
     /**
      * @param Model $model
-     * @return ClientCars
+     * @return ClientCar
      */
     public function setModel(Model $model)
     {
@@ -158,7 +158,7 @@ class ClientCars
 
     /**
      * @param CtoClient $ctoClient
-     * @return ClientCars
+     * @return ClientCar
      */
     public function setCtoClient(CtoClient $ctoClient)
     {

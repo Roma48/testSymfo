@@ -49,7 +49,7 @@ class CarJob
     protected $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\ClientCars", inversedBy="carJobs")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\ClientCar", inversedBy="carJobs")
      */
     protected $car;
 
@@ -129,10 +129,10 @@ class CarJob
     }
 
     /**
-     * @param ClientCars $car
+     * @param ClientCar $car
      * @return CarJob
      */
-    public function setCar(ClientCars $car)
+    public function setCar(ClientCar $car)
     {
         $this->car = $car;
 

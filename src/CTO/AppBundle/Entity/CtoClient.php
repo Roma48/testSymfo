@@ -56,7 +56,7 @@ class CtoClient
     protected $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCars", mappedBy="ctoClient")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="ctoClient")
      */
     protected $cars;
 
@@ -201,10 +201,10 @@ class CtoClient
     }
 
     /**
-     * @param ClientCars $car
+     * @param ClientCar $car
      * @return CtoClient
      */
-    public function addCar(ClientCars $car)
+    public function addCar(ClientCar $car)
     {
         $car->setCtoClient($this);
         $this->cars->add($car);
@@ -212,7 +212,7 @@ class CtoClient
         return $this;
     }
 
-    public function removeCar(ClientCars $car)
+    public function removeCar(ClientCar $car)
     {
         $this->cars->removeElement($car);
     }
