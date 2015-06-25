@@ -2,8 +2,11 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
+use CTO\AppBundle\Entity\ClientCar;
 use CTO\AppBundle\Entity\CtoClient;
+use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\CtoClientType;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,12 +50,26 @@ class ClientsController extends Controller
             if ($form->isValid()) {
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
+                /** @var CtoUser $user */
+                $user = $this->getUser();
+
+                $client
+                    ->setLastVisitDate(new DateTime('now'))
+                    ->setCity($user->getCity());
+
+                /** @var ClientCar $car */
+                foreach($client->getCars() as $car) {
+
+                    $car->setCarBrand($car->getModel()->getCar());
+                }
+
+                $user->addClient($client);
                 $em->persist($client);
                 $em->flush();
 
                 $this->addFlash('success', "{$client->getFirstName()} {$client->getLastName()} успішно створено.");
 
-                return $this->redirect($this->generateUrl('cto_cars_home'));
+                return $this->redirect($this->generateUrl('cto_clients_home'));
             }
         }
 

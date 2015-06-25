@@ -33,7 +33,7 @@ class Model implements \JsonSerializable
     protected $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="models")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="models", fetch="EXTRA_LAZY")
      */
     protected $car;
 

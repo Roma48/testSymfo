@@ -56,7 +56,7 @@ class CtoClient
     protected $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="ctoClient")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="ctoClient", cascade={"persist"}, fetch="EAGER")
      */
     protected $cars;
 
@@ -71,7 +71,7 @@ class CtoClient
     protected $cto;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="clientCto")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="clientCto", cascade={"persist"})
      */
     protected $notifications;
 

@@ -27,12 +27,12 @@ class ClientCar
     protected $carColor;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Car")
+     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Car", fetch="EAGER", cascade={"persist"})
      */
     protected $carBrand;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Model")
+     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Model", fetch="EAGER", cascade={"persist"})
      */
     protected $model;
 
@@ -42,7 +42,7 @@ class ClientCar
     protected $ctoClient;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="car")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="car", cascade={"persist"})
      */
     protected $carJobs;
 
@@ -130,7 +130,7 @@ class ClientCar
     }
 
     /**
-     * @return mixed
+     * @return Model
      */
     public function getModel()
     {
@@ -144,12 +144,13 @@ class ClientCar
     public function setModel(Model $model)
     {
         $this->model = $model;
+//        $this->setCarBrand($model->getCar());
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return CtoClient
      */
     public function getCtoClient()
     {

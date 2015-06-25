@@ -103,7 +103,7 @@ class CtoUser extends BaseUser
     }
 
     /**
-     * @return string
+     * @return City
      */
     public function getCity()
     {
@@ -111,10 +111,10 @@ class CtoUser extends BaseUser
     }
 
     /**
-     * @param string $city
+     * @param City $city
      * @return CtoUser
      */
-    public function setCity($city)
+    public function setCity(City $city)
     {
         $this->city = $city;
 

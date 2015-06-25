@@ -19,17 +19,17 @@
             {#{{ form(form) }}#}
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                <div>
+                <div class="error-handling">
                     {{ form_label(form.firstName) }}
                     {{ form_widget(form.firstName) }}
                     {{ form_errors(form.firstName) }}
                 </div>
-                <div>
+                <div class="error-handling">
                     {{ form_label(form.lastName) }}
                     {{ form_widget(form.lastName) }}
                     {{ form_errors(form.lastName) }}
                 </div>
-                <div>
+                <div class="error-handling">
                     {{ form_label(form.phone) }}
                     {{ form_widget(form.phone) }}
                     {{ form_errors(form.phone) }}
@@ -39,7 +39,7 @@
                     <ul class="client-cars-ul" data-prototype="{{ form_widget(form.cars.vars.prototype)|e }}">
                         {% for car in form.cars %}
                             <li>
-                                <div>
+                                <div class="error-handling">
                                     {{ form_label(car.model) }}
                                     {{ form_widget(car.model) }}
                                     {{ form_errors(car.model) }}
@@ -50,9 +50,9 @@
                                     {{ form_errors(car.carNumber) }}
                                 </div>
                                 <div>
-                                    {{ form_label(car.Color) }}
-                                    {{ form_widget(car.Color) }}
-                                    {{ form_errors(car.Color) }}
+                                    {{ form_label(car.carColor) }}
+                                    {{ form_widget(car.carColor) }}
+                                    {{ form_errors(car.carColor) }}
                                 </div>
                             </li>
                         {% endfor %}
