@@ -2,6 +2,8 @@
 
 namespace CTO\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +26,16 @@ class JobCategory
     protected $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="jobCategory", cascade={"persist"})
+     */
+    protected $carJobs;
+
+    public function __construct()
+    {
+        $this->carJobs = new ArrayCollection();
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -40,5 +52,38 @@ class JobCategory
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCarJobs()
+    {
+        return $this->carJobs;
+    }
+
+    /**
+     * @param Collection $carJobs
+     */
+    public function setCarJobs($carJobs)
+    {
+        $this->carJobs = $carJobs;
+    }
+
+    /**
+     * @param CarJob $carJob
+     * @return JobCategory
+     */
+    public function addCarJob(CarJob $carJob)
+    {
+        $carJob->setJobCategory($this);
+        $this->carJobs->add($carJob);
+
+        return $this;
+    }
+
+    public function removeCarJob(CarJob $carJob)
+    {
+        $this->carJobs->removeElement($carJob);
     }
 }

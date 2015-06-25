@@ -27,12 +27,12 @@ class ClientCar
     protected $carColor;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Car", fetch="EAGER", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="clientCars")
      */
     protected $carBrand;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\Model", fetch="EAGER", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Model", inversedBy="clientCars")
      */
     protected $model;
 
@@ -144,6 +144,7 @@ class ClientCar
     public function setModel(Model $model)
     {
         $this->model = $model;
+        $this->carBrand = $model->getCar();
 //        $this->setCarBrand($model->getCar());
 
         return $this;

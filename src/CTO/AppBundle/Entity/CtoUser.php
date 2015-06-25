@@ -52,7 +52,7 @@ class CtoUser extends BaseUser
     protected $clients;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\City", inversedBy="ctoUsers")
      */
     protected $city;
 

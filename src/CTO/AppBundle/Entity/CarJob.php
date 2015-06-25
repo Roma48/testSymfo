@@ -54,7 +54,7 @@ class CarJob
     protected $car;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\JobCategory")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\JobCategory", inversedBy="carJobs")
      */
     protected $jobCategory;
 
@@ -121,7 +121,7 @@ class CarJob
     }
 
     /**
-     * @return mixed
+     * @return ClientCar
      */
     public function getCar()
     {
@@ -140,7 +140,7 @@ class CarJob
     }
 
     /**
-     * @return mixed
+     * @return JobCategory
      */
     public function getJobCategory()
     {

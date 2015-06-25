@@ -61,7 +61,7 @@ class CtoClient
     protected $cars;
 
     /**
-     * @ORM\OneToOne(targetEntity="CTO\AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\City", inversedBy="ctoClients")
      */
     protected $city;
 

@@ -57,17 +57,11 @@ class ClientsController extends Controller
                     ->setLastVisitDate(new DateTime('now'))
                     ->setCity($user->getCity());
 
-                /** @var ClientCar $car */
-                foreach($client->getCars() as $car) {
-
-                    $car->setCarBrand($car->getModel()->getCar());
-                }
-
                 $user->addClient($client);
                 $em->persist($client);
                 $em->flush();
 
-                $this->addFlash('success', "{$client->getFirstName()} {$client->getLastName()} успішно створено.");
+                $this->addFlash('success', "Клієнт {$client->getFirstName()} {$client->getLastName()} успішно створено.");
 
                 return $this->redirect($this->generateUrl('cto_clients_home'));
             }

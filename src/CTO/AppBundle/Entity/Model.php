@@ -2,6 +2,8 @@
 
 namespace CTO\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -33,9 +35,19 @@ class Model implements \JsonSerializable
     protected $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="models", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="models")
      */
     protected $car;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="model", cascade={"persist"})
+     */
+    protected $clientCars;
+
+    public function __construct()
+    {
+        $this->clientCars = new ArrayCollection();
+    }
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
@@ -105,5 +117,33 @@ class Model implements \JsonSerializable
         $this->car = $car;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getClientCars()
+    {
+        return $this->clientCars;
+    }
+
+    /**
+     * @param ClientCar $clientCar
+     * @return Model
+     */
+    public function addClientCar(ClientCar $clientCar)
+    {
+        $clientCar->setModel($this);
+        $this->clientCars->add($clientCar);
+
+        return $this;
+    }
+
+    /**
+     * @param ClientCar $clientCar
+     */
+    public function removeClientCar(ClientCar $clientCar)
+    {
+        $this->clientCars->removeElement($clientCar);
     }
 }

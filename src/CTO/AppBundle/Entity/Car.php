@@ -39,9 +39,15 @@ class Car
      */
     protected $models;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="carBrand", cascade={"persist"})
+     */
+    protected $clientCars;
+
     public function __construct()
     {
         $this->models = new ArrayCollection();
+        $this->clientCars = new ArrayCollection();
     }
 
     /**
@@ -87,14 +93,48 @@ class Car
         return $this->models;
     }
 
+    /**
+     * @param Model $model
+     * @return Car
+     */
     public function addModel(Model $model)
     {
         $model->setCar($this);
         $this->models->add($model);
+
+        return $this;
     }
 
     public function removeModel(Model $model)
     {
         $this->models->removeElement($model);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getClientCars()
+    {
+        return $this->clientCars;
+    }
+
+    /**
+     * @param ClientCar $clientCar
+     * @return Car
+     */
+    public function addClientCar(ClientCar $clientCar)
+    {
+        $clientCar->setCarBrand($this);
+        $this->clientCars->add($clientCar);
+
+        return $this;
+    }
+
+    /**
+     * @param ClientCar $clientCar
+     */
+    public function removeClientCar(ClientCar $clientCar)
+    {
+        $this->clientCars->removeElement($clientCar);
     }
 }
