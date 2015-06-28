@@ -1,4 +1,4 @@
-{% extends "::base.html.twig" %}
+{% extends '::base.html.twig' %}
 
 {% block body %}
     <div class="row">
@@ -19,6 +19,8 @@
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-default"><i class="fa fa-filter fa-fw"></i>&nbsp;Фільтрувати</button>
+                &nbsp;&nbsp;&nbsp;
+                <a href="{{ path("cto_clients_home") }}" class="btn btn-warning"><i class="fa fa-refresh fa-fw"></i>&nbsp;Відміна</a>
                 {{ form_end(filterForm) }}
             </div>
         </div>
@@ -38,12 +40,21 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="text-center">{{ knp_pagination_sortable(clients, 'Id', 'u.id') }}</th>
-                    <th>{{ knp_pagination_sortable(clients, 'First name', 'u.firstName') }}</th>
-                    <th>{{ knp_pagination_sortable(clients, 'Last name', 'u.lastName') }}</th>
-                    <th>{{ knp_pagination_sortable(clients, 'Last visited', 'u.lastVisitDate') }}</th>
-                    <th class="text-center">Cars</th>
-                    <th class="text-center">Actions</th>
+                    {% if paginator %}
+                        <th class="text-center">{{ knp_pagination_sortable(clients, 'Id', 'u.id') }}</th>
+                        <th>{{ knp_pagination_sortable(clients, 'First name', 'u.firstName') }}</th>
+                        <th>{{ knp_pagination_sortable(clients, 'Last name', 'u.lastName') }}</th>
+                        <th>{{ knp_pagination_sortable(clients, 'Last visited', 'u.lastVisitDate') }}</th>
+                        <th class="text-center">Cars</th>
+                        <th class="text-center">Actions</th>
+                    {% else %}
+                        <th class="text-center">Id</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Last visited</th>
+                        <th class="text-center">Cars</th>
+                        <th class="text-center">Actions</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -58,7 +69,7 @@
                             <div class="btn-group">
                                 <a class="btn btn-default btn-xs"
                                    href="#"> Show </a>
-                                   {#href="{{ path('admin_appUser_show', { 'id': client.id }) }}"> Show </a>#}
+                                {#href="{{ path('admin_appUser_show', { 'id': client.id }) }}"> Show </a>#}
                                 <a class="btn btn-warning btn-xs"
                                    href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Edit </a>
                             </div>
@@ -67,10 +78,17 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="text-center">
-                {{ knp_pagination_render(clients) }}
-            </div>
+            {% if paginator %}
+                <div class="text-center">
+                    {{ knp_pagination_render(clients) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 
-{% endblock body %}
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+

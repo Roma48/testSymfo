@@ -56,7 +56,7 @@ class CtoClient
     protected $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="ctoClient", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\ClientCar", mappedBy="ctoClient", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $cars;
 
