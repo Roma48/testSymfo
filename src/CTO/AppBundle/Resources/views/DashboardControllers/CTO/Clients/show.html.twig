@@ -1,0 +1,73 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>
+                {{ client.firstName }} {{ client.lastName }}
+                <div class="pull-right">
+                    <a href="{{ path('cto_clients_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                </div>
+            </h3>
+            <br>
+        </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist" id="place-tab-sh">
+        <li class="{{ tabName == 'info' ? 'active' }}"><a href="{{ path('cto_client_show', { 'tabName' : 'info', 'slug' : client.slug }) }}">Інформація</a></li>
+        <li class="{{ tabName == 'cars' ? 'active' }}"><a href="{{ path('cto_client_show', { 'tabName' : 'cars', 'slug' : client.slug }) }}">Автомобілі</a></li>
+        <li class="{{ tabName == 'jobs' ? 'active' }}"><a href="{{ path('cto_client_show', { 'tabName' : 'jobs', 'slug' : client.slug }) }}">Завдання</a></li>
+    </ul>
+
+    {% if tabName %}
+        {{ block(tabName) }}
+    {% else %}
+        {{ block('info') }}
+    {% endif %}
+{% endblock %}
+
+{% block info %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>Загальна інформація про клієнта:</h3>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ім'я: </span>{{ client.firstName }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прізвище: </span>{{ client.lastName }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Кількість автомобілів: </span>{{ client.cars | length }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата останнього візиту: </span>{{ client.lastVisitDate | date("d.m.Y H:i") }}</p>
+        </div>
+    </div>
+{% endblock info %}
+
+{% block cars %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>Автомобілі клієнта:</h3>
+
+            {% for car in client.cars %}
+                <div>
+                    <p><span class="font-bolder">Марка: </span>{{ car.model.car.name }}</p>
+                    <p><span class="font-bolder">Модель: </span>{{ car.model.name }}</p>
+                    <p><span class="font-bolder">Номерний знак: </span>{{ car.carNumber }}</p>
+                    <p><span class="font-bolder">Колір: </span>{{ car.carColor }}</p>
+                </div>
+                {% if not loop.last and client.cars|length > 1 %}
+                    <hr class="no-margin">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock cars %}
+
+{% block jobs %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>Завдання клієнта:</h3>
+        </div>
+    </div>
+{% endblock jobs %}
+
+{% block javascripts %}
+
+{% endblock %}
+

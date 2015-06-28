@@ -27,12 +27,12 @@ class ClientCar
     protected $carColor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="clientCars")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="clientCars", fetch="EAGER")
      */
     protected $carBrand;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Model", inversedBy="clientCars")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Model", inversedBy="clientCars", fetch="EAGER")
      */
     protected $model;
 
@@ -115,7 +115,7 @@ class ClientCar
      */
     public function getCarBrand()
     {
-        return $this->$carBrand;
+        return $this->model->getCar();// $carBrand;
     }
 
     /**
@@ -144,7 +144,9 @@ class ClientCar
     public function setModel(Model $model)
     {
         $this->model = $model;
-        $this->carBrand = $model->getCar();
+        $car = $model->getCar();
+        $car->addClientCar($this);
+        $this->carBrand = $car;
 //        $this->setCarBrand($model->getCar());
 
         return $this;

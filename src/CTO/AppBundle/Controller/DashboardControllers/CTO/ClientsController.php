@@ -29,7 +29,6 @@ class ClientsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $clients = $em->getRepository('CTOAppBundle:CtoClient')->findAll();
 
         $dql = 'SELECT u From CTOAppBundle:CtoClient u';
         $usersResult = $em->createQuery($dql);
@@ -95,6 +94,7 @@ class ClientsController extends Controller
      * @Template("@CTOApp/DashboardControllers/CTO/Clients/new.html.twig")
      * @ParamConverter("ctoClient", class="CTOAppBundle:CtoClient", options={"slug" = "slug"})
      * @param CtoClient $ctoClient
+     * @param Request $request
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(CtoClient $ctoClient, Request $request)
@@ -162,4 +162,20 @@ class ClientsController extends Controller
         ];
     }
 
+    /**
+     * @Route("/show/{slug}/{tabName}", name="cto_client_show", defaults={"tabName" = "info"}, requirements={"tabName" = "info|cars|jobs"})
+     * @Method({"GET", "POST"})
+     * @ParamConverter("ctoClient", class="CTOAppBundle:CtoClient", options={"slug" = "slug"})
+     * @Template()
+     * @param CtoClient $ctoClient
+     * @param $tabName
+     * @return array
+     */
+    public function showAction(CtoClient $ctoClient, $tabName)
+    {
+        return [
+            "client" => $ctoClient,
+            "tabName" => $tabName
+        ];
+    }
 }

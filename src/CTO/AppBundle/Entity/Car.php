@@ -124,7 +124,7 @@ class Car
      */
     public function addClientCar(ClientCar $clientCar)
     {
-        $clientCar->setCarBrand($this);
+//        $clientCar->setCarBrand($this);
         $this->clientCars->add($clientCar);
 
         return $this;
