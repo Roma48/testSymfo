@@ -35,7 +35,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/dashboard/", name="after_login_switch_route")
+     * @Route("/cto/", name="after_login_switch_route")
      */
     public function defaultAction()
     {

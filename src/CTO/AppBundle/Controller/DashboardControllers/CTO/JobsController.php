@@ -21,4 +21,14 @@ class JobsController extends Controller
     {
         return [];
     }
+
+    /**
+     * @Route("/new", name="cto_jobs_new")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function newAction()
+    {
+        return [];
+    }
 }
