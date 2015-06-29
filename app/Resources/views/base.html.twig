@@ -11,10 +11,7 @@
 <body>
 
 {% block menu %}
-    {% if app.user and is_granted('ROLE_ADMIN') %}
-        {% include "::adminMenu.html.twig" %}
-    {% endif %}
-    {% if app.user and is_granted('ROLE_CTO') %}
+    {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
         {% include "::ctoMenu.html.twig" %}
     {% endif %}
 {% endblock menu %}
@@ -38,11 +35,13 @@
 
     {% block body %}
     {% endblock body %}
-    <div class="footer-nav">
-        <h4 class="text-center">
-            This is footer
-        </h4>
-    </div>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="footer-nav">
+            <h4 class="text-center">
+                This is footer
+            </h4>
+        </div>
+    {% endif %}
 </div>
 
 <script src="{{ asset('js/vendors.min.js') }}"></script>

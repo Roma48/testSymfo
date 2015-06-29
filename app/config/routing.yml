@@ -4,7 +4,7 @@ app:
 dashboard:
     resource: "@CTOAppBundle/Controller/DashboardControllers/"
     type:     annotation
-    prefix:   "dashboard"
+    prefix:   "cto"
 api:
     resource: "@CTOAppBundle/Controller/ApiControllers/"
     type:     annotation

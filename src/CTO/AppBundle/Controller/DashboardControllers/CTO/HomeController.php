@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Class HomeController
- * @Route("/cto")
  */
 class HomeController extends Controller
 {

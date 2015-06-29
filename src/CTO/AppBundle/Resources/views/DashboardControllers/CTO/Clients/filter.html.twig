@@ -68,10 +68,9 @@
                         <td class="text-center">
                             <div class="btn-group">
                                 <a class="btn btn-default btn-xs"
-                                   href="#"> Show </a>
-                                {#href="{{ path('admin_appUser_show', { 'id': client.id }) }}"> Show </a>#}
+                                   href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>
                                 <a class="btn btn-warning btn-xs"
-                                   href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Edit </a>
+                                   href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Редагувати </a>
                             </div>
                         </td>
                     </tr>

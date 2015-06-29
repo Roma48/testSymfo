@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/cto/cars")
+ * @Route("/cars")
  */
 class CarsController extends Controller
 {
