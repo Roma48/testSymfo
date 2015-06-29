@@ -71,6 +71,11 @@ class CtoClient
     protected $cto;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="client", cascade={"persist"})
+     */
+    protected $carJobs;
+
+    /**
      * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="clientCto", cascade={"persist"})
      */
     protected $notifications;
@@ -79,6 +84,7 @@ class CtoClient
     {
         $this->cars = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->carJobs = new ArrayCollection();
     }
 
     /**
@@ -212,6 +218,9 @@ class CtoClient
         return $this;
     }
 
+    /**
+     * @param ClientCar $car
+     */
     public function removeCar(ClientCar $car)
     {
         $this->cars->removeElement($car);
@@ -254,5 +263,42 @@ class CtoClient
         $this->notifications->add($notification);
 
         return $this;
+    }
+
+    /**
+     * @param Notification $notification
+     */
+    public function removeNotification(Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCarJobs()
+    {
+        return $this->carJobs;
+    }
+
+
+    /**
+     * @param CarJob $carJob
+     * @return CtoClient
+     */
+    public function addCarJob(CarJob $carJob)
+    {
+        $carJob->setClient($this);
+        $this->carJobs->add($carJob);
+
+        return $this;
+    }
+
+    /**
+     * @param CarJob $carJob
+     */
+    public function removeCarJob(CarJob $carJob)
+    {
+        $this->carJobs->removeElement($carJob);
     }
 }

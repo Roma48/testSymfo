@@ -3,6 +3,8 @@
 namespace CTO\AppBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,26 +19,11 @@ class CarJob
     use CreateUpdateTrait;
 
     /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="firstName", type="string", length=255)
-     */
-    protected $firstName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lastName", type="string", length=255, nullable=true)
-     */
-    protected $lastName;
-
-    /**
      * @var DateTime
      *
-     * @ORM\Column(name="birthDay", type="datetime", nullable=true)
+     * @ORM\Column(name="jobDate", type="datetime", nullable=true)
      */
-    protected $birthDay;
+    protected $jobDate;
 
     /**
      * @ORM\Column(name="description", type="text")
@@ -47,6 +34,11 @@ class CarJob
      * @ORM\Column(name="price", type="float")
      */
     protected $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="carJobs")
+     */
+    protected $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\ClientCar", inversedBy="carJobs")
@@ -63,61 +55,94 @@ class CarJob
      */
     protected $notifications;
 
-    /**
-     * @return string
-     */
-    public function getFirstName()
+    public function __construct()
     {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string $firstName
-     * @return CarJob
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     * @return CarJob
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-
-        return $this;
+        $this->notifications = new ArrayCollection();
     }
 
     /**
      * @return DateTime
      */
-    public function getBirthDay()
+    public function getJobDate()
     {
-        return $this->birthDay;
+        return $this->jobDate;
     }
 
     /**
-     * @param DateTime $birthDay
+     * @param DateTime $jobDate
      * @return CarJob
      */
-    public function setBirthDay($birthDay)
+    public function setJobDate(DateTime $jobDate)
     {
-        $this->birthDay = $birthDay;
+        $this->jobDate = $jobDate;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     * @return CarJob
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     * @return CarJob
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param Notification $notification
+     * @return CarJob
+     */
+    public function addNotification(Notification $notification)
+    {
+        $notification->setCarJob($this);
+        $this->notifications->add($notification);
+
+        return $this;
+    }
+
+    /**
+     * @param Notification $notification
+     */
+    public function removeNotification(Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
     }
 
     /**
@@ -156,5 +181,21 @@ class CarJob
         $this->jobCategory = $jobCategory;
 
         return $this;
+    }
+
+    /**
+     * @return CtoClient
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param CtoClient $client
+     */
+    public function setClient(CtoClient $client)
+    {
+        $this->client = $client;
     }
 }
