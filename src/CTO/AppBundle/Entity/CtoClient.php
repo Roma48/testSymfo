@@ -35,6 +35,11 @@ class CtoClient
     protected $lastName;
 
     /**
+     * @ORM\Column(name="fullName", type="string", length=255)
+     */
+    protected $fullName;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
@@ -140,6 +145,25 @@ class CtoClient
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @param mixed $fullName
+     * @return CtoClient
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }
@@ -300,5 +324,10 @@ class CtoClient
     public function removeCarJob(CarJob $carJob)
     {
         $this->carJobs->removeElement($carJob);
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
     }
 }

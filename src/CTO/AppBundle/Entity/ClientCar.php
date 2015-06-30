@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="clientCars")
  * @ORM\Entity(repositoryClass="CTO\AppBundle\Entity\Repository\ClientCarsRepository")
  */
-class ClientCar
+class ClientCar implements \JsonSerializable
 {
     use CreateUpdateTrait;
 
@@ -25,6 +25,8 @@ class ClientCar
      * @ORM\Column(name="CarColor", type="string", length=255, nullable=true)
      */
     protected $carColor;
+
+    protected $carModel;
 
     /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Car", inversedBy="clientCars", fetch="EAGER")
@@ -45,6 +47,22 @@ class ClientCar
      * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="car", cascade={"persist"})
      */
     protected $carJobs;
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getModel()->getName()
+        ];
+    }
+
 
     public function __construct()
     {
@@ -169,5 +187,13 @@ class ClientCar
         $this->ctoClient = $ctoClient;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCarModel()
+    {
+        return $this->model->getName();
     }
 }

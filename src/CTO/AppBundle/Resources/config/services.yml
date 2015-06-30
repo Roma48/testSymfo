@@ -1,4 +1,5 @@
 services:
-#    cto_app.example:
-#        class: CTO\AppBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    cto.CTOClient.doctrine.subscriber.fullName:
+        class: CTO\AppBundle\EventListener\DoctrineCTOClientSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
