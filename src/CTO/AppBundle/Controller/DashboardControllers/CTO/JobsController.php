@@ -4,6 +4,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Form\CarJobType;
+use CTO\AppBundle\Form\CtoCarJobFilterType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,12 +18,47 @@ use Symfony\Component\HttpFoundation\Request;
 class JobsController extends Controller
 {
     /**
-     * @Route("/", name="cto_jobs_home")
+     * @Route("/{tabName}", name="cto_jobs_home", defaults={"tabName" = "info"}, requirements={"tabName" = "info|list"})
      * @Method("GET")
      * @Template()
      */
-    public function homeAction()
+    public function homeAction($tabName)
     {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = 'SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN  j.jobCategory jc JOIN j.car jcar JOIN jcar.model m';
+        $jobsResult = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+        $jobs = $paginator->paginate(
+            $jobsResult,
+            $this->get('request')->query->get('page', 1),   /* page number */
+            $this->container->getParameter('pagination')    /* limit per page */
+        );
+
+        $filterForm = $this->createForm(new CtoCarJobFilterType());
+
+//        $jobs = $em->getRepository("CTOAppBundle:CarJob")->findAll();
+
+        return [
+            "jobs" => $jobs,
+            "tabName" => $tabName,
+            "filterForm" => $filterForm->createView()
+        ];
+    }
+
+    /**
+     * @Route("/filter", name="cto_jobs_filter")
+     * @Method({"GET", "POST"})
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function jobsFilterAction(Request $request)
+    {
+        $a = 'd';
+
         return [];
     }
 
@@ -75,7 +111,7 @@ class JobsController extends Controller
                 $em->persist($carJob);
                 $em->flush();
 
-                $this->addFlash('success', "Завдання успішно створено.");
+                $this->addFlash('success', "Завдання успішно відредаговано.");
 
                 return $this->redirect($this->generateUrl('cto_jobs_home'));
             }

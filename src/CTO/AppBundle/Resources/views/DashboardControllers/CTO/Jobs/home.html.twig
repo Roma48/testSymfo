@@ -13,9 +13,24 @@
         </div>
     </div>
 
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist" id="place-tab-sh">
+        <li class="{{ tabName == 'info' ? 'active' }}"><a href="{{ path('cto_jobs_home', { 'tabName' : 'info' }) }}"><i class="fa fa-info"></i>&nbsp;&nbsp;&nbsp;Інформація</a></li>
+        <li class="{{ tabName == 'list' ? 'active' }}"><a href="{{ path('cto_jobs_home', { 'tabName' : 'list' }) }}"><i class="fa fa-list"></i>&nbsp;&nbsp;&nbsp;Список</a></li>
+    </ul>
 
+    {% if tabName %}
+        {{ block(tabName) }}
+    {% else %}
+        {{ block('info') }}
+    {% endif %}
 
-
-
-    Jobs home
 {% endblock body %}
+
+{% block info %}
+    {% include "@CTOApp/DashboardControllers/CTO/Jobs/include.job.home.infoTab.html.twig" %}
+{% endblock info %}
+
+{% block list %}
+    {% include "@CTOApp/DashboardControllers/CTO/Jobs/include.job.home.listTab.html.twig" %}
+{% endblock list %}

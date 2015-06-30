@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="text-center filter-form">
+            <br>
+            {{ form_start(filterForm, {'action': path('cto_client_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(filterForm.fullName) }}
+            {{ form_widget(filterForm.jobCategory) }}
+            {{ form_widget(filterForm.dateFrom) }}
+            {{ form_widget(filterForm.dateTo) }}
+            <div class="hidden">
+                {{ form_rest(filterForm) }}
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-default"><i class="fa fa-filter fa-fw"></i>&nbsp;Фільтрувати</button>
+            {{ form_end(filterForm) }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <br>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'Category', 'jc.name') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'Price', 'j.price') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'Model', 'm.name') }}</th>
+                <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td class="text-center">{{ job.id }}</td>
+                    <td>{{ job.client.firstName }}</td>
+                    <td>{{ job.client.lastName }}</td>
+                    <td>{{ job.jobCategory.name}}</td>
+                    <td>{{ job.price}}</td>
+                    <td>{{ job.car.model.name}}</td>
+                    <td>{{ job.jobDate | date("d.m.Y H:i") }}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a class="btn btn-default btn-xs"
+                               href="#"> Показати </a>
+                               {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
+                            <a class="btn btn-warning btn-xs"
+                               href="#"> Редагувати </a>
+                               {#href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Редагувати </a>#}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">
+            {{ knp_pagination_render(jobs) }}
+        </div>
+    </div>
+</div>

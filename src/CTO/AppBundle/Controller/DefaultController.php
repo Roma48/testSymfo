@@ -41,16 +41,7 @@ class DefaultController extends Controller
     {
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 
-            $user = $this->getUser();
-            if ($user instanceof AdminUser) {
-
-                return $this->redirectToRoute('adminUser_home');
-            } elseif ($user instanceof CtoUser) {
-
-                return $this->redirectToRoute('ctoUser_home');
-            }
-
-            return $this->redirect('/logout');
+            return $this->redirectToRoute("cto_jobs_home");
         }
 
         return $this->redirect('/logout');
