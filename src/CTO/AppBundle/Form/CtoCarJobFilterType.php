@@ -19,7 +19,10 @@ class CtoCarJobFilterType extends AbstractType
                 'empty_value' => "Не вибрано",
                 'property' => 'name',
                 'attr'  => [
-                    'class'         => 'form-control',
+                    'class'         => 'selectpicker',
+                    'data-width'    => "auto",
+//                    'data-size'     => "15",
+//                    'data-live-search' => true
                 ],
             ])
             ->add('dateFrom', 'text', [
