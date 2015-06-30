@@ -21,4 +21,10 @@ class CtoClientRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function listClientwWithSorting()
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT u From CTOAppBundle:CtoClient u');
+    }
 }

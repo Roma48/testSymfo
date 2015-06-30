@@ -29,9 +29,7 @@ class ClientsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
-        $dql = 'SELECT u From CTOAppBundle:CtoClient u';
-        $usersResult = $em->createQuery($dql);
+        $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting();
 
         $paginator = $this->get('knp_paginator');
         $clients = $paginator->paginate(
@@ -142,8 +140,7 @@ class ClientsController extends Controller
             $usersResult = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter($filterFormData);
         } else {
             $withPaginator = true;
-            $dql = 'SELECT u From CTOAppBundle:CtoClient u';
-            $usersResult = $em->createQuery($dql);
+            $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting();
 
             $paginator = $this->get('knp_paginator');
             $clients = $paginator->paginate(

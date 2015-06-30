@@ -26,9 +26,7 @@ class JobsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
-        $dql = 'SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN  j.jobCategory jc JOIN j.car jcar JOIN jcar.model m';
-        $jobsResult = $em->createQuery($dql);
+        $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
 
         $paginator = $this->get('knp_paginator');
         $jobs = $paginator->paginate(
@@ -38,8 +36,6 @@ class JobsController extends Controller
         );
 
         $filterForm = $this->createForm(new CtoCarJobFilterType());
-
-//        $jobs = $em->getRepository("CTOAppBundle:CarJob")->findAll();
 
         return [
             "jobs" => $jobs,
@@ -57,9 +53,46 @@ class JobsController extends Controller
      */
     public function jobsFilterAction(Request $request)
     {
-        $a = 'd';
+        /** @var Array $filterFormData */
+        $filterFormData = $request->get('job_filter', null);
+        if ($filterFormData) {
+            $filterFormData = array_filter($filterFormData);
+        }
 
-        return [];
+        $withPaginator = false;
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        if ($filterFormData) {
+            if (array_key_exists('jobCategory', $filterFormData)) {
+
+                $jobCategory = $em->getRepository('CTOAppBundle:JobCategory')->find($filterFormData['jobCategory']);
+                if ($jobCategory) {
+                    $filterFormData['jobCategory'] = $jobCategory;
+                }
+            }
+
+            $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData);
+        } else {
+            $withPaginator = true;
+            $usersResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
+
+            $paginator = $this->get('knp_paginator');
+            $jobs = $paginator->paginate(
+                $usersResult,
+                $this->get('request')->query->get('page', 1),   /* page number */
+                $this->container->getParameter('pagination')    /* limit per page */
+            );
+        }
+
+        $filterForm = $this->createForm(new CtoCarJobFilterType(), $filterFormData);
+
+        return [
+            'jobs' => $withPaginator ? $jobs : $filteredJobs,
+            'paginator' => $withPaginator,
+            "tabName" => 'list',
+            'filterForm' => $filterForm->createView()
+        ];
     }
 
     /**

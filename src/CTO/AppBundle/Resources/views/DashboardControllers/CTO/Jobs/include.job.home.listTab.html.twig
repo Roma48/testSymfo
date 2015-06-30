@@ -2,7 +2,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="text-center filter-form">
             <br>
-            {{ form_start(filterForm, {'action': path('cto_client_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_start(filterForm, {'action': path('cto_jobs_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_widget(filterForm.fullName) }}
             {{ form_widget(filterForm.jobCategory) }}
             {{ form_widget(filterForm.dateFrom) }}
