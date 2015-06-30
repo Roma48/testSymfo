@@ -42,15 +42,14 @@
                     <td>{{ job.jobCategory.name}}</td>
                     <td>{{ job.price}}</td>
                     <td>{{ job.car.model.name}}</td>
-                    <td>{{ job.jobDate | date("d.m.Y H:i") }}</td>
+                    <td>{{ job.jobDate | date("d.m.Y") }}</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <a class="btn btn-default btn-xs"
                                href="#"> Показати </a>
                                {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
                             <a class="btn btn-warning btn-xs"
-                               href="#"> Редагувати </a>
-                               {#href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Редагувати </a>#}
+                               href="{{ path('cto_jobs_edit', { 'id': job.id }) }}"> Редагувати </a>
                         </div>
                     </td>
                 </tr>

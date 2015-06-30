@@ -34,3 +34,21 @@
 {% block list %}
     {% include "@CTOApp/DashboardControllers/CTO/Jobs/include.job.home.listTab.html.twig" %}
 {% endblock list %}
+
+{% block javascripts %}
+<script>
+    jQuery(function ($) {
+        $('.date-picker-cto').datepicker({
+            format: "dd.mm.yyyy",
+            orientation: "auto",
+//            todayBtn: "linked",
+            todayBtn: true,
+            clearBtn: true,
+            language: "uk",
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock javascripts %}

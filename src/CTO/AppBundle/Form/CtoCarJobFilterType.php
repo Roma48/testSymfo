@@ -23,10 +23,10 @@ class CtoCarJobFilterType extends AbstractType
                 ],
             ])
             ->add('dateFrom', 'text', [
-                'attr' => ['placeholder' => 'Дата ремонту З', 'class' => 'form-control']
+                'attr' => ['placeholder' => 'Дата ремонту З', 'class' => 'form-control date-picker-cto']
             ])
             ->add('dateTo', 'text', [
-                'attr' => ['placeholder' => 'Дата ремонту ПО', 'class' => 'form-control']
+                'attr' => ['placeholder' => 'Дата ремонту ПО', 'class' => 'form-control date-picker-cto']
             ])
         ;
     }

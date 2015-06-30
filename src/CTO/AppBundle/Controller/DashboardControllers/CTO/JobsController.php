@@ -65,7 +65,6 @@ class JobsController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($filterFormData) {
             if (array_key_exists('jobCategory', $filterFormData)) {
-
                 $jobCategory = $em->getRepository('CTOAppBundle:JobCategory')->find($filterFormData['jobCategory']);
                 if ($jobCategory) {
                     $filterFormData['jobCategory'] = $jobCategory;
@@ -75,11 +74,11 @@ class JobsController extends Controller
             $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData);
         } else {
             $withPaginator = true;
-            $usersResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
+            $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
 
             $paginator = $this->get('knp_paginator');
             $jobs = $paginator->paginate(
-                $usersResult,
+                $jobsResult,
                 $this->get('request')->query->get('page', 1),   /* page number */
                 $this->container->getParameter('pagination')    /* limit per page */
             );
@@ -153,6 +152,5 @@ class JobsController extends Controller
         return [
             'form' => $form->createView()
         ];
-
     }
 }

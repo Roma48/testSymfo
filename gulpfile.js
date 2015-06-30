@@ -12,7 +12,8 @@ gulp.task('vendors-css', function () {
         'web_src/frontend-vendors/bootstrap/dist/css/bootstrap.css',
         'web_src/frontend-vendors/bootstrap/dist/css/bootstrap-theme.css',
         'web_src/frontend-vendors/font-awesome/css/font-awesome.css',
-        'web_src/frontend-vendors/bootstrap-select/dist/css/bootstrap-select.css'
+        'web_src/frontend-vendors/bootstrap-select/dist/css/bootstrap-select.css',
+        'web_src/frontend-vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'
     ])
         .pipe(concat('vendors.min.css'))
         .pipe(uglifycss())
@@ -34,7 +35,9 @@ gulp.task('vendors-js', function() {
         'web_src/frontend-vendors/jquery/dist/jquery.js',
         'web_src/frontend-vendors/bootstrap/dist/js/bootstrap.js',
         'web_src/frontend-vendors/moment/moment.js',
-        'web_src/frontend-vendors/bootstrap-select/dist/js/bootstrap-select.js'
+        'web_src/frontend-vendors/bootstrap-select/dist/js/bootstrap-select.js',
+        'web_src/frontend-vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+        'web_src/frontend-vendors/bootstrap-datepicker/dist/locales/bootstrap-datepicker.uk.min.js'
     ])
         .pipe(concat('vendors-js.min.js'))
         .pipe(minifyJs())
