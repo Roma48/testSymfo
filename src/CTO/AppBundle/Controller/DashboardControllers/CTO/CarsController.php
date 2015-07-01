@@ -166,4 +166,17 @@ class CarsController extends Controller
             'form' => $form->createView()
         ];
     }
+
+    /**
+     * @Route("/getAllModels", name="cto_models_getAllListForModal", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function getModelsAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $models = $em->getRepository("CTOAppBundle:Model")->findAll();
+
+        return new JsonResponse(['models' => $models]);
+    }
 }

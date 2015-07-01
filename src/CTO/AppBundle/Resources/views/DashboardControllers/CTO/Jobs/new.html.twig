@@ -96,20 +96,37 @@
         </div>
     </div>
 
-    {#<!-- Modal for add car to client -->#}
-    {#<div class="modal fade" id="createManagerModal" tabindex="-1" role="dialog" aria-labelledby="createManagerModalLabel" aria-hidden="true">#}
-        {#<div class="modal-dialog">#}
-            {#<div class="modal-content">#}
-                {#<div class="modal-header">#}
-                    {#<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>#}
-                    {#<h4 class="modal-title" id="myModalLabel">Create new manager</h4>#}
-                {#</div>#}
-                {#<div class="modal-body">#}
-                    {#{{ render(path('cto_client_new_from_modal', {'pid': pid , 'gid': gid })) }}#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-    {#</div>#}
+    <!-- Modal for add car to client -->
+    <div class="modal fade" id="addCarToClientModal" tabindex="-1" role="dialog" aria-labelledby="addCarToClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">add car</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="margin-bottom-15">
+                        <select id="carsForClientInModalForm" name="carModels" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carNumber">Номер автомобіля:</label>
+                        <input type="text" id="client_carNumber" name="carNumber" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carColor">Колір автомобіля:</label>
+                        <input type="text" id="client_carColor" name="carColor" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15 text-center">
+                        <button class="btn btn-success" id="addCarToClientButtonSubmit">Додати автомобіль</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -119,13 +136,30 @@
 
 <script>
     jQuery(function ($) {
-        var client = $("#car_job_client");
-        var cars = $("#car_job_car");
-        var dataField = $('.date-picker-cto');
+        var client = $("#car_job_client"),
+        cars = $("#car_job_car"),
+        dataField = $('.date-picker-cto'),
+        addCarButton = $("#jobs_add_car_for_client"),
+        addCarModalFormSelect = $("#carsForClientInModalForm"),
+        addCarModalFormCarNumber = $("#client_carNumber"),
+        addCarModalFormCarColor = $("#client_carColor"),
+        addCarModalFormSubmitBtn = $("#addCarToClientButtonSubmit"),
+        addCarModalWindow = $("#addCarToClientModal");
+
+        getAllCarModels();
+
         cars.selectpicker();
+        addCarModalFormSelect.selectpicker();
 
         client.change(function(){
             var val = $(this).val();
+            if (val == "") {
+                cars.html('');
+                cars.append('<option value="" disabled="disabled">-- Спочатку виберіть клієнта --</option>');
+                cars.selectpicker('refresh');
+
+                return;
+            }
             var carPath = Routing.generate('ajax_cto_cars_from_client', { "id": val });
             $.post(carPath)
                 .success(function(response){
@@ -145,10 +179,46 @@
             ;
         });
 
+        addCarButton.click(function(event){
+            if (client.val() == "") {
+                alert("Спочатку виберіть клієнта");
+            } else {
+                addCarModalWindow.modal('show');
+            }
+        });
+
+        addCarModalFormSubmitBtn.click(function(){
+            var url = Routing.generate("cto_client_addCarToClient_from_modal", {"clientId": client.val()});
+            $.post(url,
+                {"model": {
+                    "modelId": addCarModalFormSelect.val(),
+                    "carNumber": addCarModalFormCarNumber.val(),
+                    "carColor": addCarModalFormCarColor.val()
+                    }
+                }
+            )
+            .success(function (response) {
+                if (response.status == 'ok') {
+                    cars.append('<option value="' + response.carId + '" selected>' + response.carName + '</option>');
+                } else {
+                    alert('Помилка. Автомобіль не доданий!');
+                }
+                addCarModalWindow.modal('hide');
+                addCarModalFormSelect.val(1);
+                addCarModalFormSelect.selectpicker('refresh');
+                addCarModalFormCarNumber.val('');
+                addCarModalFormCarColor.val('');
+                cars.selectpicker('refresh');
+            })
+            .error(function(error){
+                console.log(error);
+            });
+        });
+
         dataField.datepicker({
             format: "dd.mm.yyyy",
             orientation: "auto",
-//                todayBtn: "linked",
+//            todayBtn: "linked",
             todayBtn: true,
             clearBtn: true,
             language: "uk",
@@ -156,6 +226,27 @@
             autoclose: true,
             todayHighlight: true
         });
+
+        function getAllCarModels()
+        {
+            var url = Routing.generate("cto_models_getAllListForModal");
+            $.post(url)
+                .success(function(response){
+                        addCarModalFormSelect.html('');
+                        if (response.models.length > 0) {
+                            $.each(response.models, function(key, value){
+                                addCarModalFormSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                        } else {
+                            addCarModalFormSelect.append('<option value="" disabled="disabled">Моделей не знайдено.</option>');
+                        }
+                        addCarModalFormSelect.selectpicker('refresh');
+                })
+                .error(function(error){
+                   console.log(error);
+                })
+            ;
+        }
     });
 </script>
 {% endblock javascripts %}

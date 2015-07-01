@@ -61,7 +61,8 @@ class Model implements \JsonSerializable
         return [
             "slugCar" => $this->getCar()->getSlug(),
             "slugModel" => $this->getSlug(),
-            "name" => $this->getName()
+            "name" => $this->getName(),
+            "id" => $this->getId()
         ];
     }
 

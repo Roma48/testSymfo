@@ -42,7 +42,7 @@ class CarJobType extends AbstractType
                 ],
             ])
             ->add('price', 'text', [
-                'label' => 'Ціна *',
+                'label' => 'Ціна (грн.)*',
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('jobCategory', 'entity', [
