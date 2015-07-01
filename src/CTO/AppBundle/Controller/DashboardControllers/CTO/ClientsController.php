@@ -5,6 +5,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\CtoClientFilterType;
+use CTO\AppBundle\Form\CtoClientForModalType;
 use CTO\AppBundle\Form\CtoClientType;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -173,6 +174,52 @@ class ClientsController extends Controller
         return [
             "client" => $ctoClient,
             "tabName" => $tabName
+        ];
+    }
+
+    /**
+     * @Route("/new/modal/{back}", name="cto_client_new_from_modal", requirements={"back"="\d+|new"})
+     * @Method({"GET", "POST"})
+     * @Template()
+     * @param $back
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function addFromModalAction($back, Request $request)
+    {
+        $client = new CtoClient();
+        $form = $this->createForm(new CtoClientForModalType(), $client);
+
+        if ($request->getMethod() == "POST") {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                /** @var CtoUser $user */
+                $user = $this->getUser();
+
+                $client
+                    ->setLastVisitDate(new DateTime('now'))
+                    ->setCity($user->getCity());
+
+                $user->addClient($client);
+                $em->persist($client);
+                $em->flush();
+
+                if ($back == "new") {
+
+                    return $this->redirectToRoute("cto_jobs_new");
+                } else {
+
+                    return$this->redirectToRoute('cto_jobs_edit', ['id' => $back]);
+                }
+            }
+        }
+
+        return [
+            'info' => 'Новий клієнт:',
+            'form' => $form->createView(),
+            'back' => $back
         ];
     }
 }

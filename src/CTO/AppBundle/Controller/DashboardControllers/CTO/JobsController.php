@@ -119,7 +119,8 @@ class JobsController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'back' => 'new'
         ];
     }
 
@@ -150,7 +151,8 @@ class JobsController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'back' => $carJob->getId()
         ];
     }
 }
