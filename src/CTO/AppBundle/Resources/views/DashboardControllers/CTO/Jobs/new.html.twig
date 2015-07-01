@@ -18,42 +18,55 @@
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-            <div class="error-handling">
+            <div class="error-handling margin-bottom-15">
                 {{ form_label(form.jobCategory) }}
                 {{ form_widget(form.jobCategory) }}
                 {{ form_errors(form.jobCategory) }}
             </div>
 
-            <div class="error-handling">
+            <div class="error-handling margin-bottom-15">
                 {{ form_label(form.jobDate) }}
                 {{ form_widget(form.jobDate) }}
                 {{ form_errors(form.jobDate) }}
             </div>
 
-            <div class="error-handling">
-                {{ form_label(form.client) }}
-                {{ form_widget(form.client) }}
-                {{ form_errors(form.client) }}
+            <div class="clearfix">
+                <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
+                    <div class="error-handling margin-bottom-15">
+                        {{ form_label(form.client) }}
+                        {{ form_widget(form.client) }}
+                        {{ form_errors(form.client) }}
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
+                    <a href="#" class="btn btn-sm btn-success" id="jobs_add_new_client" style="width: 90%;"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Новий клієнт</a>
+                </div>
             </div>
 
-            <div class="error-handling">
-                {{ form_label(form.car) }}
-                {{ form_widget(form.car) }}
-                {{ form_errors(form.car) }}
+            <div class="clearfix">
+                <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
+                    <div class="error-handling margin-bottom-15">
+                        {{ form_label(form.car) }}
+                        {{ form_widget(form.car) }}
+                        {{ form_errors(form.car) }}
+                    </div>
+                </div>
+                <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
+                    <a href="#" class="btn btn-sm btn-success" id="jobs_add_car_for_client" style="width: 90%;"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Додати автомобіль</a>
+                </div>
             </div>
 
-            <div class="error-handling">
+            <div class="error-handling margin-bottom-15">
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}
                 {{ form_errors(form.description) }}
             </div>
 
-            <div class="error-handling">
+            <div class="error-handling margin-bottom-15">
                 {{ form_label(form.price) }}
                 {{ form_widget(form.price) }}
                 {{ form_errors(form.price) }}
             </div>
-
             <div class="text-center">
                 <button type="submit" class="btn btn-success">Виконати</button>
             </div>
@@ -65,6 +78,36 @@
         </div>
     </div>
 
+    <!-- Modal for create new client -->
+    <div class="modal fade" id="createManagerModal" tabindex="-1" role="dialog" aria-labelledby="createManagerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create new manager</h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(path('cto_client_new_from_modal', {'back': back })) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#<!-- Modal for add car to client -->#}
+    {#<div class="modal fade" id="createManagerModal" tabindex="-1" role="dialog" aria-labelledby="createManagerModalLabel" aria-hidden="true">#}
+        {#<div class="modal-dialog">#}
+            {#<div class="modal-content">#}
+                {#<div class="modal-header">#}
+                    {#<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>#}
+                    {#<h4 class="modal-title" id="myModalLabel">Create new manager</h4>#}
+                {#</div>#}
+                {#<div class="modal-body">#}
+                    {#{{ render(path('cto_client_new_from_modal', {'pid': pid , 'gid': gid })) }}#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
 {% endblock %}
 
 {% block javascripts %}
@@ -75,6 +118,8 @@
     jQuery(function ($) {
         var client = $("#car_job_client");
         var cars = $("#car_job_car");
+        var dataField = $('.date-picker-cto');
+        cars.selectpicker();
 
         client.change(function(){
             var val = $(this).val();
@@ -82,13 +127,14 @@
             $.post(carPath)
                 .success(function(response){
                         cars.html('');
-                        if (response.cars) {
+                        if (response.cars.length > 0) {
                             $.each(response.cars, function(key, value){
                                 cars.append('<option value="' + value.id + '">' + value.name + '</option>');
                             });
                         } else {
-                            cars.append('<option value="" disabled="disabled">no car found</option>');
+                            cars.append('<option value="" disabled="disabled">Клієнт не має автомобілів.</option>');
                         }
+                        cars.selectpicker('refresh');
                     })
                 .error(function(error){
                         console.log(error);
@@ -96,6 +142,17 @@
             ;
         });
 
+        dataField.datepicker({
+            format: "dd.mm.yyyy",
+            orientation: "auto",
+//                todayBtn: "linked",
+            todayBtn: true,
+            clearBtn: true,
+            language: "uk",
+            calendarWeeks: true,
+            autoclose: true,
+            todayHighlight: true
+        });
     });
 </script>
 {% endblock javascripts %}

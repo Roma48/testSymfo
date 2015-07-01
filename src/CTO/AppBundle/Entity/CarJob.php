@@ -21,6 +21,7 @@ class CarJob
     /**
      * @var DateTime
      *
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="jobDate", type="datetime", nullable=true)
      */
     protected $jobDate;
@@ -31,11 +32,13 @@ class CarJob
     protected $description;
 
     /**
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="price", type="float")
      */
     protected $price;
 
     /**
+     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="carJobs")
      */
     protected $client;
@@ -72,7 +75,7 @@ class CarJob
      * @param DateTime $jobDate
      * @return CarJob
      */
-    public function setJobDate(DateTime $jobDate)
+    public function setJobDate($jobDate)
     {
         $this->jobDate = $jobDate;
 
@@ -194,7 +197,7 @@ class CarJob
     /**
      * @param CtoClient $client
      */
-    public function setClient(CtoClient $client)
+    public function setClient($client)
     {
         $this->client = $client;
     }

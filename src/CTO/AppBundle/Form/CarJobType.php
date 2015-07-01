@@ -30,19 +30,31 @@ class CarJobType extends AbstractType
         $builder
             ->add("jobDate", "date", [
                 'widget' => 'single_text',
+                'attr' => ['class' => 'form-control date-picker-cto'],
                 'format' => 'dd.MM.yyyy',
                 'label' => 'Дата ремонту *'
             ])
             ->add('description', 'textarea', [
                 'label' => 'Опис завдання *',
+                'attr' => [
+                    'class' => 'form-control',
+                    'rows' => 6
+                ],
             ])
             ->add('price', 'text', [
-                'label' => 'Ціна *'
+                'label' => 'Ціна *',
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('jobCategory', 'entity', [
                 'class' => 'CTOAppBundle:JobCategory',
                 'property' => "name",
-                'label' => 'Категорія ремонту *'
+                'label' => 'Категорія ремонту *',
+                'attr'  => [
+                    'class'         => 'selectpicker',
+                    'data-width'    => "100%",
+//                    'data-size'     => "15",
+//                    'data-live-search' => true
+                ],
             ])
         ;
 
@@ -55,13 +67,26 @@ class CarJobType extends AbstractType
         $form
             ->add('client', 'entity', [
                 'data' => $ctoClient,
-                'empty_value' => '-- Choose Client --',
+                'empty_value' => '-- Виберіть клієнта --',
                 'class' => 'CTOAppBundle:CTOClient',
                 'property' => 'fullName',
-                'label' => 'Client *',
+                'label' => 'Клієнт *',
+                'attr'  => [
+                    'class'         => 'selectpicker',
+                    'data-width'    => "100%",
+//                    'data-size'     => "15",
+//                    'data-live-search' => true
+                ],
                 ])
             ->add('car', 'entity', [
-                'empty_value' => 'select first client',
+                'empty_value' => '-- Спочатку виберіть клієнта --',
+                'label' => 'Автомобілі клієнта',
+                'attr'  => [
+                    'class'         => 'selectpicker',
+                    'data-width'    => "100%",
+//                    'data-size'     => "15",
+//                    'data-live-search' => true
+                ],
                 'class' => 'CTOAppBundle:ClientCar',
                 'property' => 'carModel',
                 'choices' => $ctoClient ? $ctoClient->getCars() : []
