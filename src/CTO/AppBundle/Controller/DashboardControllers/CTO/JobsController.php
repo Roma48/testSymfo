@@ -120,6 +120,7 @@ class JobsController extends Controller
 
         return [
             'form' => $form->createView(),
+            'title' => 'Нове завдання',
             'back' => 'new'
         ];
     }
@@ -152,6 +153,7 @@ class JobsController extends Controller
 
         return [
             'form' => $form->createView(),
+            'title' => 'Редагування завдання',
             'back' => $carJob->getId()
         ];
     }
