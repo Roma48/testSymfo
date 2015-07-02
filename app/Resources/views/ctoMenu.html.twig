@@ -53,7 +53,11 @@
                         {% endif %}
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a href="{{path('logout')}}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Вихід</a>
+                            {% if (app.user and is_granted('ROLE_CTO')) and (app.user and is_granted('ROLE_PREVIOUS_ADMIN')) %}
+                                <a href="?_switch_user=_exit"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Вихід</a>
+                            {% else %}
+                                <a href="{{path('logout')}}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Вихід</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </li>

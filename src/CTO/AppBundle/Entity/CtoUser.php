@@ -59,7 +59,7 @@ class CtoUser extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->setRoles(self::ROLE_CTO_USER);
+        $this->setRoles([self::ROLE_CTO_USER]);
         $this->setBlocked(false);
         $this->clients = new ArrayCollection();
     }

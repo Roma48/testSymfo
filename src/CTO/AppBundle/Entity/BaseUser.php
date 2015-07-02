@@ -58,7 +58,7 @@ class BaseUser implements UserInterface
 
     /**
      *
-     * @ORM\Column(name="roles", type="string", length=255)
+     * @ORM\Column(name="roles", type="object", length=255)
      */
     protected $roles;
 
@@ -182,7 +182,7 @@ class BaseUser implements UserInterface
      */
     public function getRoles()
     {
-        return [$this->roles];
+        return $this->roles;
     }
 
     /**

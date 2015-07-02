@@ -14,6 +14,6 @@ class AdminUser extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->setRoles(self::ROLE_ADMIN_USER);
+        $this->setRoles([self::ROLE_ADMIN_USER, 'ROLE_ALLOWED_TO_SWITCH']);
     }
 }
