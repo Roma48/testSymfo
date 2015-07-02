@@ -109,6 +109,7 @@ class JobsController extends Controller
         if ($request->getMethod() == "POST") {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
                 $em->persist($carJob);
                 $em->flush();
 
@@ -142,7 +143,7 @@ class JobsController extends Controller
         if ($request->getMethod() == "POST") {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $em->persist($carJob);
+                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
                 $em->flush();
 
                 $this->addFlash('success', "Завдання успішно відредаговано.");

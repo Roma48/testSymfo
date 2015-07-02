@@ -115,7 +115,7 @@ class ParseandLoadCarsCollectionCommand extends ContainerAwareCommand
 
             foreach ($item['models'] as $modelItem) {
                 $model = new Model();
-                $model->setName($modelItem['model']);
+                $model->setName($item['marka'].' - '.$modelItem['model']);
 
                 $em->persist($model);
 
