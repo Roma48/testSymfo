@@ -24,9 +24,15 @@ class CtoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $ctoUsers = $em->getRepository("CTOAppBundle:CtoUser")->findAll();
+        $paginator = $this->get('knp_paginator');
+        $clients = $paginator->paginate(
+            $ctoUsers,
+            $this->get('request')->query->get('page', 1),   /* page number */
+            $this->container->getParameter('pagination')    /* limit per page */
+        );
 
         return [
-            "clients" => $ctoUsers
+            "clients" => $clients
         ];
     }
 

@@ -27,7 +27,7 @@ class DefaultController extends Controller
                 return $this->redirectToRoute('adminUser_home');
             } elseif ($user instanceof CtoUser) {
 
-                return $this->redirectToRoute('ctoUser_home');
+                return $this->redirectToRoute('cto_jobs_home');
             }
         }
 
