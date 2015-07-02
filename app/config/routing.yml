@@ -2,9 +2,13 @@ app:
     resource: "@CTOAppBundle/Controller/"
     type:     annotation
 dashboard:
-    resource: "@CTOAppBundle/Controller/DashboardControllers/"
+    resource: "@CTOAppBundle/Controller/DashboardControllers/CTO"
     type:     annotation
     prefix:   "cto"
+admin:
+    resource: "@CTOAppBundle/Controller/DashboardControllers/Admin"
+    type:     annotation
+    prefix:   "admin"
 api:
     resource: "@CTOAppBundle/Controller/ApiControllers/"
     type:     annotation

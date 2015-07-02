@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Class HomeController
- * @Route("/admin")
+ * @Route("/")
  */
 class HomeController extends Controller
 {

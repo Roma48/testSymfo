@@ -3,7 +3,6 @@
 namespace CTO\AppBundle\Command;
 
 use CTO\AppBundle\Entity\AdminUser;
-use CTO\AppBundle\Entity\CtoUser;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\DialogHelper;

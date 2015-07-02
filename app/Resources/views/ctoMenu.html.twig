@@ -18,6 +18,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                {% if app.user and is_granted('ROLE_CTO') %}
                 <li class="{{ app.request.attributes.get('_route') == 'cto_jobs_home' ? 'active'}}">
                     <a href="{{path('cto_jobs_home')}}"><i class="fa fa-tasks"></i>&nbsp;Завдання</a>
                 </li>
@@ -30,7 +31,11 @@
                 <li class="{{ app.request.attributes.get('_route') == 'cto_notification_home' ? 'active'}}">
                     <a href="{{path('cto_notification_home')}}" ><i class="fa fa-bell"></i>&nbsp;Сповіщення</a>
                 </li>
+                {% endif %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}
+                    <li class="{{ app.request.attributes.get('_route') == 'cto_jobs_home' ? 'active'}}">
+                        <a href="{{path('admin_ctoUsers_list')}}"><i class="fa fa-tasks"></i>&nbsp;CTO Clients</a>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Адміністративне меню&nbsp;&nbsp;<span class="caret"></span>&nbsp;&nbsp;</a>
                         <ul class="dropdown-menu">
@@ -54,7 +59,7 @@
                         <li role="separator" class="divider"></li>
                         <li>
                             {% if (app.user and is_granted('ROLE_CTO')) and (app.user and is_granted('ROLE_PREVIOUS_ADMIN')) %}
-                                <a href="?_switch_user=_exit"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Вихід</a>
+                                <a href="{{ path('adminUser_home', {'_switch_user': '_exit'}) }}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Повернутись до адмін панелі</a>
                             {% else %}
                                 <a href="{{path('logout')}}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Вихід</a>
                             {% endif %}
