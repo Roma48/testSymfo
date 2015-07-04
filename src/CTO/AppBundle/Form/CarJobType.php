@@ -34,28 +34,34 @@ class CarJobType extends AbstractType
                 'format' => 'dd.MM.yyyy',
                 'label' => 'Дата ремонту *'
             ])
-            ->add('description', 'textarea', [
-                'label' => 'Опис завдання *',
-                'attr' => [
-                    'class' => 'form-control',
-                    'rows' => 6
-                ],
+            ->add('carCategories', 'collection', [
+                'type' => new CarCategoryType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false
             ])
-            ->add('price', 'text', [
-                'label' => 'Ціна (грн.)*',
-                'attr' => ['class' => 'form-control'],
-            ])
-            ->add('jobCategory', 'entity', [
-                'class' => 'CTOAppBundle:JobCategory',
-                'property' => "name",
-                'label' => 'Категорія ремонту *',
-                'attr'  => [
-                    'class'         => 'selectpicker',
-                    'data-width'    => "100%",
-//                    'data-size'     => "15",
-//                    'data-live-search' => true
-                ],
-            ])
+//            ->add('description', 'textarea', [
+//                'label' => 'Опис завдання *',
+//                'attr' => [
+//                    'class' => 'form-control',
+//                    'rows' => 6
+//                ],
+//            ])
+//            ->add('price', 'text', [
+//                'label' => 'Ціна (грн.)*',
+//                'attr' => ['class' => 'form-control'],
+//            ])
+//            ->add('jobCategory', 'entity', [
+//                'class' => 'CTOAppBundle:JobCategory',
+//                'property' => "name",
+//                'label' => 'Категорія ремонту *',
+//                'attr'  => [
+//                    'class'         => 'selectpicker',
+//                    'data-width'    => "100%",
+////                    'data-size'     => "15",
+////                    'data-live-search' => true
+//                ],
+//            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
