@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ path('cto_jobs_home') }}">
                 {% if app.user and is_granted('ROLE_CTO') %}
                     {{ app.user.ctoName }}
                 {% else %}
@@ -19,8 +19,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 {% if app.user and is_granted('ROLE_CTO') %}
-                <li class="{{ app.request.attributes.get('_route') == 'cto_jobs_home' ? 'active'}}">
-                    <a href="{{path('cto_jobs_home')}}"><i class="fa fa-tasks"></i>&nbsp;Завдання</a>
+                <li class="{{ app.request.attributes.get('_route') == 'cto_jobs_list' ? 'active'}}">
+                    <a href="{{path('cto_jobs_list')}}"><i class="fa fa-tasks"></i>&nbsp;Завдання</a>
                 </li>
                 <li class="{{ app.request.attributes.get('_route') == 'cto_clients_home' ? 'active'}}">
                     <a href="{{path('cto_clients_home')}}"><i class="fa fa-users"></i>&nbsp;Клієнти</a>

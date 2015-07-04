@@ -32,7 +32,8 @@ class CarJobType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control date-picker-cto'],
                 'format' => 'dd.MM.yyyy',
-                'label' => 'Дата ремонту *'
+                'label' => 'Дата ремонту *',
+                'data' => new \DateTime('now')
             ])
             ->add('carCategories', 'collection', [
                 'type' => new CarCategoryType(),

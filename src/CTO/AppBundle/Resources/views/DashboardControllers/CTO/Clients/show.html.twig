@@ -34,7 +34,7 @@
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ім'я: </span>{{ client.firstName }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прізвище: </span>{{ client.lastName }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Кількість автомобілів: </span>{{ client.cars | length }}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата останнього візиту: </span>{{ client.lastVisitDate | date("d.m.Y H:i") }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата останнього візиту: </span>{{ client.lastVisitDate | date("d.m.Y") }}</p>
         </div>
     </div>
 {% endblock info %}

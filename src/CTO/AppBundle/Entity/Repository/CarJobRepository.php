@@ -10,7 +10,7 @@ class CarJobRepository extends EntityRepository
     public function listJobsWithSortings()
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN  j.jobCategory jc JOIN j.car jcar JOIN jcar.model m');
+            ->createQuery('SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN j.car jcar JOIN jcar.model m');
     }
 
     public function jobsFilter($filterData)
@@ -22,11 +22,11 @@ class CarJobRepository extends EntityRepository
                 ->andWhere('cl.fullName like :fullName')
                 ->setParameter('fullName', '%' . $filterData['fullName'] . '%');
         }
-        if (array_key_exists('jobCategory', $filterData)) {
-            $qb->join('j.jobCategory', 'jc')
-                ->andWhere('jc = :jobCategory')
-                ->setParameter('jobCategory', $filterData['jobCategory']);
-        }
+//        if (array_key_exists('jobCategory', $filterData)) {
+//            $qb->join('j.jobCategory', 'jc')
+//                ->andWhere('jc = :jobCategory')
+//                ->setParameter('jobCategory', $filterData['jobCategory']);
+//        }
         if (array_key_exists('dateFrom', $filterData)) {
             $qb->andWhere('j.jobDate >= :dateFrom')
                 ->setParameter('dateFrom', new DateTime($filterData['dateFrom']));

@@ -18,11 +18,21 @@ use Symfony\Component\HttpFoundation\Request;
 class JobsController extends Controller
 {
     /**
-     * @Route("/{tabName}", name="cto_jobs_home", defaults={"tabName" = "info"}, requirements={"tabName" = "info|list"})
+     * @Route("/", name="cto_jobs_home")
      * @Method("GET")
      * @Template()
      */
-    public function homeAction($tabName)
+    public function homeAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/list", name="cto_jobs_list")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listAction()
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -39,7 +49,6 @@ class JobsController extends Controller
 
         return [
             "jobs" => $jobs,
-            "tabName" => $tabName,
             "filterForm" => $filterForm->createView()
         ];
     }
@@ -64,12 +73,12 @@ class JobsController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         if ($filterFormData) {
-            if (array_key_exists('jobCategory', $filterFormData)) {
-                $jobCategory = $em->getRepository('CTOAppBundle:JobCategory')->find($filterFormData['jobCategory']);
-                if ($jobCategory) {
-                    $filterFormData['jobCategory'] = $jobCategory;
-                }
-            }
+//            if (array_key_exists('jobCategory', $filterFormData)) {
+//                $jobCategory = $em->getRepository('CTOAppBundle:JobCategory')->find($filterFormData['jobCategory']);
+//                if ($jobCategory) {
+//                    $filterFormData['jobCategory'] = $jobCategory;
+//                }
+//            }
 
             $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData);
         } else {
@@ -89,7 +98,6 @@ class JobsController extends Controller
         return [
             'jobs' => $withPaginator ? $jobs : $filteredJobs,
             'paginator' => $withPaginator,
-            "tabName" => 'list',
             'filterForm' => $filterForm->createView()
         ];
     }
@@ -109,13 +117,13 @@ class JobsController extends Controller
         if ($request->getMethod() == "POST") {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
+//                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
                 $em->persist($carJob);
                 $em->flush();
 
                 $this->addFlash('success', "Завдання успішно створено.");
 
-                return $this->redirect($this->generateUrl('cto_jobs_home'));
+                return $this->redirect($this->generateUrl('cto_jobs_list'));
             }
         }
 
@@ -143,12 +151,12 @@ class JobsController extends Controller
         if ($request->getMethod() == "POST") {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
+//                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
                 $em->flush();
 
                 $this->addFlash('success', "Завдання успішно відредаговано.");
 
-                return $this->redirect($this->generateUrl('cto_jobs_home'));
+                return $this->redirect($this->generateUrl('cto_jobs_list'));
             }
         }
 

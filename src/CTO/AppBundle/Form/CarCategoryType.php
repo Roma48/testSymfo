@@ -12,12 +12,13 @@ class CarCategoryType extends AbstractType
     {
         $builder
             ->add('jobCategory', 'entity', [
-                'class' => 'CTOAppBundle:CarCategory',
+                'class' => 'CTOAppBundle:JobCategory',
                 'property' => 'name',
                 'label' => 'Категорія ремонту *',
                 'attr'  => [
-                    'class'         => 'selectpicker',
-                    'data-width'    => "100%",
+                    'class'         => 'form-control',
+//                    'class'         => 'selectpicker',
+//                    'data-width'    => "100%",
 //                    'data-size'     => "15",
 //                    'data-live-search' => true
                 ],

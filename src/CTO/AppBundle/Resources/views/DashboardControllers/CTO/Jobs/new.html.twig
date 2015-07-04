@@ -18,10 +18,33 @@
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.jobCategory) }}
-                {{ form_widget(form.jobCategory) }}
-                {{ form_errors(form.jobCategory) }}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 row-not-padding">
+                <div class="clearfix">
+                    <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
+                        <div class="error-handling margin-bottom-15">
+                            {{ form_label(form.client) }}
+                            {{ form_widget(form.client) }}
+                            {{ form_errors(form.client) }}
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
+                        <a href="#" class="btn btn-sm btn-success" id="jobs_add_new_client" style="width: 90%;" data-toggle="modal" data-target="#createClientModal" title="Додати нового клієнта"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="padding-right: 0;">
+                <div class="clearfix">
+                    <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
+                        <div class="error-handling margin-bottom-15">
+                            {{ form_label(form.car) }}
+                            {{ form_widget(form.car) }}
+                            {{ form_errors(form.car) }}
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
+                        <a href="#" class="btn btn-sm btn-success" id="jobs_add_car_for_client" style="width: 90%;" title="Додати новий автомобіль клієнту"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-car"></i> </a>
+                    </div>
+                </div>
             </div>
 
             <div class="error-handling margin-bottom-15">
@@ -30,43 +53,40 @@
                 {{ form_errors(form.jobDate) }}
             </div>
 
-            <div class="clearfix">
-                <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
-                    <div class="error-handling margin-bottom-15">
-                        {{ form_label(form.client) }}
-                        {{ form_widget(form.client) }}
-                        {{ form_errors(form.client) }}
-                    </div>
-                </div>
-                <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
-                    <a href="#" class="btn btn-sm btn-success" id="jobs_add_new_client" style="width: 90%;" data-toggle="modal" data-target="#createClientModal"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Новий клієнт</a>
-                </div>
+            <div id="carCategory_collection">
+                <ul class="carCategory-ul" data-prototype="{{ form_widget(form.carCategories.vars.prototype)|e }}">
+                    {% for category in form.carCategories %}
+                        <li>
+                            <div class="error-handling margin-bottom-15">
+                                {{ form_label(category.jobCategory) }}
+                                {{ form_widget(category.jobCategory) }}
+                                {{ form_errors(category.jobCategory) }}
+                            </div>
+
+                            <div class="carJob_collection">
+                                <ul class="carJob-ul" data-prototype="{{ form_widget(category.jobDescriptions.vars.prototype)|e }}">
+                                    {% for jobD in category.jobDescriptions %}
+                                        <li>
+                                            <div class="error-handling margin-bottom-15">
+                                                {{ form_label(jobD.description) }}
+                                                {{ form_widget(jobD.description) }}
+                                                {{ form_errors(jobD.description) }}
+                                            </div>
+                                            <div class="error-handling margin-bottom-15">
+                                                {{ form_label(jobD.price) }}
+                                                {{ form_widget(jobD.price) }}
+                                                {{ form_errors(jobD.price) }}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
 
-            <div class="clearfix">
-                <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
-                    <div class="error-handling margin-bottom-15">
-                        {{ form_label(form.car) }}
-                        {{ form_widget(form.car) }}
-                        {{ form_errors(form.car) }}
-                    </div>
-                </div>
-                <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
-                    <a href="#" class="btn btn-sm btn-success" id="jobs_add_car_for_client" style="width: 90%;"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Додати автомобіль</a>
-                </div>
-            </div>
-
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.description) }}
-                {{ form_widget(form.description) }}
-                {{ form_errors(form.description) }}
-            </div>
-
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.price) }}
-                {{ form_widget(form.price) }}
-                {{ form_errors(form.price) }}
-            </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-success">Виконати</button>
             </div>
@@ -136,6 +156,97 @@
 
 <script>
     jQuery(function ($) {
+
+        // --------------------- add category ----------------------------------
+        var $collectionHolder;
+        var $addTagLink = $('<br><a href="#" class="bnt btn-sm btn-info">Додати категорію</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        $collectionHolder = $('#carCategory_collection ul.carCategory-ul');
+        $collectionHolder.append($newLinkLi);
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        $collectionHolder.find('li').each(function() {
+            addCarFormDeleteLink($(this));
+        });
+        $addTagLink.on('click', function(e) {
+            e.preventDefault();
+            addCarForm($collectionHolder, $newLinkLi);
+        });
+
+        function addCarFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити категорію</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                e.preventDefault();
+                $tagFormLi.remove();
+            });
+        }
+
+        function addCarForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+
+            addCarFormDeleteLink($newFormLi);
+
+            $(".selectpicker").selectpicker();
+        }
+        // --------------------------------------------------------------------
+
+        // --------------------- add job description ---------------------------
+        var $collectionHolder2;
+        var $addTagLink2 = $('<br><a href="#" class="bnt btn-sm btn-info">Додати роботу</a>');
+        var $newLinkLi2 = $('<li></li>').append($addTagLink2);
+
+        $collectionHolder2 = $('.carJob_collection ul.carJob-ul');
+        $collectionHolder2.append($newLinkLi2);
+        $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
+        $collectionHolder2.find('li').each(function() {
+            addCarFormDeleteLink2($(this));
+        });
+        $addTagLink2.on('click', function(e) {
+            e.preventDefault();
+            addCarForm2($collectionHolder2, $newLinkLi2);
+        });
+
+        function addCarFormDeleteLink2($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити роботу</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                e.preventDefault();
+                $tagFormLi.remove();
+            });
+        }
+
+        function addCarForm2($collectionHolder2, $newLinkLi2) {
+            var prototype = $collectionHolder2.data('prototype');
+            var index = $collectionHolder2.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $collectionHolder2.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi2.before($newFormLi);
+
+            addCarFormDeleteLink2($newFormLi);
+        }
+        // --------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
         var client = $("#car_job_client"),
         cars = $("#car_job_car"),
         dataField = $('.date-picker-cto'),
@@ -217,7 +328,7 @@
 
         dataField.datepicker({
             format: "dd.mm.yyyy",
-            orientation: "auto",
+            orientation: "top left",
 //            todayBtn: "linked",
             todayBtn: true,
             clearBtn: true,

@@ -14,17 +14,17 @@ class CtoCarJobFilterType extends AbstractType
             ->add('fullName', 'text', [
                 'attr' => ['placeholder' => 'Клієнт', 'class' => 'form-control']
             ])
-            ->add("jobCategory", 'entity', [
-                'class' => "CTOAppBundle:JobCategory",
-                'empty_value' => "Не вибрано",
-                'property' => 'name',
-                'attr'  => [
-                    'class'         => 'selectpicker',
-                    'data-width'    => "auto",
-//                    'data-size'     => "15",
-//                    'data-live-search' => true
-                ],
-            ])
+//            ->add("jobCategory", 'entity', [
+//                'class' => "CTOAppBundle:JobCategory",
+//                'empty_value' => "Не вибрано",
+//                'property' => 'name',
+//                'attr'  => [
+//                    'class'         => 'selectpicker',
+//                    'data-width'    => "auto",
+////                    'data-size'     => "15",
+////                    'data-live-search' => true
+//                ],
+//            ])
             ->add('dateFrom', 'text', [
                 'attr' => ['placeholder' => 'Дата ремонту З', 'class' => 'form-control date-picker-cto']
             ])

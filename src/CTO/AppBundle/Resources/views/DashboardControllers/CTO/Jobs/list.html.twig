@@ -1,16 +1,20 @@
-{% extends '::base.html.twig' %}
+{% extends "::base.html.twig" %}
 
 {% block body %}
-
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3>
-                Нове завдання:
+                Завдання:
                 <div class="pull-right">
-                    <a href="{{ path('cto_jobs_home', {"tabName": "list"}) }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                     <a href="{{ path('cto_jobs_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нове завдання</a>
                 </div>
             </h3>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="text-center filter-form">
                 <br>
                 {{ form_start(filterForm, {'action': path('cto_jobs_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
@@ -23,8 +27,6 @@
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-default"><i class="fa fa-filter fa-fw"></i>&nbsp;Фільтрувати</button>
-                &nbsp;&nbsp;&nbsp;
-                <a href="{{ path('cto_jobs_list') }}" class="btn btn-warning"><i class="fa fa-refresh fa-fw"></i>&nbsp;Відміна</a>
                 {{ form_end(filterForm) }}
             </div>
         </div>
@@ -36,25 +38,12 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    {% if paginator %}
-                        <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
-                        <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
-                        <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
-                        {#<th>{{ knp_pagination_sortable(jobs, 'Category', 'jc.name') }}</th>#}
-                        {#<th>{{ knp_pagination_sortable(jobs, 'Price', 'j.price') }}</th>#}
-                        <th>{{ knp_pagination_sortable(jobs, 'Model', 'm.name') }}</th>
-                        <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
-                        <th class="text-center">Actions</th>
-                    {% else %}
-                        <th class="text-center">Id</th>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        {#<th>Category</th>#}
-                        {#<th>Price</th>#}
-                        <th>Model</th>
-                        <th>Visited date</th>
-                        <th class="text-center">Actions</th>
-                    {% endif %}
+                    <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
+                    {#<th>{{ knp_pagination_sortable(jobs, 'Model', 'm.name') }}</th>#}
+                    <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
+                    <th class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,7 +54,7 @@
                         <td>{{ job.client.lastName }}</td>
                         {#<td>{{ job.jobCategory.name}}</td>#}
                         {#<td>{{ job.price}}</td>#}
-                        <td>{{ job.car.model.name}}</td>
+                        {#<td>{{ job.car.model.name}}</td>#}
                         <td>{{ job.jobDate | date("d.m.Y") }}</td>
                         <td class="text-center">
                             <div class="btn-group">
@@ -73,22 +62,20 @@
                                    href="#"> Показати </a>
                                 {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
                                 <a class="btn btn-warning btn-xs"
-                                href="{{ path('cto_jobs_edit', { 'id': job.id }) }}"> Редагувати </a>
+                                   href="{{ path('cto_jobs_edit', { 'id': job.id }) }}"> Редагувати </a>
                             </div>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            {% if paginator %}
-                <div class="text-center">
-                    {{ knp_pagination_render(jobs) }}
-                </div>
-            {% endif %}
+            <div class="text-center">
+                {{ knp_pagination_render(jobs) }}
+            </div>
         </div>
     </div>
 
-{% endblock %}
+{% endblock body %}
 
 {% block javascripts %}
     <script>
@@ -96,7 +83,7 @@
             $('.date-picker-cto').datepicker({
                 format: "dd.mm.yyyy",
                 orientation: "top left",
-//                todayBtn: "linked",
+//            todayBtn: "linked",
                 todayBtn: true,
                 clearBtn: true,
                 language: "uk",

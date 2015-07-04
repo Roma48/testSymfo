@@ -112,7 +112,7 @@ class CarJob
      * @param CarCategory $carCategories
      * @return CarJob
      */
-    public function addCarCategories(CarCategory $carCategories)
+    public function addCarCategory(CarCategory $carCategories)
     {
         $carCategories->setCarJob($this);
         $this->carCategories->add($carCategories);
@@ -123,7 +123,7 @@ class CarJob
     /**
      * @param CarCategory $carCategory
      */
-    public function removeCarCategories(CarCategory $carCategory)
+    public function removeCarCategory(CarCategory $carCategory)
     {
         $this->carCategories->removeElement($carCategory);
     }
