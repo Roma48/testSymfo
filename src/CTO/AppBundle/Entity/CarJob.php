@@ -27,17 +27,6 @@ class CarJob
     protected $jobDate;
 
     /**
-     * @ORM\Column(name="description", type="text")
-     */
-    protected $description;
-
-    /**
-     * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="price", type="float")
-     */
-    protected $price;
-
-    /**
      * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="carJobs")
      */
@@ -49,9 +38,9 @@ class CarJob
     protected $car;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\JobCategory", inversedBy="carJobs")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarCategory", mappedBy="carJob", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    protected $jobCategory;
+    protected $carCategories;
 
     /**
      * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="carJob")
@@ -61,6 +50,7 @@ class CarJob
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->carCategories = new ArrayCollection();
     }
 
     /**
@@ -78,44 +68,6 @@ class CarJob
     public function setJobDate($jobDate)
     {
         $this->jobDate = $jobDate;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param mixed $description
-     * @return CarJob
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param mixed $price
-     * @return CarJob
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
 
         return $this;
     }
@@ -149,6 +101,34 @@ class CarJob
     }
 
     /**
+     * @return Collection
+     */
+    public function getCarCategories()
+    {
+        return $this->carCategories;
+    }
+
+    /**
+     * @param CarCategory $carCategories
+     * @return CarJob
+     */
+    public function addCarCategories(CarCategory $carCategories)
+    {
+        $carCategories->setCarJob($this);
+        $this->carCategories->add($carCategories);
+
+        return $this;
+    }
+
+    /**
+     * @param CarCategory $carCategory
+     */
+    public function removeCarCategories(CarCategory $carCategory)
+    {
+        $this->carCategories->removeElement($carCategory);
+    }
+
+    /**
      * @return ClientCar
      */
     public function getCar()
@@ -163,25 +143,6 @@ class CarJob
     public function setCar(ClientCar $car)
     {
         $this->car = $car;
-
-        return $this;
-    }
-
-    /**
-     * @return JobCategory
-     */
-    public function getJobCategory()
-    {
-        return $this->jobCategory;
-    }
-
-    /**
-     * @param JobCategory $jobCategory
-     * @return CarJob
-     */
-    public function setJobCategory(JobCategory $jobCategory)
-    {
-        $this->jobCategory = $jobCategory;
 
         return $this;
     }

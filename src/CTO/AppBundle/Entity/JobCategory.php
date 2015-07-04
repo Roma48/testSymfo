@@ -26,7 +26,7 @@ class JobCategory
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarJob", mappedBy="jobCategory", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarCategory", mappedBy="jobCategory", cascade={"persist"})
      */
     protected $carJobs;
 
