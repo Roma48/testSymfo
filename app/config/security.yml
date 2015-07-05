@@ -26,6 +26,9 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        no_sec:
+            pattern: ^/cto/jsonf
+            security: false
         dashboard:
             pattern: ^/
             anonymous: ~

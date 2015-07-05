@@ -41,6 +41,17 @@ class CarJobType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false
             ])
+
+
+//            ->add('client', 'entity', [
+//                'class' => 'CTOAppBundle:CtoClient',
+//                'property' => 'fullName',
+//            ])
+//            ->add('car', 'entity', [
+//                'class' => 'CTOAppBundle:ClientCar',
+//                'property' => 'carModel',
+//            ])
+
 //            ->add('description', 'textarea', [
 //                'label' => 'Опис завдання *',
 //                'attr' => [
@@ -75,7 +86,7 @@ class CarJobType extends AbstractType
             ->add('client', 'entity', [
                 'data' => $ctoClient,
                 'empty_value' => '-- Виберіть клієнта --',
-                'class' => 'CTOAppBundle:CTOClient',
+                'class' => 'CTOAppBundle:CtoClient',
                 'property' => 'fullName',
                 'label' => 'Клієнт *',
                 'attr'  => [
