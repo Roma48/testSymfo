@@ -1,5 +1,9 @@
 {% extends '::base.html.twig' %}
+{% block stylesheets %}
+<style>
 
+</style>
+{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -16,84 +20,9 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 row-not-padding">
-                <div class="clearfix">
-                    <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
-                        <div class="error-handling margin-bottom-15">
-                            {{ form_label(form.client) }}
-                            {{ form_widget(form.client) }}
-                            {{ form_errors(form.client) }}
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
-                        <a href="#" class="btn btn-sm btn-success" id="jobs_add_new_client" style="width: 90%;" data-toggle="modal" data-target="#createClientModal" title="Додати нового клієнта"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> </a>
-                    </div>
-                </div>
+            <div id="custom_form">
+                <form></form>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="padding-right: 0;">
-                <div class="clearfix">
-                    <div class="col-md-10 col-lg-10 col-sm-9 col-xs-8 row-not-padding text-left">
-                        <div class="error-handling margin-bottom-15">
-                            {{ form_label(form.car) }}
-                            {{ form_widget(form.car) }}
-                            {{ form_errors(form.car) }}
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-4 text-right row-not-padding" style="height: 60px; padding-top: 28px;">
-                        <a href="#" class="btn btn-sm btn-success" id="jobs_add_car_for_client" style="width: 90%;" title="Додати новий автомобіль клієнту"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-car"></i> </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.jobDate) }}
-                {{ form_widget(form.jobDate) }}
-                {{ form_errors(form.jobDate) }}
-            </div>
-
-            <div id="carCategory_collection">
-                <ul class="carCategory-ul" data-prototype="{{ form_widget(form.carCategories.vars.prototype)|e }}">
-                    {% for category in form.carCategories %}
-                        <li>
-                            <div class="error-handling margin-bottom-15">
-                                {{ form_label(category.jobCategory) }}
-                                {{ form_widget(category.jobCategory) }}
-                                {{ form_errors(category.jobCategory) }}
-                            </div>
-
-                            <div class="carJob_collection">
-                                <ul class="carJob-ul" data-prototype="{{ form_widget(category.jobDescriptions.vars.prototype)|e }}">
-                                    {% for jobD in category.jobDescriptions %}
-                                        <li>
-                                            <div class="error-handling margin-bottom-15">
-                                                {{ form_label(jobD.description) }}
-                                                {{ form_widget(jobD.description) }}
-                                                {{ form_errors(jobD.description) }}
-                                            </div>
-                                            <div class="error-handling margin-bottom-15">
-                                                {{ form_label(jobD.price) }}
-                                                {{ form_widget(jobD.price) }}
-                                                {{ form_errors(jobD.price) }}
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-success">Виконати</button>
-            </div>
-            <div class="hidden">
-                {{ form_rest(form) }}
-            </div>
-            {{ form_end(form) }}
 
         </div>
     </div>
@@ -157,186 +86,296 @@
 <script>
     jQuery(function ($) {
 
-        // --------------------- add category ----------------------------------
-        var $collectionHolder;
-        var $addTagLink = $('<br><a href="#" class="bnt btn-sm btn-info">Додати категорію</a>');
-        var $newLinkLi = $('<li></li>').append($addTagLink);
+        clientKeys = ["1"];
+        clientObj = {"1": "Клієнт"};
+        categoryKeys = [];
+        categoryObj = {};
 
-        $collectionHolder = $('#carCategory_collection ul.carCategory-ul');
-        $collectionHolder.append($newLinkLi);
-        $collectionHolder.data('index', $collectionHolder.find(':input').length);
-        $collectionHolder.find('li').each(function() {
-            addCarFormDeleteLink($(this));
-        });
-        $addTagLink.on('click', function(e) {
-            e.preventDefault();
-            addCarForm($collectionHolder, $newLinkLi);
-        });
+        var formSchema = {
+            "schema": {
+                "car_job": {
+                    "type": "object",
+                    "properties": {
 
-        function addCarFormDeleteLink($tagFormLi) {
-            var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити категорію</a>');
-            $tagFormLi.append($removeFormA);
-
-            $removeFormA.on('click', function(e) {
-                e.preventDefault();
-                $tagFormLi.remove();
-            });
-        }
-
-        function addCarForm($collectionHolder, $newLinkLi) {
-            var prototype = $collectionHolder.data('prototype');
-            var index = $collectionHolder.data('index');
-            var newForm = prototype.replace(/__name__/g, index);
-            $collectionHolder.data('index', index + 1);
-            var $newFormLi = $('<li></li>').append(newForm);
-            $newLinkLi.before($newFormLi);
-
-            addCarFormDeleteLink($newFormLi);
-
-            $(".selectpicker").selectpicker();
-        }
-        // --------------------------------------------------------------------
-
-        // --------------------- add job description ---------------------------
-        var $collectionHolder2;
-        var $addTagLink2 = $('<br><a href="#" class="bnt btn-sm btn-info">Додати роботу</a>');
-        var $newLinkLi2 = $('<li></li>').append($addTagLink2);
-
-        $collectionHolder2 = $('.carJob_collection ul.carJob-ul');
-        $collectionHolder2.append($newLinkLi2);
-        $collectionHolder2.data('index', $collectionHolder2.find(':input').length);
-        $collectionHolder2.find('li').each(function() {
-            addCarFormDeleteLink2($(this));
-        });
-        $addTagLink2.on('click', function(e) {
-            e.preventDefault();
-            addCarForm2($collectionHolder2, $newLinkLi2);
-        });
-
-        function addCarFormDeleteLink2($tagFormLi) {
-            var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити роботу</a>');
-            $tagFormLi.append($removeFormA);
-
-            $removeFormA.on('click', function(e) {
-                e.preventDefault();
-                $tagFormLi.remove();
-            });
-        }
-
-        function addCarForm2($collectionHolder2, $newLinkLi2) {
-            var prototype = $collectionHolder2.data('prototype');
-            var index = $collectionHolder2.data('index');
-            var newForm = prototype.replace(/__name__/g, index);
-            $collectionHolder2.data('index', index + 1);
-            var $newFormLi = $('<li></li>').append(newForm);
-            $newLinkLi2.before($newFormLi);
-
-            addCarFormDeleteLink2($newFormLi);
-        }
-        // --------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-        var client = $("#car_job_client"),
-        cars = $("#car_job_car"),
-        dataField = $('.date-picker-cto'),
-        addCarButton = $("#jobs_add_car_for_client"),
-        addCarModalFormSelect = $("#carsForClientInModalForm"),
-        addCarModalFormCarNumber = $("#client_carNumber"),
-        addCarModalFormCarColor = $("#client_carColor"),
-        addCarModalFormSubmitBtn = $("#addCarToClientButtonSubmit"),
-        addCarModalWindow = $("#addCarToClientModal");
-
-        getAllCarModels();
-
-        cars.selectpicker();
-        addCarModalFormSelect.selectpicker();
-
-        client.change(function(){
-            var val = $(this).val();
-            if (val == "") {
-                cars.html('');
-                cars.append('<option value="" disabled="disabled">-- Спочатку виберіть клієнта --</option>');
-                cars.selectpicker('refresh');
-
-                return;
-            }
-            var carPath = Routing.generate('ajax_cto_cars_from_client', { "id": val });
-            $.post(carPath)
-                .success(function(response){
-                        cars.html('');
-                        if (response.cars.length > 0) {
-                            $.each(response.cars, function(key, value){
-                                cars.append('<option value="' + value.id + '">' + value.name + '</option>');
-                            });
-                        } else {
-                            cars.append('<option value="" disabled="disabled">Клієнт не має автомобілів.</option>');
+                        "client": {
+                            "type": "string",
+                            "title": "Клієнт",
+                            "enum": [
+                                "1", "2", "3"
+                            ]
+                        },
+                        "car": {
+                            "type": "string",
+                            "title": "Авто клієнта",
+                            "enum": clientKeys
+                        },
+                        "jobDate": {
+                            "type": "string",
+                            "title": "Job date",
+                            "default": moment().format("DD.MM.YYYY")
+                        },
+                        "carCategories": {
+                            "type": "array",
+                            "title": "Завдання",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "jobCategory": {
+                                        "type": "string",
+                                        "title": "Категорія завдання",
+                                        "enum": categoryKeys
+                                    },
+                                    "jobDescriptions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+//                                            "title": "Опис завдання",
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string",
+                                                    "title": "Опис"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "title": "Ціна"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        cars.selectpicker('refresh');
-                    })
-                .error(function(error){
-                        console.log(error);
-                    })
-            ;
-        });
-
-        addCarButton.click(function(event){
-            if (client.val() == "") {
-                alert("Спочатку виберіть клієнта");
-            } else {
-                addCarModalWindow.modal('show');
-            }
-        });
-
-        addCarModalFormSubmitBtn.click(function(){
-            var url = Routing.generate("cto_client_addCarToClient_from_modal", {"clientId": client.val()});
-            $.post(url,
-                {"model": {
-                    "modelId": addCarModalFormSelect.val(),
-                    "carNumber": addCarModalFormCarNumber.val(),
-                    "carColor": addCarModalFormCarColor.val()
                     }
                 }
-            )
-            .success(function (response) {
-                if (response.status == 'ok') {
-                    cars.append('<option value="' + response.carId + '" selected>' + response.carName + '</option>');
-                } else {
-                    alert('Помилка. Автомобіль не доданий!');
+            },
+            "form": [
+                {
+                    "type": "button",
+                    "title": "<i class='fa fa-plus'></i>&nbsp;&nbsp;<i class='fa fa-user'></i>",
+                    "onClick": function(e, values){
+                        e.preventDefault();
+
+                        var addClientModalWindow = $("#createClientModal");
+                        addClientModalWindow.modal('show');
+
+                    }
+                },
+                {
+                    "type": "button",
+                    "title": "<i class='fa fa-plus'></i>&nbsp;&nbsp;<i class='fa fa-car'></i>",
+                    "onClick": function(e){
+                        e.preventDefault();
+
+                        var addCarModalWindow = $("#addCarToClientModal");
+                        if (clients.val() == "") {
+                            alert("Спочатку виберіть клієнта");
+                        } else {
+                            addCarModalWindow.modal('show');
+                        }
+
+                        addCarModalFormSubmitBtn.click(function(){
+                            var url = Routing.generate("cto_client_addCarToClient_from_modal", {"clientId": clients.val()});
+                            $.post(url,
+                                {"model": {
+                                    "modelId": addCarModalFormSelect.val(),
+                                    "carNumber": addCarModalFormCarNumber.val(),
+                                    "carColor": addCarModalFormCarColor.val()
+                                    }
+                                }
+                            )
+                            .success(function (response) {
+                                if (response.status == 'ok') {
+                                    cars.append('<option value="' + response.carId + '" selected>' + response.carName + '</option>');
+                                } else {
+                                    alert('Помилка. Автомобіль не доданий!');
+                                }
+                                addCarModalWindow.modal('hide');
+                                addCarModalFormSelect.val(1);
+                                addCarModalFormSelect.selectpicker('refresh');
+                                addCarModalFormCarNumber.val('');
+                                addCarModalFormCarColor.val('');
+                                cars.selectpicker('refresh');
+                            })
+                            .error(function(error){
+                                console.log(error);
+                            });
+                        });
+
+                    }
+                },
+                {
+                    "key": "car_job.client",
+                    "titleMap": clientObj
+                },
+                {
+                    "key": "car_job.car",
+                    "titleMap": {
+                        "1": "car 1",
+                        "2": "car 2",
+                        "3": "car 3"
+                    }
+                },
+                {
+                    "key": "car_job.jobDate",
+                    "htmlClass": "clearfix",
+                    "fieldHtmlClass": "jod-date-picker"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "section",
+                        "items": [
+                            {
+                                "key": "car_job.carCategories[].jobCategory",
+                                "titleMap": categoryObj
+                            },
+                            {
+                                "type": "array",
+                                "items": [
+//                                    {
+//                                        "key": "car_job.carCategories[].jobDescriptions[].description"
+//                                    },
+                                    "car_job.carCategories[].jobDescriptions[]"
+//                                  {
+//                                      "key": "car_job.carCategories[].jobDescriptions[].price",
+//                                      "type": "number"
+//                                  }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "submit",
+                    "title": "Створити"
                 }
-                addCarModalWindow.modal('hide');
-                addCarModalFormSelect.val(1);
-                addCarModalFormSelect.selectpicker('refresh');
-                addCarModalFormCarNumber.val('');
-                addCarModalFormCarColor.val('');
-                cars.selectpicker('refresh');
+            ],
+            //"value": {
+            //    "car_job": {
+            //        "jobDate": "09.07.2015",
+            //        "client": "3",
+            //        "car": "2",
+            //        "carCategories": [
+            //            {
+            //                "jobCategory": "1",
+            //                "jobDescriptions": [
+            //                    {
+            //                        "price": 14.6
+            //                    },
+            //                    {
+            //                        "description": "xxxxxx",
+            //                        "price": 45.2
+            //                    }
+            //                ]
+            //            },
+            //            {
+            //                "jobCategory": "3",
+            //                "jobDescriptions": [
+            //                    {
+            //                        "price": 100
+            //                    },
+            //                    {
+            //                        "description": "zzzzzzz",
+            //                        "price": 250.5
+            //                    }
+            //                ]
+            //            }
+            //        ]
+            //    }
+            //},
+            onSubmit: function(errors, values){
+                alert('Values object:\n' + JSON.stringify(values, null, 2));
+                console.log(values);
+            }
+        };
+
+        var formObj = $("#custom_form form");
+
+//        formObj.jsonForm(formSchema);
+
+        formObj.on("click", "input[type=text].jod-date-picker", function(){
+            $(this).datepicker({
+                format: "dd.mm.yyyy",
+                orientation: "top left",
+                todayBtn: true,
+                clearBtn: true,
+                language: "uk",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+            $(this).datepicker('show');
+        });
+
+        var jobCategoriesUrl = Routing.generate('ajax_cto_get_jobCategories');
+        $.get(jobCategoriesUrl)
+            .success(function(response){
+                if (response.categories.length > 0) {
+                    $.each(response.categories, function(key, value){
+                        categoryKeys.push(value.id);
+                        categoryObj[value.id] = value.name;
+                    });
+
+                    formObj.jsonForm(formSchema);
+
+                    clients = $(document.getElementById("jsonform-0-elt-car_job.client"));
+                    cars = $(document.getElementById("jsonform-0-elt-car_job.car"));
+
+                    var getClientsUrl = Routing.generate('ajax_cto_get_clients');
+                    $.get(getClientsUrl)
+                        .success(function(responseClient){
+                            clients.html('');
+                            if (responseClient.clients.length > 0) {
+                                $.each(responseClient.clients, function(key, value){
+                                    clients.append('<option value="' + value.id + '">' + value.name + '</option>');
+                                });
+                                getClientCars(responseClient.clients[0].id);
+                            } else {
+                                clients.append('<option value="" disabled="disabled">Клієнтів не знайдено.</option>');
+                            }
+                        })
+                        .error(function(error){
+                            console.log(error);
+                        })
+                    ;
+                    clients.change(function(){
+                        var val = $(this).val();
+                        getClientCars(val);
+                    });
+
+                } else {
+                    // no categories ?
+                }
             })
             .error(function(error){
                 console.log(error);
-            });
-        });
+            })
+        ;
 
-        dataField.datepicker({
-            format: "dd.mm.yyyy",
-            orientation: "top left",
-//            todayBtn: "linked",
-            todayBtn: true,
-            clearBtn: true,
-            language: "uk",
-            calendarWeeks: true,
-            autoclose: true,
-            todayHighlight: true
-        });
+        function getClientCars(clientId)
+        {
+            var carPath = Routing.generate('ajax_cto_cars_from_client', { "id": clientId });
+            $.get(carPath)
+                .success(function(response){
+                    cars.html('');
+                    if (response.cars.length > 0) {
+                        $.each(response.cars, function(key, value){
+                            cars.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    } else {
+                        cars.append('<option value="" disabled="disabled">Клієнт не має автомобілів.</option>');
+                    }
+                })
+                .error(function(error){
+                    console.log(error);
+                })
+            ;
+        }
+
+        var addCarModalFormSelect = $("#carsForClientInModalForm"),
+            addCarModalFormCarNumber = $("#client_carNumber"),
+            addCarModalFormCarColor = $("#client_carColor"),
+            addCarModalFormSubmitBtn = $("#addCarToClientButtonSubmit");
 
         function getAllCarModels()
         {
@@ -358,6 +397,8 @@
                 })
             ;
         }
-    });
+        getAllCarModels();
+
+    }); // jQuery end
 </script>
 {% endblock javascripts %}

@@ -26,8 +26,8 @@ gulp.task('custom-css', function() {
         .pipe(less({compress: true}))
         .pipe(uglifycss())
         .pipe(rename("custom.min.css"))
-        .pipe(gulp.dest('web/css/'))
-        .pipe(notify("Gulp watch: custom-css task completed."));
+        .pipe(gulp.dest('web/css/'));
+        //.pipe(notify("Gulp watch: custom-css task completed."));
 });
 
 gulp.task('vendors-js', function() {
@@ -37,7 +37,12 @@ gulp.task('vendors-js', function() {
         'web_src/frontend-vendors/moment/moment.js',
         'web_src/frontend-vendors/bootstrap-select/dist/js/bootstrap-select.js',
         'web_src/frontend-vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-        'web_src/frontend-vendors/bootstrap-datepicker/dist/locales/bootstrap-datepicker.uk.min.js'
+        'web_src/frontend-vendors/bootstrap-datepicker/dist/locales/bootstrap-datepicker.uk.min.js',
+        'web_src/frontend-vendors/jsonform/deps/underscore.js',
+        'web_src/frontend-vendors/jsonform/deps/opt/jsv.js',
+        'web_src/frontend-vendors/jsonform/deps/opt/ace/ace.js',
+        'web_src/js/jsonForm_bootstrap3.js'
+        //'web_src/frontend-vendors/jsonform/lib/jsonform.js'
     ])
         .pipe(concat('vendors-js.min.js'))
         .pipe(minifyJs())
@@ -50,8 +55,8 @@ gulp.task('custom-js', function() {
         .pipe(concat('app.min.js'))
         .pipe(minifyJs())
         .pipe(rename("custom.min.js"))
-        .pipe(gulp.dest('web/js/'))
-        .pipe(notify("Gulp watch: custom-js task completed."));
+        .pipe(gulp.dest('web/js/'));
+        //.pipe(notify("Gulp watch: custom-js task completed."));
 });
 
 gulp.task('fonts', function(){

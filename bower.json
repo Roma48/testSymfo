@@ -11,6 +11,7 @@
     "moment": "~2",
     "font-awesome": "~4",
     "bootstrap-select": "~1.7.2",
-    "bootstrap-datepicker": "~1.4.0"
+    "bootstrap-datepicker": "~1.4.0",
+    "jsonform": "*"
   }
 }
