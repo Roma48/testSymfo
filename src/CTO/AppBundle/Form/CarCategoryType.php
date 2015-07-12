@@ -38,7 +38,8 @@ class CarCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CTO\AppBundle\Entity\CarCategory'
+            'data_class' => 'CTO\AppBundle\Entity\CarCategory',
+            'cascade_validation' => true
         ]);
     }
 

@@ -133,7 +133,8 @@ class CarJobType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CTO\AppBundle\Entity\CarJob'
+            'data_class' => 'CTO\AppBundle\Entity\CarJob',
+            'cascade_validation' => true
         ]);
     }
 

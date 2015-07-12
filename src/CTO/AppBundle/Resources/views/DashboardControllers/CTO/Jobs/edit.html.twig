@@ -24,6 +24,7 @@
 
             <div id="custom_form">
                 <form></form>
+                <div id="res"></div>
             </div>
 
         </div>
@@ -94,6 +95,7 @@
             clientCarObj = {};
             categoryKeys = [];
             categoryObj = {};
+            var jobId = {{ jobId }};
 
             var formSchema = {
                 "schema": {
@@ -245,12 +247,50 @@
                     },
                     {
                         "type": "submit",
-                        "title": "Створити"
+                        "title": "Відредагувати"
                     }
                 ],
                 "value": {},
                 onSubmit: function(errors, values){
-                    alert('Values object:\n' + JSON.stringify(values, null, 2));
+                    var submitUrl = Routing.generate('cto_jobs_edit_fromJSONFORM', {"id": jobId});
+                    var returnUrl = Routing.generate('cto_jobs_list');
+
+                    if (errors) {
+                        var subm = false;
+                        console.log(errors);
+
+                        $.each(errors, function(ind, val){
+                            if (val.attribute == "type" && val.details[0] == "number") {
+                                $('#res').html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
+
+                                return;
+                            }
+                            subm = true;
+                        });
+                        if (subm) {
+                            $.post(submitUrl, JSON.stringify(values))
+                                .success(function(response){
+                                    if (response.status == "ok") {
+                                        window.location.replace(returnUrl);
+                                    }
+                                })
+                                .error(function(error){
+                                    console.log(error);
+                                });
+                        }
+                    } else {
+                        $.post(submitUrl, JSON.stringify(values))
+                            .success(function(response){
+                                if (response.status == "ok") {
+                                    window.location.replace(returnUrl);
+                                }
+                            })
+                            .error(function(error){
+                                console.log(error);
+                            });
+//                alert('Values object:\n' + JSON.stringify(values, null, 2));
+//                console.log(values);
+                    }
                 }
             };
 

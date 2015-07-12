@@ -122,6 +122,8 @@ class JobsController extends JsonController
     /**
      * @Route("/newFromJsonForm", name="cto_jobs_new_fromJSONFORM", options={"expose" = true})
      * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse
      */
     public function createNewFromJsonFormAction(Request $request)
     {
@@ -168,6 +170,9 @@ class JobsController extends JsonController
     /**
      * @Route("/editJsonForm/{id}", name="cto_jobs_edit_fromJSONFORM", options={"expose" = true})
      * @Method("POST")
+     * @param CarJob $carJob
+     * @param Request $request
+     * @return JsonResponse
      */
     public function editFromJsonFormAction(CarJob $carJob, Request $request)
     {
@@ -176,16 +181,18 @@ class JobsController extends JsonController
         $form = $this->createForm(new CarJobType($em, $carJob->getClient()), $carJob);
 
         if ($request->getMethod() == "POST") {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-//                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
-                $em->flush();
 
-                $this->addFlash('success', "Завдання успішно відредаговано.");
+            $this->handleJsonForm($form, $request);
+            $carJob->getClient()->setLastVisitDate(new \DateTime('now'));
 
-                return $this->redirect($this->generateUrl('cto_jobs_list'));
-            }
+            $em->persist($carJob);
+            $em->flush();
+
+            $this->addFlash('success', "Завдання успішно відредаговано.");
+
+            return new JsonResponse(["status" => "ok"]);
         }
 
+        return new JsonResponse(["status" => "fail"]);
     }
 }

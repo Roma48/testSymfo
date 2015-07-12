@@ -31,7 +31,8 @@ class JobDescriptionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CTO\AppBundle\Entity\CategoryJobDescription'
+            'data_class' => 'CTO\AppBundle\Entity\CategoryJobDescription',
+            'cascade_validation' => true
         ]);
     }
 
