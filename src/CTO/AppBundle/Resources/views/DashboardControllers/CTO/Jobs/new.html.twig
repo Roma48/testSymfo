@@ -22,6 +22,7 @@
 
             <div id="custom_form">
                 <form></form>
+                <div id="res"></div>
             </div>
 
         </div>
@@ -135,7 +136,8 @@
                                                 },
                                                 "price": {
                                                     "type": "number",
-                                                    "title": "Ціна"
+                                                    "title": "Ціна",
+                                                    required: true
                                                 }
                                             }
                                         }
@@ -245,21 +247,46 @@
                 }
             ],
             onSubmit: function(errors, values){
-                console.log(JSON.stringify(values));
                 var submitUrl = Routing.generate('cto_jobs_new_fromJSONFORM');
-                $.post(submitUrl, JSON.stringify(values))
-                    .success(function(response){
-                        if (response.status == "ok") {
-                            var returnUrl = Routing.generate('cto_jobs_list');
-                            window.location.replace(returnUrl);
+
+                if (errors) {
+                    console.log(errors);
+                    var subm = false;
+
+                    $.each(errors, function(ind, val){
+                        if (val.attribute == "type" && val.details[0] == "number") {
+                            $('#res').html('<div class="alert alert-danger" role="alert">Помилка валідації</div>');
+
+                            return;
                         }
+                        subm = true;
+                    });
+                    if (subm) {
+                        $.post(submitUrl, JSON.stringify(values))
+                                .success(function(response){
+                                    if (response.status == "ok") {
+                                        var returnUrl = Routing.generate('cto_jobs_list');
+                                        window.location.replace(returnUrl);
+                                    }
+                                })
+                                .error(function(error){
+                                    console.log(error);
+                                });
+                    }
+                } else {
+                    $.post(submitUrl, JSON.stringify(values))
+                        .success(function(response){
+                            if (response.status == "ok") {
+                                var returnUrl = Routing.generate('cto_jobs_list');
+                                window.location.replace(returnUrl);
+                            }
                         })
-                    .error(function(error){
+                        .error(function(error){
                             console.log(error);
                         });
-//
 //                alert('Values object:\n' + JSON.stringify(values, null, 2));
 //                console.log(values);
+                }
             }
         };
 

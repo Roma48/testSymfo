@@ -150,7 +150,7 @@ class JobsController extends JsonController
     /**
      * @Route("/edit/{id}", name="cto_jobs_edit", options={"expose" = true})
      * @Method("GET")
-     * @Template("@CTOApp/DashboardControllers/CTO/Jobs/new.html.twig")
+     * @Template()
      * @param CarJob $carJob
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */

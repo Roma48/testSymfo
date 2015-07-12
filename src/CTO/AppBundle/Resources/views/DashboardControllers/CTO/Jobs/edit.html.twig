@@ -139,7 +139,8 @@
                                                     },
                                                     "price": {
                                                         "type": "number",
-                                                        "title": "Ціна"
+                                                        "title": "Ціна",
+                                                        required: true
                                                     }
                                                 }
                                             }
@@ -206,12 +207,10 @@
                     },
                     {
                         "key": "car_job.client",
-//                        "titleMap": clientObj
-                        "titleMap": {}
+                        "titleMap": clientObj
                     },
                     {
                         "key": "car_job.car",
-//                        "titleMap": clientCarObj
                         "titleMap": {}
                     },
                     {
@@ -252,7 +251,6 @@
                 "value": {},
                 onSubmit: function(errors, values){
                     alert('Values object:\n' + JSON.stringify(values, null, 2));
-                    console.log(values);
                 }
             };
 
@@ -296,7 +294,6 @@
                                     $.get(getJobUrl)
                                         .success(function(response){
                                             if (response.job) {
-                                                console.log(response.job);
                                                 formSchema["value"] = response.job;
                                             }
                                             getClientCars(response.job.car_job.client, response.job.car_job.car);
