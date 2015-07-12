@@ -2,20 +2,23 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
+use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
+use CTO\AppBundle\Entity\CategoryJobDescription;
 use CTO\AppBundle\Form\CarJobType;
 use CTO\AppBundle\Form\CtoCarJobFilterType;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/jobs")
  */
-class JobsController extends Controller
+class JobsController extends JsonController
 {
     /**
      * @Route("/", name="cto_jobs_home")
@@ -28,7 +31,7 @@ class JobsController extends Controller
     }
 
     /**
-     * @Route("/list", name="cto_jobs_list")
+     * @Route("/list", name="cto_jobs_list", options={"expose" = true})
      * @Method("GET")
      * @Template()
      */
@@ -104,10 +107,23 @@ class JobsController extends Controller
 
     /**
      * @Route("/new", name="cto_jobs_new")
-     * @Method({"GET", "POST"})
+     * @Method("GET")
      * @Template()
      */
-    public function newAction(Request $request)
+    public function newAction()
+    {
+
+        return [
+            'title' => 'Нове завдання',
+            'back' => 'new'
+        ];
+    }
+
+    /**
+     * @Route("/newFromJsonForm", name="cto_jobs_new_fromJSONFORM", options={"expose" = true})
+     * @Method("POST")
+     */
+    public function createNewFromJsonFormAction(Request $request)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -115,34 +131,45 @@ class JobsController extends Controller
         $form = $this->createForm(new CarJobType($em), $carJob);
 
         if ($request->getMethod() == "POST") {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-//                $carJob->setPrice(str_replace(',', '.', $carJob->getPrice()));
-                $em->persist($carJob);
-                $em->flush();
 
-                $this->addFlash('success', "Завдання успішно створено.");
+            $this->handleJsonForm($form, $request);
 
-                return $this->redirect($this->generateUrl('cto_jobs_list'));
-            }
+            $carJob->getClient()->setLastVisitDate(new \DateTime('now'));
+
+            $em->persist($carJob);
+            $em->flush();
+
+            $this->addFlash('success', "Завдання успішно створено.");
+
+            return new JsonResponse(["status" => "ok"]);
         }
 
+        return new JsonResponse(["status" => "fail"]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="cto_jobs_edit", options={"expose" = true})
+     * @Method("GET")
+     * @Template("@CTOApp/DashboardControllers/CTO/Jobs/new.html.twig")
+     * @param CarJob $carJob
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editAction(CarJob $carJob)
+    {
+
         return [
-            'form' => $form->createView(),
-            'title' => 'Нове завдання',
-            'back' => 'new'
+            'job' => $carJob->jsonSerialize(),
+            'jobId' => $carJob->getId(),
+            'title' => 'Редагування завдання',
+            'back' => $carJob->getId()
         ];
     }
 
     /**
-     * @Route("/edit/{id}", name="cto_jobs_edit")
-     * @Method({"GET", "POST"})
-     * @Template("@CTOApp/DashboardControllers/CTO/Jobs/new.html.twig")
-     * @param CarJob $carJob
-     * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/editJsonForm/{id}", name="cto_jobs_edit_fromJSONFORM", options={"expose" = true})
+     * @Method("POST")
      */
-    public function editAction(CarJob $carJob, Request $request)
+    public function editFromJsonFormAction(CarJob $carJob, Request $request)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -160,10 +187,5 @@ class JobsController extends Controller
             }
         }
 
-        return [
-            'form' => $form->createView(),
-            'title' => 'Редагування завдання',
-            'back' => $carJob->getId()
-        ];
     }
 }

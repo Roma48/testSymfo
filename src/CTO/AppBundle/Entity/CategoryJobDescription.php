@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="jobDescription")
  * @ORM\Entity()
  */
-class CategoryJobDescription 
+class CategoryJobDescription implements \JsonSerializable
 {
     use CreateUpdateTrait;
 
@@ -31,6 +31,21 @@ class CategoryJobDescription
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory", inversedBy="jobDescriptions")
      */
     protected $carCategory;
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return [
+            "description" => $this->getDescription(),
+            "price" => $this->getPrice()
+        ];
+    }
 
     /**
      * @return mixed
@@ -65,7 +80,7 @@ class CategoryJobDescription
      */
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = str_replace(',', '.', $price);
 
         return $this;
     }

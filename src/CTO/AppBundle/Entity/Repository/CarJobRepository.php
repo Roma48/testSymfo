@@ -10,7 +10,7 @@ class CarJobRepository extends EntityRepository
     public function listJobsWithSortings()
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN j.car jcar JOIN jcar.model m');
+            ->createQuery('SELECT j From CTOAppBundle:CarJob j JOIN j.client cc JOIN j.car jcar JOIN jcar.model m ORDER by j.jobDate DESC ');
     }
 
     public function jobsFilter($filterData)

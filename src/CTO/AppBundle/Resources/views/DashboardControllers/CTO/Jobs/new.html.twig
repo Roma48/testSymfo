@@ -10,7 +10,7 @@
             <h3>
                 {{ title }}:
                 <div class="pull-right">
-                    <a href="{{ path('cto_jobs_home', {'tabName': 'list'}) }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                    <a href="{{ path('cto_jobs_list') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                 </div>
             </h3>
             <br>
@@ -87,7 +87,7 @@
     jQuery(function ($) {
 
         clientKeys = ["1"];
-        clientObj = {"1": "Клієнт"};
+        clientObj = {"1": "Завантаження ... "};
         categoryKeys = [];
         categoryObj = {};
 
@@ -100,9 +100,7 @@
                         "client": {
                             "type": "string",
                             "title": "Клієнт",
-                            "enum": [
-                                "1", "2", "3"
-                            ]
+                            "enum": clientKeys
                         },
                         "car": {
                             "type": "string",
@@ -209,11 +207,7 @@
                 },
                 {
                     "key": "car_job.car",
-                    "titleMap": {
-                        "1": "car 1",
-                        "2": "car 2",
-                        "3": "car 3"
-                    }
+                    "titleMap": clientObj
                 },
                 {
                     "key": "car_job.jobDate",
@@ -250,48 +244,26 @@
                     "title": "Створити"
                 }
             ],
-            //"value": {
-            //    "car_job": {
-            //        "jobDate": "09.07.2015",
-            //        "client": "3",
-            //        "car": "2",
-            //        "carCategories": [
-            //            {
-            //                "jobCategory": "1",
-            //                "jobDescriptions": [
-            //                    {
-            //                        "price": 14.6
-            //                    },
-            //                    {
-            //                        "description": "xxxxxx",
-            //                        "price": 45.2
-            //                    }
-            //                ]
-            //            },
-            //            {
-            //                "jobCategory": "3",
-            //                "jobDescriptions": [
-            //                    {
-            //                        "price": 100
-            //                    },
-            //                    {
-            //                        "description": "zzzzzzz",
-            //                        "price": 250.5
-            //                    }
-            //                ]
-            //            }
-            //        ]
-            //    }
-            //},
             onSubmit: function(errors, values){
-                alert('Values object:\n' + JSON.stringify(values, null, 2));
-                console.log(values);
+                console.log(JSON.stringify(values));
+                var submitUrl = Routing.generate('cto_jobs_new_fromJSONFORM');
+                $.post(submitUrl, JSON.stringify(values))
+                    .success(function(response){
+                        if (response.status == "ok") {
+                            var returnUrl = Routing.generate('cto_jobs_list');
+                            window.location.replace(returnUrl);
+                        }
+                        })
+                    .error(function(error){
+                            console.log(error);
+                        });
+//
+//                alert('Values object:\n' + JSON.stringify(values, null, 2));
+//                console.log(values);
             }
         };
 
         var formObj = $("#custom_form form");
-
-//        formObj.jsonForm(formSchema);
 
         formObj.on("click", "input[type=text].jod-date-picker", function(){
             $(this).datepicker({

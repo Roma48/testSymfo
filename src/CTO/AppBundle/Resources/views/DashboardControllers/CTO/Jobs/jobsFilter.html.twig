@@ -7,7 +7,7 @@
             <h3>
                 Нове завдання:
                 <div class="pull-right">
-                    <a href="{{ path('cto_jobs_home', {"tabName": "list"}) }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                    <a href="{{ path('cto_jobs_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                     <a href="{{ path('cto_jobs_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нове завдання</a>
                 </div>
             </h3>
@@ -40,18 +40,14 @@
                         <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
                         <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
                         <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
-                        {#<th>{{ knp_pagination_sortable(jobs, 'Category', 'jc.name') }}</th>#}
-                        {#<th>{{ knp_pagination_sortable(jobs, 'Price', 'j.price') }}</th>#}
-                        <th>{{ knp_pagination_sortable(jobs, 'Model', 'm.name') }}</th>
+                        <th>{{ knp_pagination_sortable(jobs, 'Car', 'm.name') }}</th>
                         <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
                         <th class="text-center">Actions</th>
                     {% else %}
                         <th class="text-center">Id</th>
                         <th>First name</th>
                         <th>Last name</th>
-                        {#<th>Category</th>#}
-                        {#<th>Price</th>#}
-                        <th>Model</th>
+                        <th>Car</th>
                         <th>Visited date</th>
                         <th class="text-center">Actions</th>
                     {% endif %}
@@ -63,8 +59,6 @@
                         <td class="text-center">{{ job.id }}</td>
                         <td>{{ job.client.firstName }}</td>
                         <td>{{ job.client.lastName }}</td>
-                        {#<td>{{ job.jobCategory.name}}</td>#}
-                        {#<td>{{ job.price}}</td>#}
                         <td>{{ job.car.model.name}}</td>
                         <td>{{ job.jobDate | date("d.m.Y") }}</td>
                         <td class="text-center">

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="carJobs")
  * @ORM\Entity(repositoryClass="CTO\AppBundle\Entity\Repository\CarJobRepository")
  */
-class CarJob 
+class CarJob implements \JsonSerializable
 {
     use CreateUpdateTrait;
 
@@ -46,6 +46,25 @@ class CarJob
      * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Notification", mappedBy="carJob")
      */
     protected $notifications;
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return [
+            "car_job" => [
+                "jobDate" => $this->getJobDate()->format("d.m.Y"),
+                "client" => (string) $this->getClient()->getId(),
+                "car" => (string) $this->getCar()->getId(),
+                "carCategories" => $this->getCarCategories()->getValues()
+            ]
+        ];
+    }
 
     public function __construct()
     {

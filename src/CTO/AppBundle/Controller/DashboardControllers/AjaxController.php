@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers;
 
+use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -46,5 +47,14 @@ class AjaxController extends Controller
         $categories = $em->getRepository("CTOAppBundle:JobCategory")->findAll();
 
         return new JsonResponse(["categories" => $categories]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getJob/{id}", name="ajax_cto_getJobById", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getJob(CarJob $carJob)
+    {
+        return new JsonResponse(["job" => $carJob]);
     }
 }

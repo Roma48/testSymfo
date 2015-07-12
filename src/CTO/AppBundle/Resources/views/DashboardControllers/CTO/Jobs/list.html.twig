@@ -41,7 +41,7 @@
                     <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
                     <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
                     <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
-                    {#<th>{{ knp_pagination_sortable(jobs, 'Model', 'm.name') }}</th>#}
+                    <th>{{ knp_pagination_sortable(jobs, 'Car', 'm.name') }}</th>
                     <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -54,7 +54,7 @@
                         <td>{{ job.client.lastName }}</td>
                         {#<td>{{ job.jobCategory.name}}</td>#}
                         {#<td>{{ job.price}}</td>#}
-                        {#<td>{{ job.car.model.name}}</td>#}
+                        <td>{{ job.car.model.name}}</td>
                         <td>{{ job.jobDate | date("d.m.Y") }}</td>
                         <td class="text-center">
                             <div class="btn-group">
