@@ -39,7 +39,8 @@ class CarJobType extends AbstractType
                 'type' => new CarCategoryType(),
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false
+                'by_reference' => false,
+                'cascade_validation' => true
             ])
 
 

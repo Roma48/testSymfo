@@ -21,6 +21,7 @@ class JobDescriptionType extends AbstractType
             ->add('price', 'text', [
                 'label' => 'Ціна (грн.)*',
                 'attr' => ['class' => 'form-control'],
+                'cascade_validation' => true
             ])
         ;
     }

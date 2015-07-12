@@ -23,9 +23,13 @@ class CategoryJobDescription implements \JsonSerializable
 
     /**
      * @Assert\NotBlank(message="Обов'язкове поле")
-     * @Assert\Regex(pattern="/[0-9.]+")
+     * @Assert\Type(
+     *   type="numeric",
+     *   message="only float allowed"
+     * )
      * @ORM\Column(name="price", type="float")
      */
+    //   pattern="/[0-9]{1,}([,.][0-9]{1,2})?/
     protected $price;
 
     /**
