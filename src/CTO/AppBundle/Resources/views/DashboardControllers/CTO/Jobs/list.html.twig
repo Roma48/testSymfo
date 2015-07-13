@@ -19,7 +19,6 @@
                 <br>
                 {{ form_start(filterForm, {'action': path('cto_jobs_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
                 {{ form_widget(filterForm.fullName) }}
-                {#{{ form_widget(filterForm.jobCategory) }}#}
                 {{ form_widget(filterForm.dateFrom) }}
                 {{ form_widget(filterForm.dateTo) }}
                 <div class="hidden">
@@ -52,15 +51,12 @@
                         <td class="text-center">{{ job.id }}</td>
                         <td>{{ job.client.firstName }}</td>
                         <td>{{ job.client.lastName }}</td>
-                        {#<td>{{ job.jobCategory.name}}</td>#}
-                        {#<td>{{ job.price}}</td>#}
                         <td>{{ job.car.model.name}}</td>
                         <td>{{ job.jobDate | date("d.m.Y") }}</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a class="btn btn-default btn-xs"
-                                   href="#"> Показати </a>
-                                {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
+                                    href="{{ path('cto_jobs_show', { 'id': job.id }) }}"> Показати </a>
                                 <a class="btn btn-warning btn-xs"
                                    href="{{ path('cto_jobs_edit', { 'id': job.id }) }}"> Редагувати </a>
                             </div>

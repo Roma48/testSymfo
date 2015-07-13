@@ -32,7 +32,23 @@ class ClientCarType extends AbstractType
                 'label'     => 'Колір автомобіля:',
                 'attr'      => ['class' => 'form-control'],
                 'required'  => false
-            ]);
+            ])
+            ->add('engine', 'text', [
+                'label'     => 'Об\'єм двигуна (л.):',
+                'attr'      => ['class' => 'form-control'],
+                'required'  => false
+            ])
+            ->add('vinCode', 'text', [
+                'label'     => 'VIN код:',
+                'attr'      => ['class' => 'form-control'],
+                'required'  => false
+            ])
+            ->add('createYear', 'text', [
+                'label'     => 'Рік випуску:',
+                'attr'      => ['class' => 'form-control'],
+                'required'  => false
+            ])
+            ;
     }
 
     /**

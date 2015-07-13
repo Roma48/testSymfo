@@ -17,7 +17,7 @@ class CategoryJobDescription implements \JsonSerializable
     use CreateUpdateTrait;
 
     /**
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
 
@@ -27,7 +27,7 @@ class CategoryJobDescription implements \JsonSerializable
      *   type="numeric",
      *   message="only float allowed"
      * )
-     * @ORM\Column(name="price", type="float")
+     * @ORM\Column(name="price", type="float", nullable=true)
      */
     //   pattern="/[0-9]{1,}([,.][0-9]{1,2})?/
     protected $price;

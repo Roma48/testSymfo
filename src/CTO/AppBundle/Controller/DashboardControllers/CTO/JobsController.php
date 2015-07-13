@@ -137,13 +137,15 @@ class JobsController extends JsonController
             $this->handleJsonForm($form, $request);
 
             $carJob->getClient()->setLastVisitDate(new \DateTime('now'));
+            $carJob->setTmpHash(uniqid("", true));
 
             $em->persist($carJob);
             $em->flush();
+            $em->flush();  // <--- this flush for calculate total cost in event listener
 
             $this->addFlash('success', "Завдання успішно створено.");
 
-            return new JsonResponse(["status" => "ok"]);
+            return new JsonResponse(["status" => "ok", "jid" => $carJob->getId()]);
         }
 
         return new JsonResponse(["status" => "fail"]);
@@ -184,8 +186,8 @@ class JobsController extends JsonController
 
             $this->handleJsonForm($form, $request);
             $carJob->getClient()->setLastVisitDate(new \DateTime('now'));
+            $carJob->setTmpHash(uniqid("", true));
 
-            $em->persist($carJob);
             $em->flush();
 
             $this->addFlash('success', "Завдання успішно відредаговано.");
@@ -194,5 +196,20 @@ class JobsController extends JsonController
         }
 
         return new JsonResponse(["status" => "fail"]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="cto_jobs_show", options={"expose" = true})
+     * @Method("GET")
+     * @Template()
+     * @param CarJob $carJob
+     * @return array
+     */
+    public function showAction(CarJob $carJob)
+    {
+
+        return [
+            'job' => $carJob
+        ];
     }
 }

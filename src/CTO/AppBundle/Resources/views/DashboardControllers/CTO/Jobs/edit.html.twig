@@ -253,7 +253,7 @@
                 "value": {},
                 onSubmit: function(errors, values){
                     var submitUrl = Routing.generate('cto_jobs_edit_fromJSONFORM', {"id": jobId});
-                    var returnUrl = Routing.generate('cto_jobs_list');
+                    var returnUrl = Routing.generate('cto_jobs_show', {"id": jobId});
 
                     if (errors) {
                         var subm = false;

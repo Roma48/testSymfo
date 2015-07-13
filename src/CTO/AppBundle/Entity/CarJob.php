@@ -27,6 +27,16 @@ class CarJob implements \JsonSerializable
     protected $jobDate;
 
     /**
+     * @ORM\Column(name="totalCost", type="float")
+     */
+    protected $totalCost;
+
+    /**
+     * @ORM\Column(name="tmp_hash", type="string")
+     */
+    protected $tmpHash;
+
+    /**
      * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="carJobs")
      */
@@ -70,6 +80,8 @@ class CarJob implements \JsonSerializable
     {
         $this->notifications = new ArrayCollection();
         $this->carCategories = new ArrayCollection();
+        $this->totalCost = 0;
+        $this->tmpHash = uniqid("", true);
     }
 
     /**
@@ -180,5 +192,43 @@ class CarJob implements \JsonSerializable
     public function setClient($client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalCost()
+    {
+        return $this->totalCost;
+    }
+
+    /**
+     * @param mixed $totalCost
+     * @return CarJob
+     */
+    public function setTotalCost($totalCost)
+    {
+        $this->totalCost = $totalCost;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTmpHash()
+    {
+        return $this->tmpHash;
+    }
+
+    /**
+     * @param mixed $tmpHash
+     * @return CarJob
+     */
+    public function setTmpHash($tmpHash)
+    {
+        $this->tmpHash = $tmpHash;
+
+        return $this;
     }
 }

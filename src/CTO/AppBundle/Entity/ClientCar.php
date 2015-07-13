@@ -26,6 +26,25 @@ class ClientCar implements \JsonSerializable
      */
     protected $carColor;
 
+    /**
+     * @Assert\Type(
+     *   type="numeric",
+     *   message="тільки цифри допустимі"
+     * )
+     * @ORM\Column(name="engine", type="float", nullable=true)
+     */
+    protected $engine;
+
+    /**
+     * @ORM\Column(name="vinCode", type="string", nullable=true)
+     */
+    protected $vinCode;
+
+    /**
+     * @ORM\Column(name="createYear", type="string", length=20, nullable=true)
+     */
+    protected $createYear;
+
     protected $carModel;
 
     /**
@@ -195,5 +214,62 @@ class ClientCar implements \JsonSerializable
     public function getCarModel()
     {
         return $this->model->getName();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEngine()
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @param mixed $engine
+     * @return ClientCar
+     */
+    public function setEngine($engine)
+    {
+        $this->engine = $engine;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVinCode()
+    {
+        return $this->vinCode;
+    }
+
+    /**
+     * @param mixed $vinCode
+     * @return ClientCar
+     */
+    public function setVinCode($vinCode)
+    {
+        $this->vinCode = $vinCode;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreateYear()
+    {
+        return $this->createYear;
+    }
+
+    /**
+     * @param mixed $createYear
+     * @return ClientCar
+     */
+    public function setCreateYear($createYear)
+    {
+        $this->createYear = $createYear;
+
+        return $this;
     }
 }

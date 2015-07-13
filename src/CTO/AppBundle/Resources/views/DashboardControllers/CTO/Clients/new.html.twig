@@ -54,6 +54,21 @@
                                     {{ form_widget(car.carColor) }}
                                     {{ form_errors(car.carColor) }}
                                 </div>
+                                <div>
+                                    {{ form_label(car.engine) }}
+                                    {{ form_widget(car.engine) }}
+                                    {{ form_errors(car.engine) }}
+                                </div>
+                                <div>
+                                    {{ form_label(car.vinCode) }}
+                                    {{ form_widget(car.vinCode) }}
+                                    {{ form_errors(car.vinCode) }}
+                                </div>
+                                <div>
+                                    {{ form_label(car.createYear) }}
+                                    {{ form_widget(car.createYear) }}
+                                    {{ form_errors(car.createYear) }}
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>

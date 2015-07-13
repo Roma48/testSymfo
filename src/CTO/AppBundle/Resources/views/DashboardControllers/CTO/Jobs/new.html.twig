@@ -248,7 +248,6 @@
             ],
             onSubmit: function(errors, values){
                 var submitUrl = Routing.generate('cto_jobs_new_fromJSONFORM');
-                var returnUrl = Routing.generate('cto_jobs_list');
 
                 if (errors) {
                     var subm = false;
@@ -265,6 +264,7 @@
                         $.post(submitUrl, JSON.stringify(values))
                                 .success(function(response){
                                     if (response.status == "ok") {
+                                        var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
                                         window.location.replace(returnUrl);
                                     }
                                 })
@@ -276,6 +276,7 @@
                     $.post(submitUrl, JSON.stringify(values))
                         .success(function(response){
                             if (response.status == "ok") {
+                                var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
                                 window.location.replace(returnUrl);
                             }
                         })
