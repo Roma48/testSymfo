@@ -22,7 +22,7 @@
 
             <div id="custom_form">
                 <form></form>
-                <div id="res"></div>
+                <div id="res"><div class="well well-sm">Завантаження форми ...</div></div>
             </div>
 
         </div>
@@ -91,6 +91,7 @@
         clientObj = {"1": "Завантаження ... "};
         categoryKeys = [];
         categoryObj = {};
+        var res = $("#res");
 
         var formSchema = {
             "schema": {
@@ -254,7 +255,7 @@
 
                     $.each(errors, function(ind, val){
                         if (val.attribute == "type" && val.details[0] == "number") {
-                            $('#res').html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
+                            res.html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
 
                             return;
                         }
@@ -314,6 +315,7 @@
                         categoryObj[value.id] = value.name;
                     });
 
+                    res.html('');
                     formObj.jsonForm(formSchema);
 
                     clients = $(document.getElementById("jsonform-0-elt-car_job.client"));

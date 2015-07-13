@@ -24,7 +24,7 @@
 
             <div id="custom_form">
                 <form></form>
-                <div id="res"></div>
+                <div id="res"><div class="well well-sm">Завантаження форми ...</div></div>
             </div>
 
         </div>
@@ -96,6 +96,7 @@
             categoryKeys = [];
             categoryObj = {};
             var jobId = {{ jobId }};
+            var res = $("#res");
 
             var formSchema = {
                 "schema": {
@@ -261,7 +262,7 @@
 
                         $.each(errors, function(ind, val){
                             if (val.attribute == "type" && val.details[0] == "number") {
-                                $('#res').html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
+                                res.html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
 
                                 return;
                             }
@@ -276,7 +277,7 @@
                                 })
                                 .error(function(error){
                                     if (error.status == 400 && error.responseJSON.error.info.field == "car_job") {
-                                        $('#res').html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
+                                        res.html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
                                     }
                                 });
                         }
@@ -289,7 +290,7 @@
                             })
                             .error(function(error){
                                 if (error.status == 400 && error.responseJSON.error.info.field == "car_job") {
-                                    $('#res').html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
+                                    res.html('<div class="alert alert-danger" role="alert">Ціна повинна бути цифрою.</div>');
                                 }
                                 console.info("erre");
                             });
@@ -342,7 +343,7 @@
                                                 formSchema["value"] = response.job;
                                             }
                                             getClientCars(response.job.car_job.client, response.job.car_job.car);
-
+                                            res.html('');
                                             formObj.jsonForm(formSchema);
 
                                             clients = $(document.getElementById("jsonform-0-elt-car_job.client"));
