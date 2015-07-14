@@ -161,7 +161,7 @@ class ClientCar implements \JsonSerializable
      */
     public function setCarBrand(Car $car)
     {
-        $this->$carBrand = $car;
+        $this->carBrand = $car;
 
         return $this;
     }
