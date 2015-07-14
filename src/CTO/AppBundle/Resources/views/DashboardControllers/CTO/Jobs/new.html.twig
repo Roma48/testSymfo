@@ -52,10 +52,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">add car</h4>
+                    <h4 class="modal-title" id="myModalLabel">Додати автомобіль поточному клієнту:</h4>
                 </div>
                 <div class="modal-body">
                     <div class="margin-bottom-15">
+                        <label for="carsForClientInModalForm">Модель автомобіля:</label>
                         <select id="carsForClientInModalForm" name="carModels" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
                         </select>
                     </div>
@@ -66,6 +67,18 @@
                     <div class="margin-bottom-15">
                         <label for="client_carColor">Колір автомобіля:</label>
                         <input type="text" id="client_carColor" name="carColor" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carEngine">Об'єм двигуна (л.):</label>
+                        <input type="text" id="client_carEngine" name="carEngine" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carVinCode">VIN код:</label>
+                        <input type="text" id="client_carVinCode" name="carVinCode" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carYear">Рік випуску:</label>
+                        <input type="text" id="client_carYear" name="carYear" class="form-control">
                     </div>
                     <div class="margin-bottom-15 text-center">
                         <button class="btn btn-success" id="addCarToClientButtonSubmit">Додати автомобіль</button>
@@ -180,7 +193,10 @@
                                 {"model": {
                                     "modelId": addCarModalFormSelect.val(),
                                     "carNumber": addCarModalFormCarNumber.val(),
-                                    "carColor": addCarModalFormCarColor.val()
+                                    "carColor": addCarModalFormCarColor.val(),
+                                    "carEngine": addCarModalFormCarEngine.val(),
+                                    "carVinCode": addCarModalFormCarVinCode.val(),
+                                    "carYear": addCarModalFormCarYear.val()
                                     }
                                 }
                             )
@@ -195,6 +211,9 @@
                                 addCarModalFormSelect.selectpicker('refresh');
                                 addCarModalFormCarNumber.val('');
                                 addCarModalFormCarColor.val('');
+                                addCarModalFormCarEngine.val('');
+                                addCarModalFormCarVinCode.val('');
+                                addCarModalFormCarYear.val('');
                                 cars.selectpicker('refresh');
                             })
                             .error(function(error){
@@ -375,6 +394,9 @@
         var addCarModalFormSelect = $("#carsForClientInModalForm"),
             addCarModalFormCarNumber = $("#client_carNumber"),
             addCarModalFormCarColor = $("#client_carColor"),
+            addCarModalFormCarEngine = $("#client_carEngine"),
+            addCarModalFormCarVinCode = $("#client_carVinCode"),
+            addCarModalFormCarYear = $("#client_carYear"),
             addCarModalFormSubmitBtn = $("#addCarToClientButtonSubmit");
 
         function getAllCarModels()
@@ -382,15 +404,15 @@
             var url = Routing.generate("cto_models_getAllListForModal");
             $.post(url)
                 .success(function(response){
-                        addCarModalFormSelect.html('');
-                        if (response.models.length > 0) {
-                            $.each(response.models, function(key, value){
-                                addCarModalFormSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
-                            });
-                        } else {
-                            addCarModalFormSelect.append('<option value="" disabled="disabled">Моделей не знайдено.</option>');
-                        }
-                        addCarModalFormSelect.selectpicker('refresh');
+                    addCarModalFormSelect.html('');
+                    if (response.models.length > 0) {
+                        $.each(response.models, function(key, value){
+                            addCarModalFormSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    } else {
+                        addCarModalFormSelect.append('<option value="" disabled="disabled">Моделей не знайдено.</option>');
+                    }
+                    addCarModalFormSelect.selectpicker('refresh');
                 })
                 .error(function(error){
                    console.log(error);

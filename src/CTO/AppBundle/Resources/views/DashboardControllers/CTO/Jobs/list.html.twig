@@ -51,7 +51,10 @@
                         <td class="text-center">{{ job.id }}</td>
                         <td>{{ job.client.firstName }}</td>
                         <td>{{ job.client.lastName }}</td>
-                        <td>{{ job.car.model.name}}</td>
+                        <td>{% if job.car.model is defined %}
+                                {{ job.car.model.name}}
+                            {% endif %}
+                        </td>
                         <td>{{ job.jobDate | date("d.m.Y") }}</td>
                         <td class="text-center">
                             <div class="btn-group">

@@ -251,9 +251,12 @@ class ClientsController extends Controller
             if ($model) {
                 $clientCar = new ClientCar();
                 $clientCar
-                    ->setModel($model)
+                    ->setEngine($modelRequest['carEngine'] ? $modelRequest['carEngine'] : null)
+                    ->setCreateYear($modelRequest['carYear'] ? $modelRequest['carYear'] : null)
+                    ->setVinCode($modelRequest['carVinCode'] ? $modelRequest['carVinCode'] : null)
                     ->setCarNumber($modelRequest['carNumber'] ? $modelRequest['carNumber'] : null)
-                    ->setCarColor($modelRequest['carColor'] ? $modelRequest['carColor'] : null);
+                    ->setCarColor($modelRequest['carColor'] ? $modelRequest['carColor'] : null)
+                    ->setModel($model);
 
                 $em->persist($clientCar);
                 $ctoClient->addCar($clientCar);

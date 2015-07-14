@@ -230,7 +230,7 @@ class ClientCar implements \JsonSerializable
      */
     public function setEngine($engine)
     {
-        $this->engine = $engine;
+        $this->engine = (float)str_replace(',', '.', $engine);
 
         return $this;
     }

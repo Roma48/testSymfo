@@ -70,7 +70,7 @@ class CarJob implements \JsonSerializable
             "car_job" => [
                 "jobDate" => $this->getJobDate()->format("d.m.Y"),
                 "client" => (string) $this->getClient()->getId(),
-                "car" => (string) $this->getCar()->getId(),
+                "car" => $this->getCar() ? (string) $this->getCar()->getId() : '',
                 "carCategories" => $this->getCarCategories()->getValues()
             ]
         ];
