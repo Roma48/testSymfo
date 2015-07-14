@@ -71,7 +71,7 @@
             {% for job in client.carJobs %}
                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
                     <div class="well well-sm">
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата візиту: </span><a href="{{ path('cto_jobs_show', {'id': job.id}) }}"> {{ job.jobDate | date("d.m.Y") }}</a></p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата візиту: </span>{{ job.jobDate | date("d.m.Y") }}&nbsp;&nbsp;&nbsp;<a href="{{ path('cto_jobs_show', {'id': job.id}) }}"><i class="fa fa-info"></i></a></p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Авто: </span>{{ job.car.model.name }}</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено: </span>{{ job.totalCost | number_format(2, '.', ',') }} грн.</p>
                         {% set totalSumm = totalSumm + job.totalCost %}

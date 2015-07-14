@@ -1,6 +1,6 @@
 <?php
 
-namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
+namespace CTO\AppBundle\Controller\DashboardControllers\Admin;
 
 use CTO\AppBundle\Entity\Car;
 use CTO\AppBundle\Entity\Model;

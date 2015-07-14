@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h4><u>Загальна інформація про клієнта:</u></h4>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ім'я: </span><a href="{{ path('cto_client_show', {"slug": job.client.slug }) }}">{{ job.client.firstName }}</a></p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ім'я: {{ job.client.firstName }}&nbsp;&nbsp;</span>(<a href="{{ path('cto_client_show', {"slug": job.client.slug }) }}">Профайл кліента</a>)</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прізвище: </span>{{ job.client.lastName }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Кількість автомобілів: </span>{{ job.client.cars | length }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Дата останнього візиту: </span>{{ job.client.lastVisitDate | date("d.m.Y") }}</p>
