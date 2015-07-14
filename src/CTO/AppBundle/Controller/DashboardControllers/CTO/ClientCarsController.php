@@ -4,7 +4,6 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use CTO\AppBundle\Form\ClientCarsFilterType;
 use Doctrine\ORM\EntityManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,6 +48,8 @@ class ClientCarsController extends Controller
      * @Route("/filter", name="cto_clientcars_filter")
      * @Method({"POST", "GET"})
      * @Template()
+     * @param Request $request
+     * @return array
      */
     public function filterAction(Request $request)
     {
@@ -68,6 +69,8 @@ class ClientCarsController extends Controller
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+        $clientCars = [];
+
         if ($filterFormData) {
             $clientCarsResult = $em->getRepository('CTOAppBundle:ClientCar')->carFilter($filterFormData);
         } else {
