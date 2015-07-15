@@ -45,6 +45,8 @@ class CtoController extends Controller
      * @Route("/new", name="admin_ctoUser_create")
      * @Method({"GET", "POST"})
      * @Template()
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -82,6 +84,9 @@ class CtoController extends Controller
      * @Method({"GET", "POST"})
      * @Template("@CTOApp/DashboardControllers/Admin/Cto/new.html.twig")
      * @ParamConverter("ctoUser", class="CTOAppBundle:CtoUser", options={"slug"="slug"})
+     * @param CtoUser $ctoUser
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(CtoUser $ctoUser, Request $request)
     {
