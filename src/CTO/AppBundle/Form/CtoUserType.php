@@ -41,6 +41,7 @@ class CtoUserType extends AbstractType
             ->add('email', 'email', [
                 'label' => 'e-mail СТО:*',
                 'attr' => ["class" => "form-control"],
+                'disabled' => $this->type ? false : true,
                 'required' => false
             ])
             ->add('phone', 'text', [

@@ -26,6 +26,12 @@ class DefaultController extends Controller
 
                 return $this->redirectToRoute('adminUser_home');
             } elseif ($user instanceof CtoUser) {
+                /** @var CtoUser $user */
+                if ($user->isBlocked()) {
+
+                    $this->addFlash('success', 'Ваш акаунт заблоковано.');
+                    return $this->redirectToRoute('logout');
+                }
 
                 return $this->redirectToRoute('cto_jobs_home');
             }

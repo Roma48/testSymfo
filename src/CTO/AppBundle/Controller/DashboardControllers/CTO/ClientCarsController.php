@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
+use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\ClientCarsFilterType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +28,9 @@ class ClientCarsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting();
+        /** @var CtoUser $cto */
+        $cto = $this->getUser();
+        $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting($cto);
 
         $paginator = $this->get('knp_paginator');
         $clientCars = $paginator->paginate(
@@ -69,13 +72,15 @@ class ClientCarsController extends Controller
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+        /** @var CtoUser $cto */
+        $cto = $this->getUser();
         $clientCars = [];
 
         if ($filterFormData) {
-            $clientCarsResult = $em->getRepository('CTOAppBundle:ClientCar')->carFilter($filterFormData);
+            $clientCarsResult = $em->getRepository('CTOAppBundle:ClientCar')->carFilter($filterFormData, $cto);
         } else {
             $withPaginator = true;
-            $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting();
+            $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting($cto);
 
             $paginator = $this->get('knp_paginator');
             $clientCars = $paginator->paginate(

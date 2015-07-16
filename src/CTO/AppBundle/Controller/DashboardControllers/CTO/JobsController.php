@@ -5,6 +5,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CategoryJobDescription;
+use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\CarJobType;
 use CTO\AppBundle\Form\CtoCarJobFilterType;
 use Doctrine\ORM\EntityManager;
@@ -39,7 +40,9 @@ class JobsController extends JsonController
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
+        /** @var CtoUser $cto */
+        $cto = $this->getUser();
+        $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings($cto);
 
         $paginator = $this->get('knp_paginator');
         $jobs = $paginator->paginate(
@@ -75,18 +78,14 @@ class JobsController extends JsonController
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        if ($filterFormData) {
-//            if (array_key_exists('jobCategory', $filterFormData)) {
-//                $jobCategory = $em->getRepository('CTOAppBundle:JobCategory')->find($filterFormData['jobCategory']);
-//                if ($jobCategory) {
-//                    $filterFormData['jobCategory'] = $jobCategory;
-//                }
-//            }
+        /** @var CtoUser $cto */
+        $cto = $this->getUser();
 
-            $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData);
+        if ($filterFormData) {
+            $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData, $cto);
         } else {
             $withPaginator = true;
-            $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings();
+            $jobsResult = $em->getRepository("CTOAppBundle:CarJob")->listJobsWithSortings($cto);
 
             $paginator = $this->get('knp_paginator');
             $jobs = $paginator->paginate(
@@ -141,7 +140,7 @@ class JobsController extends JsonController
 
             $em->persist($carJob);
             $em->flush();
-            $em->flush();  // <--- this flush for calculate total cost in event listener
+            $em->flush();  // <--- this flush need for calculate total cost in event listener
 
             $this->addFlash('success', "Завдання успішно створено.");
 
