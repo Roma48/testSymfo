@@ -5,6 +5,9 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3>
                 Список СТО:
+                <div class="pull-right">
+                    <a href="{{ path('admin_ctoUser_create') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Додати СТО</a>
+                </div>
             </h3>
             <br>
         </div>
@@ -43,8 +46,7 @@
                                 <a class="btn btn-info btn-xs"
                                    href="{{ path('cto_jobs_home', {'_switch_user': client.email }) }}">&nbsp;&nbsp;Ввійти&nbsp;&nbsp;</a>
                                 <a class="btn btn-warning btn-xs"
-                                   href="#"> Редагувати </a>
-                                   {#href="{{ path('cto_client_edit', { 'slug': client.slug }) }}"> Редагувати </a>#}
+                                   href="{{ path('admin_ctoUser_edit', { 'slug': client.slug }) }}"> Редагувати </a>
                             </div>
                         </td>
                     </tr>

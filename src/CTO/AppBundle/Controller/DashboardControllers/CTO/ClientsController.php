@@ -32,7 +32,9 @@ class ClientsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting();
+        /** @var CtoUser $cto */
+        $cto = $this->getUser();
+        $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting($cto);
 
         $paginator = $this->get('knp_paginator');
         $clients = $paginator->paginate(
@@ -135,15 +137,18 @@ class ClientsController extends Controller
             $filterFormData = array_filter($filterFormData);
         }
 
+        /** @var CtoUser $ctoUser */
+        $ctoUser = $this->getUser();
+
         $withPaginator = false;
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         if ($filterFormData) {
-            $usersResult = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter($filterFormData);
+            $usersResult = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter($filterFormData, $ctoUser);
         } else {
             $withPaginator = true;
-            $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting();
+            $usersResult = $em->getRepository("CTOAppBundle:CtoClient")->listClientwWithSorting($ctoUser);
 
             $paginator = $this->get('knp_paginator');
             $clients = $paginator->paginate(

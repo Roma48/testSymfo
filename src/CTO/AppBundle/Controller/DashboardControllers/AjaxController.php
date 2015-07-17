@@ -31,7 +31,7 @@ class AjaxController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $ctoClients = $em->getRepository("CTOAppBundle:CtoClient")->findAll();
+        $ctoClients = $em->getRepository("CTOAppBundle:CtoClient")->findBy(['cto' => $this->getUser()]);
 
         return new JsonResponse(["clients" => $ctoClients]);
     }

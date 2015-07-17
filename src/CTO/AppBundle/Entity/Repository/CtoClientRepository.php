@@ -2,13 +2,16 @@
 
 namespace CTO\AppBundle\Entity\Repository;
 
+use CTO\AppBundle\Entity\CtoUser;
 use Doctrine\ORM\EntityRepository;
 
 class CtoClientRepository extends EntityRepository
 {
-    public function clientFilter($filterData)
+    public function clientFilter($filterData, CtoUser $user)
     {
-        $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.cto = :ctoUser')
+            ->setParameter('ctoUser', $user);
 
         if (array_key_exists('firstName', $filterData)) {
             $qb->andWhere('u.firstName like :firstname')
@@ -22,9 +25,9 @@ class CtoClientRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function listClientwWithSorting()
+    public function listClientwWithSorting(CtoUser $user)
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT u From CTOAppBundle:CtoClient u');
+            ->createQuery('SELECT u From CTOAppBundle:CtoClient u WHERE u.cto = :ctoUser ')->setParameter('ctoUser', $user);
     }
 }

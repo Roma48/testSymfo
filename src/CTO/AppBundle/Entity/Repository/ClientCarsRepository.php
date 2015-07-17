@@ -2,23 +2,26 @@
 
 namespace CTO\AppBundle\Entity\Repository;
 
+use CTO\AppBundle\Entity\CtoUser;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class ClientCarsRepository extends EntityRepository
 {
-    public function listAllCarsWithSorting()
+    public function listAllCarsWithSorting(CtoUser $user)
     {
         return $this->getEntityManager()
-            ->createQuery('select car from CTOAppBundle:ClientCar car JOIN car.ctoClient cl JOIN car.model mod ORDER BY cl.lastVisitDate ASC');
+            ->createQuery('select car from CTOAppBundle:ClientCar car JOIN car.ctoClient cl JOIN car.model mod WHERE cl.cto = :ctoUser ORDER BY cl.lastVisitDate ASC')->setParameter('ctoUser', $user);
     }
 
-    public function carFilter($filterData) {
-        $qb = $this->createQueryBuilder('c');
+    public function carFilter($filterData, CtoUser $user) {
+        $qb = $this->createQueryBuilder('c')
+            ->join('c.ctoClient', 'cl')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user);
 
         if (array_key_exists('fullName', $filterData)) {
-            $qb->join('c.ctoClient', 'cl')
-                ->andWhere('cl.fullName like :fullName')
+            $qb->andWhere('cl.fullName like :fullName')
                 ->setParameter('fullName', '%' . $filterData['fullName'] . '%');
         }
         if (array_key_exists('model', $filterData)) {
