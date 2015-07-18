@@ -211,4 +211,19 @@ class JobsController extends JsonController
             'job' => $carJob
         ];
     }
+
+    /**
+     * @Route("/print/{id}", name="cto_jobs_print")
+     * @Method("GET")
+     * @Template()
+     * @param CarJob $carJob
+     * @return array
+     */
+    public function printAction(CarJob $carJob)
+    {
+
+        return [
+            'job' => $carJob
+        ];
+    }
 }
