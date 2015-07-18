@@ -7,13 +7,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ path('cto_jobs_home') }}">
-                {% if app.user and is_granted('ROLE_CTO') %}
+
+            {% if app.user and is_granted('ROLE_CTO') %}
+                <a class="navbar-brand" href="{{ path('cto_jobs_home') }}">
                     {{ app.user.ctoName }}
-                {% else %}
+                </a>
+            {% endif %}
+
+            {% if app.user and is_granted('ROLE_ADMIN') %}
+                <a class="navbar-brand" href="{{ path('adminUser_home') }}">
                     Admin menu
-                {% endif %}
-            </a>
+                </a>
+            {% endif %}
+
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

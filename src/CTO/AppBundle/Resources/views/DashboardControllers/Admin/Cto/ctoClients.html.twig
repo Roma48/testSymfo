@@ -23,7 +23,9 @@
                     <th>Ім'я</th>
                     <th>Прізвище</th>
                     <th>Назва СТО</th>
-                    <th>Заблоковано</th>
+                    <th class="text-center">Заблоковано</th>
+                    <th>Дата ост. логіну</th>
+                    <th>Дата реєстрації</th>
                     <th class="text-center">Дії</th>
                 </tr>
                 </thead>
@@ -34,13 +36,15 @@
                         <td>{{ client.firstName }}</td>
                         <td>{{ client.lastName }}</td>
                         <td>{{ client.ctoName }}</td>
-                        <td>
+                        <td class="text-center">
                             {% if client.blocked %}
                                 Так
                             {% else %}
                                 Ні
                             {% endif %}
                         </td>
+                        <td>{{ client.lastLogin | date('d.m.Y H:i') }}</td>
+                        <td>{{ client.createdAt | date('d.m.Y H:i') }}</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a class="btn btn-info btn-xs"

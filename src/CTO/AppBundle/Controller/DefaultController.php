@@ -5,6 +5,8 @@ namespace CTO\AppBundle\Controller;
 use CTO\AppBundle\Entity\AdminUser;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\LoginType;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,6 +35,10 @@ class DefaultController extends Controller
                     return $this->redirectToRoute('logout');
                 }
 
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $user->setLastLogin(new DateTime('now'));
+                $em->flush();
                 return $this->redirectToRoute('cto_jobs_home');
             }
         }
