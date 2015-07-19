@@ -42,6 +42,29 @@ class CtoController extends Controller
     }
 
     /**
+     * @Route("/clients/money", name="admin_ctoUsers_money_secured")
+     * @Method("GET")
+     * @Template()
+     */
+    public function infoWithMoneyAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $ctoUsersResult = $em->getRepository("CTOAppBundle:CtoUser")->listCTOUsersWithMoneySorted();
+        $paginator = $this->get('knp_paginator');
+        $ctoUsers = $paginator->paginate(
+            $ctoUsersResult,
+            $this->get('request')->query->get('page', 1),   /* page number */
+            $this->container->getParameter('pagination')    /* limit per page */
+        );
+
+        return [
+            'ctoUsers' => $ctoUsers
+        ];
+    }
+
+    /**
      * @Route("/new", name="admin_ctoUser_create")
      * @Method({"GET", "POST"})
      * @Template()
