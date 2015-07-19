@@ -35,25 +35,58 @@
                 {{ job.car.model.name }}
             {% endif %}
             </p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт: </span>{{ job.totalCost | number_format(2, '.', ',') }} грн.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (клієнтом): </span>{{ job.totalCost | number_format(2, '.', ',') }} грн.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (CTO): </span>{{ job.totalSpend | number_format(2, '.', ',') }} грн.</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прибуток CTO: </span>{{ (job.totalCost - job.totalSpend) | number_format(2, '.', ',') }} грн.</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h4><u>По категоріям:</u></h4>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <h4 class="text-center"><u>По категоріям:</u></h4>
 
             {% for category in job.carCategories %}
                 <h5>&nbsp;&nbsp;&nbsp;{{ category.jobCategory.name }}</h5>
                 {% if category.jobDescriptions | length > 0 %}
                     <div class="well well-sm">
                         {% for description in category.jobDescriptions %}
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Опис: </span>{{ description.description }}</p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ціна: </span>{{ description.price | number_format(2, '.', ',') }} грн.</p>
+                            <p><span class="font-bolder">Опис: </span>{{ description.description }}</p>
+                            <p><span class="font-bolder">Ціна: </span>{{ description.price | number_format(2, '.', ',') }} грн.</p>
                         {% endfor %}
                     </div>
                 {% endif %}
             {% endfor %}
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <h4 class="text-center"><u>Витрати СТО:</u></h4>
+            <h5>&nbsp;&nbsp;&nbsp;Затрачено на деталі</h5>
+                {% if job.spendingJob | length > 0 %}
+                    <div class="well well-sm">
+                        {% for spending in job.spendingJob %}
+                            <p><span class="font-bolder">Опис: </span>{{ spending.description }}</p>
+                            <p><span class="font-bolder">Ціна: </span>{{ spending.price | number_format(2, '.', ',') }} грн.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            <h5>&nbsp;&nbsp;&nbsp;Затрачено на метеріали</h5>
+                {% if job.usedMaterialsJob | length > 0 %}
+                    <div class="well well-sm">
+                        {% for used in job.usedMaterialsJob %}
+                            <p><span class="font-bolder">Опис: </span>{{ used.description }}</p>
+                            <p><span class="font-bolder">Ціна: </span>{{ used.price | number_format(2, '.', ',') }} грн.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            <h5>&nbsp;&nbsp;&nbsp;Виплачена зарплата</h5>
+                {% if job.paidSalaryJob | length > 0 %}
+                    <div class="well well-sm">
+                        {% for paid in job.paidSalaryJob %}
+                            <p><span class="font-bolder">Кому: </span>{{ paid.description }}</p>
+                            <p><span class="font-bolder">Сума: </span>{{ paid.price | number_format(2, '.', ',') }} грн.</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
         </div>
     </div>
 {% endblock %}

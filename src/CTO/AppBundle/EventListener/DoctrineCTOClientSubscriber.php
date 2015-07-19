@@ -6,6 +6,9 @@ use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CategoryJobDescription;
 use CTO\AppBundle\Entity\CtoClient;
+use CTO\AppBundle\Entity\PaidSalaryJob;
+use CTO\AppBundle\Entity\SpendingJob;
+use CTO\AppBundle\Entity\UsedMaterialsJob;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -34,8 +37,22 @@ class DoctrineCTOClientSubscriber implements EventSubscriber
                         $totalCost += $description->getPrice();
                     }
                 }
-
                 $entity->setTotalCost($totalCost);
+
+                $totalSpend = 0;
+                /** @var SpendingJob $spendItem */
+                foreach($entity->getSpendingJob() as $spendItem) {
+                    $totalSpend += $spendItem->getPrice();
+                }
+                /** @var UsedMaterialsJob $usedItem */
+                foreach($entity->getUsedMaterialsJob() as $usedItem) {
+                    $totalSpend += $usedItem->getPrice();
+                }
+                /** @var PaidSalaryJob $paidItem */
+                foreach($entity->getPaidSalaryJob() as $paidItem) {
+                    $totalSpend += $paidItem->getPrice();
+                }
+                $entity->setTotalSpend($totalSpend);
             }
         }
 
@@ -55,8 +72,22 @@ class DoctrineCTOClientSubscriber implements EventSubscriber
                         $totalCost += $description->getPrice();
                     }
                 }
-
                 $entity->setTotalCost($totalCost);
+
+                $totalSpend = 0;
+                /** @var SpendingJob $spendItem */
+                foreach($entity->getSpendingJob() as $spendItem) {
+                    $totalSpend += $spendItem->getPrice();
+                }
+                /** @var UsedMaterialsJob $usedItem */
+                foreach($entity->getUsedMaterialsJob() as $usedItem) {
+                    $totalSpend += $usedItem->getPrice();
+                }
+                /** @var PaidSalaryJob $paidItem */
+                foreach($entity->getPaidSalaryJob() as $paidItem) {
+                    $totalSpend += $paidItem->getPrice();
+                }
+                $entity->setTotalSpend($totalSpend);
             }
         }
 

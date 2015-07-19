@@ -32,6 +32,11 @@ class CarJob implements \JsonSerializable
     protected $totalCost;
 
     /**
+     * @ORM\Column(name="totalSpend", type="float")
+     */
+    protected $totalSpend;
+
+    /**
      * @ORM\Column(name="tmp_hash", type="string")
      */
     protected $tmpHash;
@@ -102,6 +107,7 @@ class CarJob implements \JsonSerializable
         $this->usedMaterialsJob = new ArrayCollection();
         $this->paidSalaryJob = new ArrayCollection();
         $this->totalCost = 0;
+        $this->totalSpend = 0;
         $this->tmpHash = uniqid("", true);
     }
 
@@ -314,6 +320,25 @@ class CarJob implements \JsonSerializable
     public function setTotalCost($totalCost)
     {
         $this->totalCost = $totalCost;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalSpend()
+    {
+        return $this->totalSpend;
+    }
+
+    /**
+     * @param mixed $totalSpend
+     * @return CarJob
+     */
+    public function setTotalSpend($totalSpend)
+    {
+        $this->totalSpend = $totalSpend;
 
         return $this;
     }
