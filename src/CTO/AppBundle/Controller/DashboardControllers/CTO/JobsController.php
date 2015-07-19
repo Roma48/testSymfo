@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
+use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CategoryJobDescription;
@@ -221,8 +222,10 @@ class JobsController extends JsonController
      */
     public function printAction(CarJob $carJob)
     {
+        $today = Carbon::now();
 
         return [
+            'today' => $today,
             'job' => $carJob
         ];
     }

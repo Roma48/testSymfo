@@ -12,7 +12,11 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h4><u>Загальна інформація про клієнта:</u></h4>
+            <h4><u>Загальна інформація про клієнта:</u>
+            <span class="pull-right font-small">
+                Роздруковано: {{ today | date('d.m.Y H:i') }}
+            </span>
+            </h4>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ім'я: </span>{{ job.client.firstName }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прізвище: </span>{{ job.client.lastName }}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Кількість автомобілів: </span>{{ job.client.cars | length }}</p>
