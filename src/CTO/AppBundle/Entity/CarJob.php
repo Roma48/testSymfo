@@ -58,6 +58,21 @@ class CarJob implements \JsonSerializable
     protected $notifications;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\SpendingJob", mappedBy="carJob", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $spendingJob;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\UsedMaterialsJob", mappedBy="carJob", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $usedMaterialsJob;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\PaidSalaryJob", mappedBy="carJob", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $paidSalaryJob;
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -71,7 +86,10 @@ class CarJob implements \JsonSerializable
                 "jobDate" => $this->getJobDate()->format("d.m.Y"),
                 "client" => (string) $this->getClient()->getId(),
                 "car" => $this->getCar() ? (string) $this->getCar()->getId() : '',
-                "carCategories" => $this->getCarCategories()->getValues()
+                "carCategories" => $this->getCarCategories()->getValues(),
+                "spendingJob" => $this->getSpendingJob()->getValues(),
+                "usedMaterialsJob" => $this->getUsedMaterialsJob()->getValues(),
+                "paidSalaryJob" => $this->getPaidSalaryJob()->getValues()
             ]
         ];
     }
@@ -80,6 +98,9 @@ class CarJob implements \JsonSerializable
     {
         $this->notifications = new ArrayCollection();
         $this->carCategories = new ArrayCollection();
+        $this->spendingJob = new ArrayCollection();
+        $this->usedMaterialsJob = new ArrayCollection();
+        $this->paidSalaryJob = new ArrayCollection();
         $this->totalCost = 0;
         $this->tmpHash = uniqid("", true);
     }
@@ -157,6 +178,90 @@ class CarJob implements \JsonSerializable
     public function removeCarCategory(CarCategory $carCategory)
     {
         $this->carCategories->removeElement($carCategory);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSpendingJob()
+    {
+        return $this->spendingJob;
+    }
+
+    /**
+     * @param SpendingJob $spendingJob
+     * @return CarJob
+     */
+    public function addSpendingJob(SpendingJob $spendingJob)
+    {
+        $spendingJob->setCarJob($this);
+        $this->spendingJob->add($spendingJob);
+
+        return $this;
+    }
+
+    /**
+     * @param SpendingJob $spendingJob
+     */
+    public function removeSpendingJob(SpendingJob $spendingJob)
+    {
+        $this->spendingJob->removeElement($spendingJob);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getUsedMaterialsJob()
+    {
+        return $this->usedMaterialsJob;
+    }
+
+    /**
+     * @param UsedMaterialsJob $usedMaterialsJob
+     * @return CarJob
+     */
+    public function addUsedMaterialsJob(UsedMaterialsJob $usedMaterialsJob)
+    {
+        $usedMaterialsJob->setCarJob($this);
+        $this->usedMaterialsJob->add($usedMaterialsJob);
+
+        return $this;
+    }
+
+    /**
+     * @param UsedMaterialsJob $usedMaterialsJob
+     */
+    public function removeUsedMaterialsJob(UsedMaterialsJob $usedMaterialsJob)
+    {
+        $this->usedMaterialsJob->removeElement($usedMaterialsJob);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPaidSalaryJob()
+    {
+        return $this->paidSalaryJob;
+    }
+
+    /**
+     * @param PaidSalaryJob $paidSalaryJob
+     * @return CarJob
+     */
+    public function addPaidSalaryJob(PaidSalaryJob $paidSalaryJob)
+    {
+        $paidSalaryJob->setCarJob($this);
+        $this->paidSalaryJob->add($paidSalaryJob);
+
+        return $this;
+    }
+
+    /**
+     * @param PaidSalaryJob $paidSalaryJob
+     */
+    public function removePaidSalaryJob(PaidSalaryJob $paidSalaryJob)
+    {
+        $this->$paidSalaryJob->removeElement($paidSalaryJob);
     }
 
     /**
