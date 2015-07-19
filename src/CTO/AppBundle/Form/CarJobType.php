@@ -42,7 +42,27 @@ class CarJobType extends AbstractType
                 'by_reference' => false,
                 'cascade_validation' => true
             ])
-
+            ->add('spendingJob', 'collection', [
+                'type' => new SpendingJobType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'cascade_validation' => true
+            ])
+            ->add('usedMaterialsJob', 'collection', [
+                'type' => new UsedMaterialsType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'cascade_validation' => true
+            ])
+            ->add('paidSalaryJob', 'collection', [
+                'type' => new PaidSalaryType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'cascade_validation' => true
+            ])
 
 //            ->add('client', 'entity', [
 //                'class' => 'CTOAppBundle:CtoClient',

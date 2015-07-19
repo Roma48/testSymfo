@@ -158,6 +158,60 @@
                                     }
                                 }
                             }
+                        },
+                        "spendingJob": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                    "title": "Затрачено на деталі:",
+                                "properties": {
+                                    "description": {
+                                        "type": "string",
+                                        "title": "Опис"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "title": "Ціна",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        },
+                        "usedMaterialsJob": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "title": "Затрачено на метеріали:",
+                                "properties": {
+                                    "description": {
+                                        "type": "string",
+                                        "title": "Опис"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "title": "Ціна",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        },
+                        "paidSalaryJob": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "title": "Виплачена зарплата:",
+                                "properties": {
+                                    "description": {
+                                        "type": "string",
+                                        "title": "Опис"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "title": "Ціна",
+                                        "required": true
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -260,6 +314,24 @@
                             }
                         ]
                     }
+                },
+                {
+                    "type": "array",
+                    "items": [
+                        "car_job.spendingJob[]"
+                    ]
+                },
+                {
+                    "type": "array",
+                    "items": [
+                        "car_job.usedMaterialsJob[]"
+                    ]
+                },
+                {
+                    "type": "array",
+                    "items": [
+                        "car_job.paidSalaryJob[]"
+                    ]
                 },
                 {
                     "type": "submit",
