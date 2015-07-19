@@ -163,6 +163,57 @@
                                         }
                                     }
                                 }
+                            },
+                            "spendingJob": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "description": {
+                                            "type": "string",
+                                            "title": "Опис"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "title": "Ціна",
+                                            "required": true
+                                        }
+                                    }
+                                }
+                            },
+                            "usedMaterialsJob": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "description": {
+                                            "type": "string",
+                                            "title": "Опис"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "title": "Ціна",
+                                            "required": true
+                                        }
+                                    }
+                                }
+                            },
+                            "paidSalaryJob": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "description": {
+                                            "type": "string",
+                                            "title": "Кому"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "title": "Сума",
+                                            "required": true
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -242,6 +293,8 @@
                     },
                     {
                         "type": "array",
+                        "title": "<h4 class='text-center'>Зроблена робота:</h4>",
+                        "description": "Блок для СТО.",
                         "items": {
                             "type": "section",
                             "items": [
@@ -266,8 +319,62 @@
                         }
                     },
                     {
-                        "type": "submit",
-                        "title": "Відредагувати"
+                        "type": "array",
+                        "title": "<h4 class='text-center'>Затрачено на деталі:</h4>",
+                        "htmlClass": "margin-bottom-15",
+                        "items": {
+                            "type": "section",
+                            "HtmlClass": "zzz",
+                            "items": [
+                                {
+                                    "key": "car_job.spendingJob[].description"
+                                },
+                                {
+                                    "key": "car_job.spendingJob[].price"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "array",
+                        "title": "<h4 class='text-center'>Затрачено на метеріали:</h4>",
+                        "htmlClass": "margin-bottom-15",
+                        "items": {
+                            "type": "section",
+                            "items": [
+                                {
+                                    "key": "car_job.usedMaterialsJob[].description"
+                                },
+                                {
+                                    "key": "car_job.usedMaterialsJob[].price"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "array",
+                        "title": "<h4 class='text-center'>Виплачена зарплата:</h4>",
+                        "htmlClass": "margin-bottom-15",
+                        "items": {
+                            "type": "section",
+                            "items": [
+                                {
+                                    "key": "car_job.paidSalaryJob[].description"
+                                },
+                                {
+                                    "key": "car_job.paidSalaryJob[].price"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "items": [
+                            {
+                                "type": "submit",
+                                "title": "Відредагувати"
+                            }
+                        ]
                     }
                 ],
                 "value": {},

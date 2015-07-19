@@ -142,7 +142,6 @@
                                         "type": "array",
                                         "items": {
                                             "type": "object",
-//                                            "title": "Опис завдання",
                                             "properties": {
                                                 "description": {
                                                     "type": "string",
@@ -163,7 +162,6 @@
                             "type": "array",
                             "items": {
                                 "type": "object",
-                                    "title": "Затрачено на деталі:",
                                 "properties": {
                                     "description": {
                                         "type": "string",
@@ -181,7 +179,6 @@
                             "type": "array",
                             "items": {
                                 "type": "object",
-                                "title": "Затрачено на метеріали:",
                                 "properties": {
                                     "description": {
                                         "type": "string",
@@ -199,15 +196,14 @@
                             "type": "array",
                             "items": {
                                 "type": "object",
-                                "title": "Виплачена зарплата:",
                                 "properties": {
                                     "description": {
                                         "type": "string",
-                                        "title": "Опис"
+                                        "title": "Кому"
                                     },
                                     "price": {
                                         "type": "number",
-                                        "title": "Ціна",
+                                        "title": "Сума",
                                         "required": true
                                     }
                                 }
@@ -292,6 +288,8 @@
                 },
                 {
                     "type": "array",
+                    "title": "<h4 class='text-center'>Зроблена робота:</h4>",
+                    "description": "Блок для СТО.",
                     "items": {
                         "type": "section",
                         "items": [
@@ -317,25 +315,61 @@
                 },
                 {
                     "type": "array",
-                    "items": [
-                        "car_job.spendingJob[]"
-                    ]
+                    "title": "<h4 class='text-center'>Затрачено на деталі:</h4>",
+                    "htmlClass": "margin-bottom-15",
+                    "items": {
+                        "type": "section",
+                        "HtmlClass": "zzz",
+                        "items": [
+                            {
+                                "key": "car_job.spendingJob[].description"
+                            },
+                            {
+                                "key": "car_job.spendingJob[].price"
+                            }
+                        ]
+                    }
                 },
                 {
                     "type": "array",
-                    "items": [
-                        "car_job.usedMaterialsJob[]"
-                    ]
+                    "title": "<h4 class='text-center'>Затрачено на метеріали:</h4>",
+                    "htmlClass": "margin-bottom-15",
+                    "items": {
+                        "type": "section",
+                        "items": [
+                            {
+                                "key": "car_job.usedMaterialsJob[].description"
+                            },
+                            {
+                                "key": "car_job.usedMaterialsJob[].price"
+                            }
+                        ]
+                    }
                 },
                 {
                     "type": "array",
-                    "items": [
-                        "car_job.paidSalaryJob[]"
-                    ]
+                    "title": "<h4 class='text-center'>Виплачена зарплата:</h4>",
+                    "htmlClass": "margin-bottom-15",
+                    "items": {
+                        "type": "section",
+                        "items": [
+                            {
+                                "key": "car_job.paidSalaryJob[].description"
+                            },
+                            {
+                                "key": "car_job.paidSalaryJob[].price"
+                            }
+                        ]
+                    }
                 },
                 {
-                    "type": "submit",
-                    "title": "Створити"
+                    "type": "section",
+                    "items": [
+                        {
+                            "type": "submit",
+                            "title": "Створити"
+                        }
+                    ]
                 }
             ],
             onSubmit: function(errors, values){

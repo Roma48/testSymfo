@@ -261,7 +261,7 @@ class CarJob implements \JsonSerializable
      */
     public function removePaidSalaryJob(PaidSalaryJob $paidSalaryJob)
     {
-        $this->$paidSalaryJob->removeElement($paidSalaryJob);
+        $this->paidSalaryJob->removeElement($paidSalaryJob);
     }
 
     /**
