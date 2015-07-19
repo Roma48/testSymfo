@@ -8,22 +8,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ClientCarsFilterType extends AbstractType
 {
+    protected $cars;
+
+    public function __construct($cars)
+    {
+        $this->cars = $cars;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('fullName', 'text', [
                 'attr' => ['placeholder' => 'Клієнт', 'class' => 'form-control']
             ])
-            ->add("model", 'entity', [
-                'class' => "CTOAppBundle:Model",
+            ->add('model', 'choice', [
                 'empty_value' => "Не вибрано",
-                'property' => 'name',
+                'choices' => $this->cars,
                 'attr'  => [
                     'class'         => 'selectpicker',
                     'data-width'    => "15%",
                     'data-size'     => "15",
                     'data-live-search' => true
                 ],
+
             ])
             ->add('dateFrom', 'text', [
                 'attr' => ['placeholder' => 'Дата візиту З', 'class' => 'form-control date-picker-cto']

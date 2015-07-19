@@ -26,7 +26,7 @@ class ClientCarsRepository extends EntityRepository
         }
         if (array_key_exists('model', $filterData)) {
             $qb->join('c.model', 'mo')
-                ->andWhere('mo = :model')
+                ->andWhere('mo.id = :model')
                 ->setParameter('model', $filterData['model']);
         }
         if (array_key_exists('dateFrom', $filterData)) {

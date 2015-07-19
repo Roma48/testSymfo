@@ -32,6 +32,14 @@ class ClientCarsController extends Controller
         $cto = $this->getUser();
         $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting($cto);
 
+        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->findAll();
+        $cars = [];
+        foreach ($carResult as $clientCar) {
+            if ($clientCar->getModel()) {
+                $cars[$clientCar->getModel()->getId()] = $clientCar->getModel()->getName();
+            }
+        }
+
         $paginator = $this->get('knp_paginator');
         $clientCars = $paginator->paginate(
             $clientCarsResult,
@@ -39,7 +47,7 @@ class ClientCarsController extends Controller
             $this->container->getParameter('pagination')    /* limit per page */
         );
 
-        $filterForm = $this->createForm(new ClientCarsFilterType());
+        $filterForm = $this->createForm(new ClientCarsFilterType($cars));
 
         return [
             'cars' => $clientCars,
@@ -56,15 +64,12 @@ class ClientCarsController extends Controller
      */
     public function filterAction(Request $request)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
         /** @var Array $filterFormData */
         $filterFormData = $request->get('clientcars_filter', null);
         if ($filterFormData) {
             $filterFormData = array_filter($filterFormData);
             if (array_key_exists('model', $filterFormData)) {
-                $filterFormData['model'] = $em->getRepository('CTOAppBundle:Model')->find($filterFormData['model']);
+                $filterFormData['model'] = (int) $filterFormData['model'];
             }
         }
 
@@ -90,8 +95,15 @@ class ClientCarsController extends Controller
             );
         }
 
-        $filterForm = $this->createForm(new ClientCarsFilterType(), $filterFormData);
+        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->findAll();
+        $cars = [];
+        foreach ($carResult as $clientCar) {
+            if ($clientCar->getModel()) {
+                $cars[$clientCar->getModel()->getId()] = $clientCar->getModel()->getName();
+            }
+        }
 
+        $filterForm = $this->createForm(new ClientCarsFilterType($cars), $filterFormData);
 
         return [
             'cars' => $withPaginator ? $clientCars : $clientCarsResult,
