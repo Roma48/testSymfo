@@ -14,6 +14,17 @@ class ClientCarsRepository extends EntityRepository
             ->createQuery('select car from CTOAppBundle:ClientCar car JOIN car.ctoClient cl JOIN car.model mod WHERE cl.cto = :ctoUser ORDER BY cl.lastVisitDate ASC')->setParameter('ctoUser', $user);
     }
 
+    public function allCarsByCTO(CtoUser $user)
+    {
+       return $this->createQueryBuilder('c')
+           ->leftJoin('c.ctoClient', 'cl')
+           ->leftJoin('cl.cto', 'cto')
+           ->where('cto = :ctoUser')
+           ->setParameter('ctoUser', $user)
+           ->getQuery()
+           ->getResult();
+    }
+
     public function carFilter($filterData, CtoUser $user) {
         $qb = $this->createQueryBuilder('c')
             ->join('c.ctoClient', 'cl')

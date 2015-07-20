@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
+use CTO\AppBundle\Entity\ClientCar;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Form\ClientCarsFilterType;
 use Doctrine\ORM\EntityManager;
@@ -32,8 +33,9 @@ class ClientCarsController extends Controller
         $cto = $this->getUser();
         $clientCarsResult = $em->getRepository("CTOAppBundle:ClientCar")->listAllCarsWithSorting($cto);
 
-        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->findAll();
+        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->allCarsByCTO($this->getUser());
         $cars = [];
+        /** @var ClientCar $clientCar */
         foreach ($carResult as $clientCar) {
             if ($clientCar->getModel()) {
                 $cars[$clientCar->getModel()->getId()] = $clientCar->getModel()->getName();
@@ -95,8 +97,9 @@ class ClientCarsController extends Controller
             );
         }
 
-        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->findAll();
+        $carResult = $em->getRepository('CTOAppBundle:ClientCar')->allCarsByCTO($this->getUser());
         $cars = [];
+        /** @var ClientCar $clientCar */
         foreach ($carResult as $clientCar) {
             if ($clientCar->getModel()) {
                 $cars[$clientCar->getModel()->getId()] = $clientCar->getModel()->getName();
