@@ -46,8 +46,8 @@
                 {% if category.jobDescriptions | length > 0 %}
                     <div class="well well-sm">
                         {% for description in category.jobDescriptions %}
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Опис: </span>{{ description.description }}</p>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Ціна: </span>{{ description.price | number_format(2, '.', ',') }} грн.</p>
+                            <p><span class="font-bolder">Опис: </span>{{ description.description }}</p>
+                            <p><span class="font-bolder">Ціна: </span>{{ description.price | number_format(2, '.', ',') }} грн.</p>
                         {% endfor %}
                     </div>
                 {% endif %}

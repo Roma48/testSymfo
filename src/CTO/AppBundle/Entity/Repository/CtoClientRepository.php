@@ -21,6 +21,8 @@ class CtoClientRepository extends EntityRepository
             $qb->andWhere('u.lastName like :lastname')
                 ->setParameter('lastname', '%' . $filterData['lastName'] . '%');
         }
+        $qb
+            ->orderBy('u.lastVisitDate', 'ASC');
 
         return $qb->getQuery()->getResult();
     }
@@ -28,6 +30,6 @@ class CtoClientRepository extends EntityRepository
     public function listClientwWithSorting(CtoUser $user)
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT u From CTOAppBundle:CtoClient u WHERE u.cto = :ctoUser ')->setParameter('ctoUser', $user);
+            ->createQuery('SELECT u From CTOAppBundle:CtoClient u WHERE u.cto = :ctoUser order by u.lastVisitDate ASC ')->setParameter('ctoUser', $user);
     }
 }

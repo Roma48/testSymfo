@@ -50,6 +50,8 @@ class ClientCarsRepository extends EntityRepository
                 ->andWhere('cl.lastVisitDate <= :dateTo')
                 ->setParameter('dateTo', new DateTime($filterData['dateTo']));
         }
+        $qb
+            ->orderBy('cl.lastVisitDate', 'ASC');
 
         return $qb->getQuery()->getResult();
     }
