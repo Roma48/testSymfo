@@ -29,7 +29,28 @@ class JobsController extends JsonController
      */
     public function homeAction()
     {
-        return [];
+        $now = Carbon::now();
+        $startMonth = $now->copy();
+        $startMonth->startOfMonth();
+        $endMonth = $now->copy();
+        $endMonth->endOfMonth();
+        /** @var CtoUser $user */
+        $user = $this->getUser();
+
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $jobsCountForMonth = $em->getRepository("CTOAppBundle:CarJob")->countForMonth($startMonth, $endMonth, $user);
+        $repairCars = $em->getRepository("CTOAppBundle:CarJob")->countDistinctClientCarsForMonth($startMonth, $endMonth, $user);
+        $salary = $em->getRepository("CTOAppBundle:CarJob")->totalSalaryForMonth($startMonth, $endMonth, $user);
+
+
+        return [
+            'now' => $now,
+            'jobsCount' => $jobsCountForMonth['jobs'],
+            'repairCars' => $repairCars['cars'],
+            'money' => $salary['money']
+        ];
     }
 
     /**

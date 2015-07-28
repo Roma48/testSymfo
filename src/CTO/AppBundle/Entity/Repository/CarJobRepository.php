@@ -36,4 +36,50 @@ class CarJobRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function countForMonth($start, $end, CtoUser $user)
+    {
+        return $this->createQueryBuilder('j')
+            ->select('count(j) as jobs')
+            ->join('j.client', 'cl')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user)
+            ->andWhere('j.jobDate >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('j.jobDate <= :end')
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function countDistinctClientCarsForMonth($start, $end, CtoUser $user)
+    {
+        return $this->createQueryBuilder('j')
+            ->select('count(distinct car) as cars')
+            ->join('j.client', 'cl')
+            ->join('j.car', 'car')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user)
+            ->andWhere('j.jobDate >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('j.jobDate <= :end')
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function totalSalaryForMonth($start, $end, CtoUser $user)
+    {
+        return $this->createQueryBuilder('j')
+            ->select('sum(j.totalCost) - sum(j.totalSpend) as money')
+            ->join('j.client', 'cl')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user)
+            ->andWhere('j.jobDate >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('j.jobDate <= :end')
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getSingleResult();
+    }
 }

@@ -3,3 +3,9 @@ services:
         class: CTO\AppBundle\EventListener\DoctrineCTOClientSubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    cto.twigExtension.monthTranslate:
+        class: CTO\AppBundle\TwigExtension\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
