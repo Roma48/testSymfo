@@ -49,6 +49,16 @@ class Notification
     protected $smsId;
 
     /**
+     * @ORM\Column(name="autoSending", type="boolean")
+     */
+    protected $autoSending;
+
+    /**
+     * @ORM\Column(name="notificationDone", type="boolean")
+     */
+    protected $notificationDone;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="notifications")
      */
     protected $clientCto;
@@ -182,6 +192,44 @@ class Notification
     public function setSmsId($smsId)
     {
         $this->smsId = $smsId;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAutoSending()
+    {
+        return $this->autoSending;
+    }
+
+    /**
+     * @param boolean $autoSending
+     * @return Notification
+     */
+    public function setAutoSending($autoSending)
+    {
+        $this->autoSending = $autoSending;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNotificationDone()
+    {
+        return $this->notificationDone;
+    }
+
+    /**
+     * @param boolean $notificationDone
+     * @return Notification
+     */
+    public function setNotificationDone($notificationDone)
+    {
+        $this->notificationDone = $notificationDone;
 
         return $this;
     }
