@@ -3,15 +3,16 @@
 namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use Carbon\Carbon;
-use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
-use CTO\AppBundle\Entity\CategoryJobDescription;
 use CTO\AppBundle\Entity\CtoUser;
+use CTO\AppBundle\Entity\Notification;
 use CTO\AppBundle\Form\CarJobType;
 use CTO\AppBundle\Form\CtoCarJobFilterType;
+use CTO\AppBundle\Form\JobNotificationReminderType;
 use Doctrine\ORM\EntityManager;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,7 +44,6 @@ class JobsController extends JsonController
         $jobsCountForMonth = $em->getRepository("CTOAppBundle:CarJob")->countForMonth($startMonth, $endMonth, $user);
         $repairCars = $em->getRepository("CTOAppBundle:CarJob")->countDistinctClientCarsForMonth($startMonth, $endMonth, $user);
         $salary = $em->getRepository("CTOAppBundle:CarJob")->totalSalaryForMonth($startMonth, $endMonth, $user);
-
 
         return [
             'now' => $now,
@@ -103,6 +103,8 @@ class JobsController extends JsonController
         /** @var CtoUser $cto */
         $cto = $this->getUser();
 
+        $jobs = [];
+        $filteredJobs = [];
         if ($filterFormData) {
             $filteredJobs = $em->getRepository('CTOAppBundle:CarJob')->jobsFilter($filterFormData, $cto);
         } else {
@@ -231,6 +233,46 @@ class JobsController extends JsonController
 
         return [
             'job' => $carJob
+        ];
+    }
+
+    /**
+     * @param CarJob $carJob
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/show/{jobId}/reminder", name="cto_jobs_addReminder")
+     * @Method({"GET", "POST"})
+     * @ParamConverter("carJob", class="CTOAppBundle:CarJob", options={"id"="jobId"})
+     * @Template()
+     */
+    public function addReminderAction(CarJob $carJob, Request $request)
+    {
+        $notification = new Notification();
+        $notification
+            ->setType(Notification::TYPE_PLANED)
+            ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
+            ->setCarJob($carJob)
+            ->setClientCto($carJob->getClient());
+
+        $form = $this->createForm(new JobNotificationReminderType($carJob), $notification);
+
+        if ($request->getMethod() == Request::METHOD_POST) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($notification);
+                $em->flush();
+
+                return $this->redirectToRoute('cto_jobs_show', ['id' => $carJob->getId()]);
+            }
+        }
+
+        return [
+            'jobId' => $carJob->getId(),
+            'form' => $form->createView()
         ];
     }
 

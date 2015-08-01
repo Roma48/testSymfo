@@ -115,4 +115,9 @@ class CarCategory implements \JsonSerializable
     {
         $this->jobDescriptions->removeElement($categoryJobDescription);
     }
+
+    public function __toString()
+    {
+        return $this->getJobCategory()->getName();
+    }
 }

@@ -47,6 +47,30 @@
 </div>
 
 <script src="{{ asset('js/vendors.min.js') }}"></script>
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+<script>
+    jQuery(function ($) {
+
+        var badgePath = Routing.generate('ajax_notification_badgeLast3days');
+        var badge = $("#badge");
+
+        $.get(badgePath)
+            .success(function(response){
+                if (response.nitificationsCount == 0) {
+                    badge.html('');
+                } else {
+                    badge.html('<span class="badge badge-red">' + response.nitificationsCount + '</span>');
+                }
+            })
+            .error(function(error){
+                console.log(error);
+            })
+        ;
+
+    });
+</script>
 {% block javascripts %}{% endblock javascripts %}
 </body>
 </html>

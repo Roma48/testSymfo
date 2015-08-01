@@ -17,7 +17,7 @@ class Notification
     use CreateUpdateTrait;
 
     const TYPE_AUTO = 'auto';
-    const TYPE_MANUAL = 'manual';
+    const TYPE_PLANED = 'planed';
     const TYPE_BROADCAST = 'broadcast';
     const STATUS_SEND_OK = 'ok';
     const STATUS_SEND_IN_PROGRESS = 'in-progress';
@@ -34,7 +34,8 @@ class Notification
     protected $type;
 
     /**
-     * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank(message="Це поле обов'язкове")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
 
@@ -49,14 +50,24 @@ class Notification
     protected $smsId;
 
     /**
-     * @ORM\Column(name="autoSending", type="boolean")
+     * @ORM\Column(name="autoSending", type="boolean", nullable=true)
      */
     protected $autoSending;
 
     /**
-     * @ORM\Column(name="notificationDone", type="boolean")
+     * @ORM\Column(name="adminCopy", type="boolean", nullable=true)
+     */
+    protected $adminCopy;
+
+    /**
+     * @ORM\Column(name="notificationDone", type="boolean", nullable=true)
      */
     protected $notificationDone;
+
+    /**
+     * @ORM\Column(name="resqueJobDescription", type="object", nullable=true)
+     */
+    protected $resqueJobDescription;
 
     /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="notifications")
@@ -67,6 +78,11 @@ class Notification
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarJob", inversedBy="notifications")
      */
     protected $carJob;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory", inversedBy="id")
+     */
+    protected $carJobCategory;
 
     /**
      * @return mixed
@@ -230,6 +246,63 @@ class Notification
     public function setNotificationDone($notificationDone)
     {
         $this->notificationDone = $notificationDone;
+
+        return $this;
+    }
+
+    /**
+     * @return CarCategory
+     */
+    public function getCarJobCategory()
+    {
+        return $this->carJobCategory;
+    }
+
+    /**
+     * @param CarCategory $carJobCategory
+     * @return Notification
+     */
+    public function setCarJobCategory(CarCategory $carJobCategory)
+    {
+        $this->carJobCategory = $carJobCategory;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAdminCopy()
+    {
+        return $this->adminCopy;
+    }
+
+    /**
+     * @param boolean $adminCopy
+     * @return Notification
+     */
+    public function setAdminCopy($adminCopy)
+    {
+        $this->adminCopy = $adminCopy;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResqueJobDescription()
+    {
+        return $this->resqueJobDescription;
+    }
+
+    /**
+     * @param mixed $resqueJobDescription
+     * @return Notification
+     */
+    public function setResqueJobDescription($resqueJobDescription)
+    {
+        $this->resqueJobDescription = $resqueJobDescription;
 
         return $this;
     }

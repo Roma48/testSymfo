@@ -35,7 +35,7 @@
                     <a href="{{path('cto_clientcars_home')}}"><i class="fa fa-car"></i>&nbsp;Автомобілі клієнтів</a>
                 </li>
                 <li class="{{ app.request.attributes.get('_route') == 'cto_notification_home' ? 'active'}}">
-                    <a href="{{path('cto_notification_home')}}" ><i class="fa fa-bell"></i>&nbsp;Сповіщення</a>
+                    <a href="{{path('cto_notification_home')}}" ><i class="fa fa-bell"></i>&nbsp;Сповіщення&nbsp;&nbsp;<span id="badge"></span></a>
                 </li>
                 {% endif %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}

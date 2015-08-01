@@ -2,8 +2,10 @@
 
 namespace CTO\AppBundle\Controller\DashboardControllers;
 
+use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
+use CTO\AppBundle\Entity\CtoUser;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -69,5 +71,26 @@ class AjaxController extends Controller
         $models = $em->getRepository("CTOAppBundle:Model")->findAll();
 
         return new JsonResponse(['models' => $models]);
+    }
+
+    /**
+     * @Route("/getBadgeNotificationForLastThreeDays", name="ajax_notification_badgeLast3days", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getBadgeNotificationForLastThreeDaysAction()
+    {
+        $now = Carbon::now();
+        $from = $now->copy();
+        $from->startOfDay();
+        $to = $now->copy();
+        $to->addDays(3)->endOfDay();
+
+        /** @var CtoUser $user */
+        $user = $this->getUser();
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $notificationCount = $em->getRepository("CTOAppBundle:Notification")->getNotificationCountForLast3day($user, $from, $to);
+
+        return new JsonResponse(['nitificationsCount' => (int)$notificationCount['NotifCount']]);
     }
 }
