@@ -2,9 +2,7 @@
 
 namespace CTO\AppBundle\Command;
 
-use CTO\AppBundle\Entity\AdminUser;
 use CTO\AppBundle\Entity\City;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -47,7 +45,7 @@ class CreateCityCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $city = new City();
 
-        $city->setName($cityName);
+        $city->setName(trim($cityName));
 
         $em->persist($city);
         $em->flush();
