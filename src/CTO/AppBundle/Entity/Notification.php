@@ -34,7 +34,6 @@ class Notification
     protected $type;
 
     /**
-     * @Assert\NotBlank(message="Це поле обов'язкове")
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
@@ -80,7 +79,7 @@ class Notification
     protected $carJob;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory")
      */
     protected $carJobCategory;
 
@@ -131,7 +130,7 @@ class Notification
     /**
      * @param DateTime $whenSend
      */
-    public function setWhenSend(DateTime $whenSend)
+    public function setWhenSend($whenSend)
     {
         $this->whenSend = $whenSend;
     }

@@ -264,7 +264,12 @@ class JobsController extends JsonController
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
+
+                //   if autoSending = true  -> create resque job
+
                 $em->flush();
+
+                $this->addFlash('success', 'Нагадування успішно створено.');
 
                 return $this->redirectToRoute('cto_jobs_show', ['id' => $carJob->getId()]);
             }
