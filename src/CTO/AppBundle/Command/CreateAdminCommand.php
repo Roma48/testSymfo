@@ -71,7 +71,7 @@ class CreateAdminCommand extends ContainerAwareCommand
             ->setLastLogin(new DateTime('now'));
 
         $em->persist($admin);
-        $em->flush($admin);
+        $em->flush();
 
         $output->writeln("");
         $output->writeln(" Created successfully. ");
