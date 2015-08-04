@@ -82,4 +82,33 @@ class CarJobRepository extends EntityRepository
             ->getQuery()
             ->getSingleResult();
     }
+
+    public function totalFinancialReportForMonth($start, $end, CtoUser $user)
+    {
+        return $this->createQueryBuilder('j')
+            ->select('sum(j.totalCost) - sum(j.totalSpend) as money, count(distinct car) as cars, count(j) as jobs')
+            ->join('j.client', 'cl')
+            ->join('j.car', 'car')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user)
+            ->andWhere('j.jobDate >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('j.jobDate <= :end')
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function getOneJobByCTOUser(CtoUser $user, $order)
+    {
+        return $this->createQueryBuilder('j')
+            ->select('j')
+            ->join('j.client', 'cl')
+            ->andWhere('cl.cto = :ctoUser')
+            ->setParameter('ctoUser', $user)
+            ->orderBy('j.jobDate', $order)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 }

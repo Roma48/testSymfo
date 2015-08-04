@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    <br>
+    <div class="row">
+        {% for result in results %}
+
+            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                <div style="padding: 0 5px;">
+                    <h3 style="margin-top: 0;">{{ result['date'] | date('F, Y') | monthTranslate }}</h3>
+                    <div class="well well-lg">
+                        <p><span class="font-bolder">Виконано завдань: </span>{{ result['jobsCount'] }} </p>
+                        <p><span class="font-bolder">Відремонтовано автомобілів: </span>{{ result['repairCars'] }}</p>
+                        <p><span class="font-bolder">Зароблено:</span> {{ result['money'] | number_format(2, '.', ',') }} грн.</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

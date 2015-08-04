@@ -38,18 +38,15 @@ class JobsController extends JsonController
         /** @var CtoUser $user */
         $user = $this->getUser();
 
-
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $jobsCountForMonth = $em->getRepository("CTOAppBundle:CarJob")->countForMonth($startMonth, $endMonth, $user);
-        $repairCars = $em->getRepository("CTOAppBundle:CarJob")->countDistinctClientCarsForMonth($startMonth, $endMonth, $user);
-        $salary = $em->getRepository("CTOAppBundle:CarJob")->totalSalaryForMonth($startMonth, $endMonth, $user);
+        $finReport = $em->getRepository("CTOAppBundle:CarJob")->totalFinancialReportForMonth($startMonth, $endMonth, $user);
 
         return [
             'now' => $now,
-            'jobsCount' => $jobsCountForMonth['jobs'],
-            'repairCars' => $repairCars['cars'],
-            'money' => $salary['money']
+            'jobsCount' => $finReport['jobs'],
+            'repairCars' => $finReport['cars'],
+            'money' => $finReport['money']
         ];
     }
 
