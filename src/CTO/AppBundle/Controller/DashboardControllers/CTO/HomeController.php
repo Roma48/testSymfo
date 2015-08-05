@@ -29,6 +29,9 @@ class HomeController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/settings", name="ctoUser_settings_edit")
      * @Method({"POST", "GET"})
      * @Template("@CTOApp/DashboardControllers/Admin/Cto/new.html.twig")
@@ -63,7 +66,6 @@ class HomeController extends Controller
             'form' => $form->createView(),
             'title' => 'Редагувати'
         ];
-
     }
 
     /**
@@ -107,6 +109,10 @@ class HomeController extends Controller
         return ['results' => $result];
     }
 
+    /**
+     * @param DateTime $date
+     * @return array
+     */
     private function getStartAndFinishMonth(DateTime $date)
     {
         $now = Carbon::createFromFormat('Y-m-d', $date->format('Y-m-d'));
