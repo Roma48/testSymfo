@@ -96,7 +96,6 @@ class CtoUserType extends AbstractType
         ]);
     }
 
-
     /**
      * Returns the name of this type.
      *

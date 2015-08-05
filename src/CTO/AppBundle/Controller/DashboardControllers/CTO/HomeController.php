@@ -4,12 +4,14 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use Carbon\Carbon;
 use CTO\AppBundle\Entity\CtoUser;
+use CTO\AppBundle\Form\CtoUserType;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class HomeController
@@ -24,6 +26,44 @@ class HomeController extends Controller
     public function homeAction()
     {
         return [];
+    }
+
+    /**
+     * @Route("/settings", name="ctoUser_settings_edit")
+     * @Method({"POST", "GET"})
+     * @Template("@CTOApp/DashboardControllers/Admin/Cto/new.html.twig")
+     */
+    public function settingsAction(Request $request)
+    {
+        /** @var CtoUser $user */
+        $user = $this->getUser();
+        $form = $this->createForm(new CtoUserType(), $user);
+
+        if ($request->getMethod() == Request::METHOD_POST) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+
+                if ($user->getPlainPassword()) {
+                    $encoder = $this->get('security.password_encoder');
+                    $user->setPassword($encoder->encodePassword($user, $user->getPlainPassword()));
+                }
+
+                $em->flush();
+
+                $this->addFlash('success', "{$user->getCtoName()} успішно відредаговано.");
+
+                return $this->redirectToRoute('cto_jobs_home');
+            }
+        }
+
+        return [
+            'form' => $form->createView(),
+            'title' => 'Редагувати'
+        ];
+
     }
 
     /**

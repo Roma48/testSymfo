@@ -6,7 +6,11 @@
             <h3>
                 {{ title }} СТО:
                 <div class="pull-right">
-                    <a href="{{ path('admin_ctoUsers_list') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_ctoUsers_list') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                    {% elseif is_granted('ROLE_CTO') %}
+                        <a href="{{ path('cto_jobs_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
+                    {% endif %}
                 </div>
             </h3>
             <br>

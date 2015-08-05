@@ -63,7 +63,7 @@
                             <li><a href="#"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування ADM</a></li>
                         {% endif %}
                         {% if app.user and is_granted('ROLE_CTO') %}
-                            <li><a href="#"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування CTO</a></li>
+                            <li><a href="{{ path('ctoUser_settings_edit') }}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування CTO</a></li>
                         {% endif %}
                         <li role="separator" class="divider"></li>
                         <li>
