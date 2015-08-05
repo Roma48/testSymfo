@@ -38,11 +38,17 @@ class HomeController extends Controller
         /** @var CtoUser $user */
         $user = $this->getUser();
 
+        $result = [];
         $firstJob = $em->getRepository('CTOAppBundle:CarJob')->getOneJobByCTOUser($user, 'ASC');
         $lastJob = $em->getRepository('CTOAppBundle:CarJob')->getOneJobByCTOUser($user, 'DESC');
+
+        if (count($firstJob) == 0 and count($lastJob) == 0) {
+
+            return ['results' => $result];
+        }
+
         $firstJobDate = Carbon::createFromFormat('Y-m-d', $firstJob[0]->getJobDate()->format('Y-m-d'));
         $lastJobDate = Carbon::createFromFormat('Y-m-d', $lastJob[0]->getJobDate()->format('Y-m-d'));
-        $result = [];
 
         while ($firstJobDate <= $lastJobDate ) {
             $month = $this->getStartAndFinishMonth($firstJobDate);

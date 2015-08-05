@@ -3,6 +3,7 @@
 namespace CTO\AppBundle\Controller\DashboardControllers;
 
 use Carbon\Carbon;
+use CTO\AppBundle\Entity\AdminUser;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
@@ -87,6 +88,12 @@ class AjaxController extends Controller
 
         /** @var CtoUser $user */
         $user = $this->getUser();
+
+        if ($user instanceof AdminUser) {
+
+            return new JsonResponse(['nitificationsCount' => 0]);
+        }
+
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $notificationCount = $em->getRepository("CTOAppBundle:Notification")->getNotificationCountForLast3day($user, $from, $to);
