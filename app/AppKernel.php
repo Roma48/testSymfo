@@ -30,7 +30,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
-            new Mcfedr\JsonFormBundle\McfedrJsonFormBundle()
+            new Mcfedr\JsonFormBundle\McfedrJsonFormBundle(),
+            new Mcfedr\ResqueBundle\McfedrResqueBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

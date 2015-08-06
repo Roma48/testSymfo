@@ -54,6 +54,11 @@ class JobNotificationReminderType extends AbstractType
                 'label' => 'Відправити копію адміністратору',
                 'required' => false
             ])
+            ->add('sendNow', 'checkbox', [
+                'attr' => ['class' => ''],
+                'label' => 'Відправити негайно',
+                'required' => false
+            ])
         ;
     }
 

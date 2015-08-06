@@ -18,3 +18,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
     pagination: 15
+    queue_name: cto
+    alfa_sms_name: CTO service
+    alfa_sms_ID: "tel"
+    alfa_sms_password: "pas"
+    alfa_sms_api_key: "api_id"

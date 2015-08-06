@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "30c16ade5fd2a13cff73755efd28a42e",
+    "hash": "4e4fe706cf149dfef0bb9e21b80df063",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -45,6 +45,45 @@
                 "transliterator"
             ],
             "time": "2014-05-15 22:08:22"
+        },
+        {
+            "name": "colinmollenhour/credis",
+            "version": "1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/colinmollenhour/credis.git",
+                "reference": "7bd47b61fc3dad28aa881de45c71026256ad27cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/7bd47b61fc3dad28aa881de45c71026256ad27cc",
+                "reference": "7bd47b61fc3dad28aa881de45c71026256ad27cc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Client.php",
+                    "Cluster.php",
+                    "Sentinel.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Mollenhour",
+                    "email": "colin@mollenhour.com"
+                }
+            ],
+            "description": "Credis is a lightweight interface to the Redis key-value store which wraps the phpredis library when available for better performance.",
+            "homepage": "https://github.com/colinmollenhour/credis",
+            "time": "2014-11-13 18:40:25"
         },
         {
             "name": "doctrine/annotations",
@@ -1632,6 +1671,140 @@
                 "symfony"
             ],
             "time": "2015-04-30 07:26:23"
+        },
+        {
+            "name": "mcfedr/php-resque",
+            "version": "1.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mcfedr/php-resque.git",
+                "reference": "cfe05a69238606fd9ca6b3a30f16ec563538b165"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mcfedr/php-resque/zipball/cfe05a69238606fd9ca6b3a30f16ec563538b165",
+                "reference": "cfe05a69238606fd9ca6b3a30f16ec563538b165",
+                "shasum": ""
+            },
+            "require": {
+                "colinmollenhour/credis": "~1.2",
+                "ext-pcntl": "*",
+                "php": ">=5.3.0",
+                "psr/log": "1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1"
+            },
+            "suggest": {
+                "ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker.",
+                "ext-redis": "Native PHP extension for Redis connectivity. Credis will automatically utilize when available."
+            },
+            "bin": [
+                "bin/resque"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Resque": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Boulton",
+                    "email": "chris@bigcommerce.com"
+                }
+            ],
+            "description": "Redis backed library for creating background jobs and processing them later. Based on resque for Ruby.",
+            "homepage": "http://www.github.com/mcfedr/php-resque/",
+            "keywords": [
+                "background",
+                "job",
+                "redis",
+                "resque"
+            ],
+            "time": "2015-03-04 10:46:46"
+        },
+        {
+            "name": "mcfedr/php-resque-scheduler",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mcfedr/php-resque-scheduler.git",
+                "reference": "5229eae940256b20e9b5ea07f7dd3f192ffef550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mcfedr/php-resque-scheduler/zipball/5229eae940256b20e9b5ea07f7dd3f192ffef550",
+                "reference": "5229eae940256b20e9b5ea07f7dd3f192ffef550",
+                "shasum": ""
+            },
+            "require": {
+                "mcfedr/php-resque": "~1.3"
+            },
+            "bin": [
+                "bin/resque-scheduler"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ResqueScheduler": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Chris Boulton",
+                    "email": "chris@bgigcommerce.com"
+                }
+            ],
+            "description": "php-resque-scheduler is a PHP port of resque-scheduler, which adds support for scheduling items in the future to Resque.",
+            "time": "2014-06-05 07:08:36"
+        },
+        {
+            "name": "mcfedr/resque-bundle",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mcfedr/resque-bundle.git",
+                "reference": "7f8a991a49ae3bc66c8421aeacdcd0d59b5c1dda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mcfedr/resque-bundle/zipball/7f8a991a49ae3bc66c8421aeacdcd0d59b5c1dda",
+                "reference": "7f8a991a49ae3bc66c8421aeacdcd0d59b5c1dda",
+                "shasum": ""
+            },
+            "require": {
+                "mcfedr/php-resque": "~1.3",
+                "mcfedr/php-resque-scheduler": "~1.3",
+                "php": ">=5.4",
+                "symfony/symfony": "~2.3"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phploc/phploc": "~2.0",
+                "phpmd/phpmd": "~2.1",
+                "phpunit/phpunit": "~4.1",
+                "sebastian/phpcpd": "~2.0",
+                "squizlabs/php_codesniffer": "~1.5",
+                "theseer/phpdox": "~0.7"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Mcfedr\\ResqueBundle\\": "src/Mcfedr/ResqueBundle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A bundle for resque",
+            "time": "2015-03-19 08:10:02"
         },
         {
             "name": "monolog/monolog",

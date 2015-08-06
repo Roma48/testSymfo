@@ -97,3 +97,8 @@ knp_paginator:
         pagination: ::bootstrap-paginator-template.html.twig     # sliding pagination controls template
 #        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+mcfedr_resque:
+    host: 127.0.0.1
+    port: 6379
+    default_queue: %queue_name%

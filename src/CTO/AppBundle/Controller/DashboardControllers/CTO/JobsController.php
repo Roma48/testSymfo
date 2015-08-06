@@ -262,6 +262,11 @@ class JobsController extends JsonController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
 
+                if ($notification->isAutoSending()) {
+                    if ($notification->isSendNow()) {
+                        $this->get('cto.sms.sender')->sendNow($notification, $sendCopyToAdmin = true);
+                    }
+                }
                 //   if autoSending = true  -> create resque job
 
                 $em->flush();

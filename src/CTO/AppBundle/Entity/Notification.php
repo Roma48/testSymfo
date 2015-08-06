@@ -59,9 +59,9 @@ class Notification
     protected $adminCopy;
 
     /**
-     * @ORM\Column(name="notificationDone", type="boolean", nullable=true)
+     * @ORM\Column(name="sendNow", type="boolean", nullable=true)
      */
-    protected $notificationDone;
+    protected $sendNow;
 
     /**
      * @ORM\Column(name="resqueJobDescription", type="object", nullable=true)
@@ -233,18 +233,18 @@ class Notification
     /**
      * @return boolean
      */
-    public function isNotificationDone()
+    public function isSendNow()
     {
-        return $this->notificationDone;
+        return $this->sendNow;
     }
 
     /**
      * @param boolean $notificationDone
      * @return Notification
      */
-    public function setNotificationDone($notificationDone)
+    public function setSendNow($notificationDone)
     {
-        $this->notificationDone = $notificationDone;
+        $this->sendNow = $notificationDone;
 
         return $this;
     }
