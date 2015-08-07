@@ -262,12 +262,24 @@ class JobsController extends JsonController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
 
+
                 if ($notification->isAutoSending()) {
+                    $senderSrv = $this->get('cto.sms.sender');
+                    /** @var CtoUser $admin */
+                    $admin = $this->getUser();
+
                     if ($notification->isSendNow()) {
-                        $this->get('cto.sms.sender')->sendNow($notification, $sendCopyToAdmin = true);
+                        $senderSrv->sendNow($notification, $carJob->getClient(), $admin);
+                    } else {
+                        $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'adminCopy' => $notification->isAdminCopy(),
+                            'notificationId' => $notification->getId(),
+                            'clientId' => $carJob->getClient()->getId(),
+                            'adminId' => $admin->getId()
+                        ], $this->getParameter('queue_name'), $notification->getWhenSend());
+                        $notification->setResqueJobDescription($jobDescription);
                     }
                 }
-                //   if autoSending = true  -> create resque job
 
                 $em->flush();
 

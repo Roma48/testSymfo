@@ -23,7 +23,7 @@ class CtoClientForModalType extends AbstractType
             ])
             ->add('phone', 'text', [
                 'label' => 'Телефон: *',
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control', 'placeholder' => '(050) 123-45-67'],
                 'required' => false
             ])
         ;

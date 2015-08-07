@@ -52,6 +52,8 @@ class BaseUser implements UserInterface
      * @var string
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
+     * @Assert\Length(max=20, maxMessage="Не більше {{ limit }} символів")
+     * @Assert\Regex(pattern="/^[+]?[0-9+() -]+$/", message="Допустимі тільки цифри")
      * @ORM\Column(name="phone", type="string", length=255)
      */
     protected $phone;
@@ -312,7 +314,12 @@ class BaseUser implements UserInterface
      */
     public function setPhone($phone)
     {
-        $this->phone = $phone;
+//        $this->phone = $phone;
+//
+//        return $this;
+
+        $tmp = str_replace(' ', '', str_replace('-', '', str_replace(')','', str_replace('(','', trim($phone)))));
+        $this->phone = $phone ? $tmp : null;
 
         return $this;
     }

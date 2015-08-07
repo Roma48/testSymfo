@@ -2,6 +2,7 @@
 
 namespace CTO\AppBundle\Notification;
 
+use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Entity\Notification;
 use Doctrine\ORM\EntityManager;
@@ -41,12 +42,21 @@ class SMSSender implements WorkerInterface
         $this->alfa_sms_api_key = $alfa_sms_api_key;
     }
 
-    public function sendNow(Notification $notification, $sendCopyToAdmin = false, CtoUser $user)
+    public function getResqueManager()
+    {
+        return $this->resqueManager;
+    }
+
+    public function sendNow(Notification $notification, CtoClient $ctoClient, CtoUser $admin)
     {
         $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
 
         try {
-            $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$user->getPhone(), $notification->getDescription());
+            $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
+            if ($notification->isAdminCopy()) {
+                $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+            }
+            $notification->setStatus(Notification::STATUS_SEND_OK);
         } catch (\Exception $e) {}
 
     }
@@ -59,8 +69,24 @@ class SMSSender implements WorkerInterface
      */
     public function execute(array $options = null)
     {
-        // TODO: Implement execute() method.
+        $sendCopyToAdmin = $options['adminCopy'];
+        $notificationId = $options['notificationId'];
+        $clientId = $options['clientId'];
+        $adminId = $options['adminId'];
+
+        $notification = $this->em->getRepository('CTOAppBundle:Notification')->find($notificationId);
+        $ctoClient = $this->em->getRepository('CTOAppBundle:CtoClient')->find($clientId);
+
+        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
+
+        try {
+            $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
+            if ($notification->isAdminCopy()) {
+                $admin = $this->em->getRepository('CTOAppBundle:CtoUser')->find($adminId);
+                $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+            }
+            $notification->setStatus(Notification::STATUS_SEND_OK);
+            $this->em->flush();
+        } catch (\Exception $e) {}
     }
-
-
 }

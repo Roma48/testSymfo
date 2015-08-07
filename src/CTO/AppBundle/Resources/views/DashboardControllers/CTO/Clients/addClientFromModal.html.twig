@@ -11,7 +11,10 @@
 </div>
 <div class="error-handling">
     {{ form_label(form.phone) }}
-    {{ form_widget(form.phone) }}
+    <div class="input-group">
+        <div class="input-group-addon">+38</div>
+        {{ form_widget(form.phone) }}
+    </div>
     {{ form_errors(form.phone) }}
 </div>
 <br>
