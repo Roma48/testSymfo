@@ -82,9 +82,10 @@ class AjaxController extends Controller
     {
         $now = Carbon::now();
         $from = $now->copy();
-        $from->startOfDay();
+//        $from->startOfDay();
         $to = $now->copy();
-        $to->addDays(3)->endOfDay();
+        $to->endOfDay();
+//        $to->addDays(3)->endOfDay();
 
         /** @var CtoUser $user */
         $user = $this->getUser();

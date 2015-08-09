@@ -16,12 +16,12 @@ class Notification
 {
     use CreateUpdateTrait;
 
-    const TYPE_AUTO = 'auto';
-    const TYPE_PLANED = 'planed';
-    const TYPE_BROADCAST = 'broadcast';
+    const TYPE_NOTIFICATION = 'notification';
+    const TYPE_RECOMENDATION = 'recomendation';
     const STATUS_SEND_OK = 'ok';
     const STATUS_SEND_IN_PROGRESS = 'in-progress';
     const STATUS_SEND_FAIL = 'fail';
+    const STATUS_ABORTED = 'aborted';
 
     /**
      * @ORM\Column(name="status", type="string", length=20)

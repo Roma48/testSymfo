@@ -247,7 +247,7 @@ class JobsController extends JsonController
     {
         $notification = new Notification();
         $notification
-            ->setType(Notification::TYPE_PLANED)
+            ->setType(Notification::TYPE_NOTIFICATION)
             ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
             ->setCarJob($carJob)
             ->setClientCto($carJob->getClient());
@@ -272,7 +272,6 @@ class JobsController extends JsonController
                         $senderSrv->sendNow($notification, $carJob->getClient(), $admin);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
-                            'adminCopy' => $notification->isAdminCopy(),
                             'notificationId' => $notification->getId(),
                             'clientId' => $carJob->getClient()->getId(),
                             'adminId' => $admin->getId()

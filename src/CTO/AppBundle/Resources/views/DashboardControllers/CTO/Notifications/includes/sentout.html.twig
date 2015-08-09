@@ -1,0 +1,52 @@
+<div class="tab-pane fade in active" id="sentout">
+
+    <div class="row no-margin">
+        <table class="table table-hover table-responsive">
+            <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Кому
+                </th>
+                <th>
+                    Коли
+                </th>
+                <th>
+                    Статус
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sentoutItem in sentout %}
+                <tr>
+                    <td style="vertical-align: middle;">
+                        {{ sentoutItem.id }}
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <a href="{{ path('cto_client_show', {'slug': sentoutItem.clientCto.slug}) }}">{{ sentoutItem.clientCto.fullName }}</a>
+                    </td>
+                    <td style="vertical-align: middle;">
+                        {{ sentoutItem.whenSend | date('d.m.Y H:i') }}
+                    </td>
+                    <td>
+                        {% if sentoutItem.status == constant('CTO\\AppBundle\\Entity\\Notification::STATUS_SEND_OK') %}
+                            Відправлено
+                        {% elseif sentoutItem.status == constant('CTO\\AppBundle\\Entity\\Notification::STATUS_ABORTED') %}
+                            Скасовано
+                        {% else %}
+                            Помилка відправки
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <div class="text-center">
+            {{ knp_pagination_render(sentout) }}
+        </div>
+    </div>
+
+</div>

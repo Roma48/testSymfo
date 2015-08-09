@@ -54,11 +54,14 @@ class SMSSender implements WorkerInterface
         try {
             $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
-                $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                try {
+                    $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                } catch (\Exception $e) {}
             }
             $notification->setStatus(Notification::STATUS_SEND_OK);
-        } catch (\Exception $e) {}
-
+        } catch (\Exception $e) {
+            $notification->setStatus(Notification::STATUS_SEND_FAIL);
+        }
     }
 
     /**
@@ -69,7 +72,6 @@ class SMSSender implements WorkerInterface
      */
     public function execute(array $options = null)
     {
-        $sendCopyToAdmin = $options['adminCopy'];
         $notificationId = $options['notificationId'];
         $clientId = $options['clientId'];
         $adminId = $options['adminId'];
@@ -83,10 +85,20 @@ class SMSSender implements WorkerInterface
             $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
                 $admin = $this->em->getRepository('CTOAppBundle:CtoUser')->find($adminId);
-                $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                try {
+                    $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                } catch(\Exception $e) {
+                    $notification->setStatus(Notification::STATUS_SEND_FAIL);
+                    $this->em->flush();
+
+                    return;
+                }
             }
             $notification->setStatus(Notification::STATUS_SEND_OK);
             $this->em->flush();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            $notification->setStatus(Notification::STATUS_SEND_FAIL);
+            $this->em->flush();
+        }
     }
 }
