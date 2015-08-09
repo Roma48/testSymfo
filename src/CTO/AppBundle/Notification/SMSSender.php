@@ -23,6 +23,9 @@ class SMSSender implements WorkerInterface
     protected $alfa_sms_password;
     protected $alfa_sms_api_key;
 
+    /** @var SMSClient $clientSMS */
+    protected $clientSMS;
+
     public function __construct(
         EntityManager $entityManager,
         ResqueManager $resqueManager,
@@ -36,10 +39,14 @@ class SMSSender implements WorkerInterface
         $this->resqueManager = $resqueManager;
         $this->queueName = $queue_name;
 
+        $this->clientSMS = new SMSClient($alfa_sms_ID, $alfa_sms_password, $alfa_sms_api_key);
         $this->alfa_sms_name = $alfa_sms_name;
-        $this->alfa_sms_ID = $alfa_sms_ID;
-        $this->alfa_sms_password = $alfa_sms_password;
-        $this->alfa_sms_api_key = $alfa_sms_api_key;
+
+//        $this->alfa_sms_ID = $alfa_sms_ID;
+//        $this->alfa_sms_password = $alfa_sms_password;
+//        $this->alfa_sms_api_key = $alfa_sms_api_key;
+
+
     }
 
     public function getResqueManager()
@@ -47,15 +54,20 @@ class SMSSender implements WorkerInterface
         return $this->resqueManager;
     }
 
+    public function getBalance()
+    {
+        return $this->clientSMS->getBalance();
+    }
+
     public function sendNow(Notification $notification, CtoClient $ctoClient, CtoUser $admin)
     {
-        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
+//        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
 
         try {
-            $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
+            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
                 try {
-                    $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
                 } catch (\Exception $e) {}
             }
             $notification->setStatus(Notification::STATUS_SEND_OK);
@@ -79,14 +91,14 @@ class SMSSender implements WorkerInterface
         $notification = $this->em->getRepository('CTOAppBundle:Notification')->find($notificationId);
         $ctoClient = $this->em->getRepository('CTOAppBundle:CtoClient')->find($clientId);
 
-        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
+//        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
 
         try {
-            $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
+            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
                 $admin = $this->em->getRepository('CTOAppBundle:CtoUser')->find($adminId);
                 try {
-                    $clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
                 } catch(\Exception $e) {
                     $notification->setStatus(Notification::STATUS_SEND_FAIL);
                     $this->em->flush();
