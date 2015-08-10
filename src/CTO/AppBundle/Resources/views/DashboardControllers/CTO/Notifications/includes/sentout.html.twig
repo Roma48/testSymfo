@@ -14,6 +14,9 @@
                     Коли
                 </th>
                 <th>
+                    Повідомлення
+                </th>
+                <th>
                     Статус
                 </th>
             </tr>
@@ -29,6 +32,9 @@
                     </td>
                     <td style="vertical-align: middle;">
                         {{ sentoutItem.whenSend | date('d.m.Y H:i') }}
+                    </td>
+                    <td>
+                        {{ sentoutItem.description }}
                     </td>
                     <td>
                         {% if sentoutItem.status == constant('CTO\\AppBundle\\Entity\\Notification::STATUS_SEND_OK') %}
