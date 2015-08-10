@@ -32,9 +32,9 @@
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                            <a href="#" class="btn btn-default" title="Скасувати">&nbsp;&nbsp;<i class="fa fa-times"></i>&nbsp;&nbsp;</a>
-                            <a href="#" class="btn btn-default" title="Редагувати">&nbsp;&nbsp;<i class="fa fa-pencil"></i>&nbsp;&nbsp;</a>
-                            <a href="#" class="btn btn-default" title="Копіювати">&nbsp;&nbsp;<i class="fa fa-files-o"></i>&nbsp;&nbsp;</a>
+                            <a href="{{ path('cto_notification_skip', {'id': plannedItem.id}) }}" class="btn btn-default" title="Скасувати" onclick="return confirm('Ви впевнені?');">&nbsp;&nbsp;<i class="fa fa-times"></i>&nbsp;&nbsp;</a>
+                            <a href="{{ path('cto_notification_edit', {'id': plannedItem.id}) }}" class="btn btn-default" title="Редагувати">&nbsp;&nbsp;<i class="fa fa-pencil"></i>&nbsp;&nbsp;</a>
+                            <a href="{{ path('cto_notification_copy', {'id': plannedItem.id}) }}" class="btn btn-default" title="Копіювати">&nbsp;&nbsp;<i class="fa fa-files-o"></i>&nbsp;&nbsp;</a>
                         </div>
                     </td>
                 </tr>

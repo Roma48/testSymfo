@@ -39,7 +39,6 @@ class JobNotificationReminderType extends AbstractType
                 'attr' => ['class' => 'form-control datetime-picker-cto'],
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Дата нагадування *',
-                'data' => new \DateTime('now'),
                 'constraints' => [
                     new NotBlank(['message' => "Це поле обов'язкове"])
                 ]

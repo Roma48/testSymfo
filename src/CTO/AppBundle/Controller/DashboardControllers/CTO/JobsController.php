@@ -261,7 +261,7 @@ class JobsController extends JsonController
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
-
+                $em->flush();
 
                 if ($notification->isAutoSending()) {
                     $senderSrv = $this->get('cto.sms.sender');

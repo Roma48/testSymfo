@@ -129,10 +129,13 @@ class Notification
 
     /**
      * @param DateTime $whenSend
+     * @return Notification
      */
     public function setWhenSend($whenSend)
     {
         $this->whenSend = $whenSend;
+
+        return $this;
     }
 
     /**

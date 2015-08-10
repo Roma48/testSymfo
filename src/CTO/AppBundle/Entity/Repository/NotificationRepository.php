@@ -14,12 +14,10 @@ class NotificationRepository extends EntityRepository
         return $this->createQueryBuilder('j')
             ->select('count(j) as NotifCount')
             ->join('j.clientCto', 'cl')
-            ->andWhere('cl.cto = :cto')
-            ->setParameter('cto', $user)
-            ->andWhere('j.whenSend >= :from')
-            ->setParameter('from', $from)
-            ->andWhere('j.whenSend <= :to')
-            ->setParameter('to', $to)
+            ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.whenSend >= :from')->setParameter('from', $from)
+            ->andWhere('j.whenSend <= :to')->setParameter('to', $to)
+            ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
             ->getQuery()
             ->getSingleResult();
     }
@@ -55,7 +53,7 @@ class NotificationRepository extends EntityRepository
             ->join('j.clientCto', 'cl')
             ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
             ->andWhere('j.status <> :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
-            ->orderBy('j.whenSend', 'ASC')
+            ->orderBy('j.whenSend', 'DESC')
             ->getQuery()
             ->getResult();
     }

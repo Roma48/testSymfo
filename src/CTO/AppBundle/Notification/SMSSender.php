@@ -41,12 +41,6 @@ class SMSSender implements WorkerInterface
 
         $this->clientSMS = new SMSClient($alfa_sms_ID, $alfa_sms_password, $alfa_sms_api_key);
         $this->alfa_sms_name = $alfa_sms_name;
-
-//        $this->alfa_sms_ID = $alfa_sms_ID;
-//        $this->alfa_sms_password = $alfa_sms_password;
-//        $this->alfa_sms_api_key = $alfa_sms_api_key;
-
-
     }
 
     public function getResqueManager()
@@ -61,8 +55,6 @@ class SMSSender implements WorkerInterface
 
     public function sendNow(Notification $notification, CtoClient $ctoClient, CtoUser $admin)
     {
-//        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
-
         try {
             $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
@@ -74,6 +66,13 @@ class SMSSender implements WorkerInterface
         } catch (\Exception $e) {
             $notification->setStatus(Notification::STATUS_SEND_FAIL);
         }
+    }
+
+    public function stop($jobDescription)
+    {
+        try {
+            $this->resqueManager->delete($jobDescription);
+        } catch(\Exception $e) {}
     }
 
     /**
@@ -90,8 +89,6 @@ class SMSSender implements WorkerInterface
 
         $notification = $this->em->getRepository('CTOAppBundle:Notification')->find($notificationId);
         $ctoClient = $this->em->getRepository('CTOAppBundle:CtoClient')->find($clientId);
-
-//        $clientSMS = new SMSClient($this->alfa_sms_ID, $this->alfa_sms_password, $this->alfa_sms_api_key);
 
         try {
             $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
