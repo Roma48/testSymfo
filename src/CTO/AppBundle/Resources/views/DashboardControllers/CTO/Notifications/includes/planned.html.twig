@@ -17,6 +17,9 @@
                     Повідомлення
                 </th>
                 <th>
+                    Категорія
+                </th>
+                <th>
                     Дія
                 </th>
             </tr>
@@ -28,20 +31,38 @@
                         {{ plannedItem.id }}
                     </td>
                     <td style="vertical-align: middle;">
+                        {% if plannedItem.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
+                            <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
+                        {% else %}
+                            <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
+                        {% endif %}
                         <a href="{{ path('cto_client_show', {'slug': plannedItem.clientCto.slug}) }}">{{ plannedItem.clientCto.fullName }}</a>
                     </td>
                     <td style="vertical-align: middle;">
                         {{ plannedItem.whenSend | date('d.m.Y H:i') }}
                     </td>
-                    <td>
+                    <td style="vertical-align: middle;">
                         {{ plannedItem.description }}
                     </td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a href="{{ path('cto_notification_skip', {'id': plannedItem.id}) }}" class="btn btn-default" title="Скасувати" onclick="return confirm('Ви впевнені?');">&nbsp;&nbsp;<i class="fa fa-times"></i>&nbsp;&nbsp;</a>
-                            <a href="{{ path('cto_notification_edit', {'id': plannedItem.id}) }}" class="btn btn-default" title="Редагувати">&nbsp;&nbsp;<i class="fa fa-pencil"></i>&nbsp;&nbsp;</a>
-                            <a href="{{ path('cto_notification_copy', {'id': plannedItem.id}) }}" class="btn btn-default" title="Копіювати">&nbsp;&nbsp;<i class="fa fa-files-o"></i>&nbsp;&nbsp;</a>
-                        </div>
+                    <td style="vertical-align: middle;">
+                        {% if plannedItem.carJobCategory.jobCategory.name is defined %}
+                            {{ plannedItem.carJobCategory.jobCategory.name }}
+                        {% endif %}
+                    </td>
+                    <td style="vertical-align: middle;">
+                        {% if plannedItem.type != constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ path('cto_notification_skip', {'id': plannedItem.id}) }}" class="btn btn-default" title="Скасувати" onclick="return confirm('Ви впевнені?');">&nbsp;&nbsp;<i class="fa fa-times"></i>&nbsp;&nbsp;</a>
+                                <a href="{{ path('cto_notification_edit', {'id': plannedItem.id}) }}" class="btn btn-default" title="Редагувати">&nbsp;&nbsp;<i class="fa fa-pencil"></i>&nbsp;&nbsp;</a>
+                                <a href="{{ path('cto_notification_copy', {'id': plannedItem.id}) }}" class="btn btn-default" title="Копіювати">&nbsp;&nbsp;<i class="fa fa-files-o"></i>&nbsp;&nbsp;</a>
+                            </div>
+                        {% else %}
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ path('cto_notification_skip', {'id': plannedItem.id}) }}" class="btn btn-default" title="Скасувати" onclick="return confirm('Ви впевнені?');">&nbsp;&nbsp;<i class="fa fa-times"></i>&nbsp;&nbsp;</a>
+                                <a href="{{ path('cto_notification_broadcastEdit', {'id': plannedItem.id}) }}" class="btn btn-default" title="Редагувати">&nbsp;&nbsp;<i class="fa fa-pencil"></i>&nbsp;&nbsp;</a>
+                                <a href="{{ path('cto_notification_broadcastCopy', {'id': plannedItem.id}) }}" class="btn btn-default" title="Копіювати">&nbsp;&nbsp;<i class="fa fa-files-o"></i>&nbsp;&nbsp;</a>
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

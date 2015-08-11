@@ -35,19 +35,20 @@ class NotificationRepository extends EntityRepository
             ->getResult();
     }
 
-    public function getPlanned($user, $from)
+    public function getPlanned(CtoUser $user, $from, $to)
     {
         return $this->createQueryBuilder('j')
             ->join('j.clientCto', 'cl')
             ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
-            ->andWhere('j.whenSend >= :from')->setParameter('from', $from)
+            ->andWhere('j.whenSend < :from')->setParameter('from', $from)
+            ->orWhere('j.whenSend > :to')->setParameter('to', $to)
             ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
             ->orderBy('j.whenSend', 'ASC')
             ->getQuery()
             ->getResult();
     }
 
-    public function getSentOut($user)
+    public function getSentOut(CtoUser $user)
     {
         return $this->createQueryBuilder('j')
             ->join('j.clientCto', 'cl')

@@ -7,7 +7,7 @@
             <h3>
                 Сповіщення:
                 <div class="pull-right">
-                    <a href="#" class="btn btn-sm btn-success"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;&nbsp;Зробити розсилку</a>
+                    <a href="{{ path('cto_notification_broadcast') }}" class="btn btn-sm btn-success"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;&nbsp;Зробити розсилку</a>
                 </div>
             </h3>
         </div>
@@ -16,7 +16,7 @@
     <ul class="nav nav-tabs" role="tablist" id="place-tab-sh">
         <li class="{{ tabName == 'current' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'current' }) }}">Поточні</a></li>
         <li class="{{ tabName == 'planned' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'planned' }) }}">Заплановані</a></li>
-        <li class="{{ tabName == 'sentout' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'sentout' }) }}">Відправлені</a></li>
+        <li class="{{ tabName == 'sentout' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'sentout' }) }}">Виконані</a></li>
     </ul>
     <br>
 

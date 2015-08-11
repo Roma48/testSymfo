@@ -13,6 +13,7 @@
     "bootstrap-select": "~1.7.2",
     "bootstrap-datepicker": "~1.4.0",
     "jsonform": "*",
+    "selectize": "0.12.1",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35"
   }
 }

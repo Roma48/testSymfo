@@ -17,6 +17,9 @@
                     Повідомлення
                 </th>
                 <th>
+                    Категорія
+                </th>
+                <th>
                     Статус
                 </th>
             </tr>
@@ -28,21 +31,31 @@
                         {{ sentoutItem.id }}
                     </td>
                     <td style="vertical-align: middle;">
+                        {% if sentoutItem.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
+                            <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
+                        {% else %}
+                            <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
+                        {% endif %}
                         <a href="{{ path('cto_client_show', {'slug': sentoutItem.clientCto.slug}) }}">{{ sentoutItem.clientCto.fullName }}</a>
                     </td>
                     <td style="vertical-align: middle;">
                         {{ sentoutItem.whenSend | date('d.m.Y H:i') }}
                     </td>
-                    <td>
+                    <td style="vertical-align: middle;">
                         {{ sentoutItem.description }}
                     </td>
-                    <td>
+                    <td style="vertical-align: middle;">
+                        {% if sentoutItem.carJobCategory.jobCategory.name is defined %}
+                            {{ sentoutItem.carJobCategory.jobCategory.name }}
+                        {% endif %}
+                    </td>
+                    <td style="vertical-align: middle;">
                         {% if sentoutItem.status == constant('CTO\\AppBundle\\Entity\\Notification::STATUS_SEND_OK') %}
-                            Відправлено
+                            <span style="color: #0cba59;">Відправлено</span>
                         {% elseif sentoutItem.status == constant('CTO\\AppBundle\\Entity\\Notification::STATUS_ABORTED') %}
-                            Скасовано
+                            <span style="color: #bab55a;">Скасовано</span>
                         {% else %}
-                            Помилка відправки
+                            <span style="color: #ba5359;">Помилка відправки</span>
                         {% endif %}
                     </td>
                 </tr>
