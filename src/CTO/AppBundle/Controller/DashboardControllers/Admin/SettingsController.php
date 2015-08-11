@@ -38,6 +38,9 @@ class SettingsController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/edit", name="cto_admin_settings_edit")
      * @Method({"GET", "POST"})
      * @Template()
