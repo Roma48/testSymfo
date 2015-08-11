@@ -314,10 +314,6 @@ class BaseUser implements UserInterface
      */
     public function setPhone($phone)
     {
-//        $this->phone = $phone;
-//
-//        return $this;
-
         $tmp = str_replace(' ', '', str_replace('-', '', str_replace(')','', str_replace('(','', trim($phone)))));
         $this->phone = $phone ? $tmp : null;
 
