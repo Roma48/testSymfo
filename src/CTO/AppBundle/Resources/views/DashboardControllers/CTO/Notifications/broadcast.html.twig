@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3>
-                Створити розсилку:
+                {{ method }} розсилку:
                 <div class="pull-right">
                     <a href="{{ path('cto_notification_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                 </div>
@@ -21,9 +21,9 @@
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
             <div class="margin-bottom-15">
-                {{ form_label(form.to) }}
-                {{ form_widget(form.to) }}
-                {{ form_errors(form.to) }}
+                {{ form_label(form.broadcastTo) }}
+                {{ form_widget(form.broadcastTo) }}
+                {{ form_errors(form.broadcastTo) }}
             </div>
             <div class="error-handling margin-bottom-15 description-container">
                 {{ form_label(form.description) }}
@@ -32,10 +32,10 @@
                 {{ form_errors(form.description) }}
             </div>
             <div class="margin-bottom-15">
-                {{ form_label(form.when) }}
-                {{ form_widget(form.when) }}
+                {{ form_label(form.whenSend) }}
+                {{ form_widget(form.whenSend) }}
                 <div class="error-handling">
-                    {{ form_errors(form.when) }}
+                    {{ form_errors(form.whenSend) }}
                 </div>
             </div>
             <div class="error-handling margin-bottom-15 ">
@@ -72,8 +72,8 @@
     <script>
         jQuery(function ($) {
 
-            var when = $("#broadcast_when");
-            var to = $("#broadcast_to");
+            var when = $("#broadcast_whenSend");
+            var to = $("#broadcast_broadcastTo");
             var getUsersPath = Routing.generate('cto_notification_broadcastGetUsersAjax');
 
             var textCounter = $("#notification_description");

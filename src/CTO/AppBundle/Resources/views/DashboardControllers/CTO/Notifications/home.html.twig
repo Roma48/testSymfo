@@ -28,6 +28,14 @@
 
 {% endblock body %}
 
+{% block javascripts %}
+    <script>
+        jQuery(function ($) {
+            $(".broadcast-tooltip").tooltip();
+        });
+    </script>
+{% endblock javascripts %}
+
 {% block current %}
     {% include '@CTOApp/DashboardControllers/CTO/Notifications/includes/current.html.twig' %}
 {% endblock current %}

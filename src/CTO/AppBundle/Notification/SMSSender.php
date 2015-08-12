@@ -53,18 +53,37 @@ class SMSSender implements WorkerInterface
         return $this->clientSMS->getBalance();
     }
 
-    public function sendNow(Notification $notification, CtoClient $ctoClient, CtoUser $admin)
+    public function sendNow(Notification $notification, CtoUser $admin, $broadcast = false)
     {
-        try {
-            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
-            if ($notification->isAdminCopy()) {
+        if ($broadcast) {
+            $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => explode(',', $notification->getBroadcastTo())]);
+
+            /** @var CtoClient $user */
+            foreach ($users as $user) {
                 try {
-                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
-                } catch (\Exception $e) {}
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$user->getPhone(), $notification->getDescription());
+                    if ($notification->isAdminCopy()) {
+                        try {
+                            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                        } catch (\Exception $e) {}
+                    }
+                    $notification->setStatus(Notification::STATUS_SEND_OK);
+                } catch (\Exception $e) {
+                    $notification->setStatus(Notification::STATUS_SEND_FAIL);
+                }
             }
-            $notification->setStatus(Notification::STATUS_SEND_OK);
-        } catch (\Exception $e) {
-            $notification->setStatus(Notification::STATUS_SEND_FAIL);
+        } else {
+            try {
+                $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$notification->getClientCto()->getPhone(), $notification->getDescription());
+                if ($notification->isAdminCopy()) {
+                    try {
+                        $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                    } catch (\Exception $e) {}
+                }
+                $notification->setStatus(Notification::STATUS_SEND_OK);
+            } catch (\Exception $e) {
+                $notification->setStatus(Notification::STATUS_SEND_FAIL);
+            }
         }
     }
 
@@ -84,16 +103,43 @@ class SMSSender implements WorkerInterface
     public function execute(array $options = null)
     {
         $notificationId = $options['notificationId'];
-        $clientId = $options['clientId'];
-        $adminId = $options['adminId'];
+        $broadcast = $options['broadcast'];
 
         $notification = $this->em->getRepository('CTOAppBundle:Notification')->find($notificationId);
-        $ctoClient = $this->em->getRepository('CTOAppBundle:CtoClient')->find($clientId);
+        $ctoClient = $notification->getClientCto();
+        $admin = $notification->getUserCto();
+
+        if ($broadcast) {
+            $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => explode(',', $notification->getBroadcastTo())]);
+
+            /** @var CtoClient $user */
+            foreach ($users as $user) {
+                try {
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$user->getPhone(), $notification->getDescription());
+                    if ($notification->isAdminCopy()) {
+                        try {
+                            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                        } catch (\Exception $e) {
+                            $notification->setStatus(Notification::STATUS_SEND_FAIL);
+                            $this->em->flush();
+
+                            continue;
+                        }
+                    }
+                    $notification->setStatus(Notification::STATUS_SEND_OK);
+                    $this->em->flush();
+                } catch (\Exception $e) {
+                    $notification->setStatus(Notification::STATUS_SEND_FAIL);
+                    $this->em->flush();
+                }
+            }
+
+            return;
+        }
 
         try {
             $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$ctoClient->getPhone(), $notification->getDescription());
             if ($notification->isAdminCopy()) {
-                $admin = $this->em->getRepository('CTOAppBundle:CtoUser')->find($adminId);
                 try {
                     $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
                 } catch(\Exception $e) {

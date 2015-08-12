@@ -245,11 +245,15 @@ class JobsController extends JsonController
      */
     public function addReminderAction(CarJob $carJob, Request $request)
     {
+        /** @var CtoUser $admin */
+        $admin = $this->getUser();
+
         $notification = new Notification();
         $notification
             ->setType(Notification::TYPE_NOTIFICATION)
             ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
             ->setCarJob($carJob)
+            ->setUserCto($admin)
             ->setClientCto($carJob->getClient());
 
         $form = $this->createForm(new JobNotificationReminderType($carJob), $notification);
@@ -265,16 +269,13 @@ class JobsController extends JsonController
 
                 if ($notification->isAutoSending()) {
                     $senderSrv = $this->get('cto.sms.sender');
-                    /** @var CtoUser $admin */
-                    $admin = $this->getUser();
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $carJob->getClient(), $admin);
+                        $senderSrv->sendNow($notification, $admin);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
-                            'clientId' => $carJob->getClient()->getId(),
-                            'adminId' => $admin->getId()
+                            'broadcast' => false
                         ], $this->getParameter('queue_name'), $notification->getWhenSend());
                         $notification->setResqueJobDescription($jobDescription);
                     }

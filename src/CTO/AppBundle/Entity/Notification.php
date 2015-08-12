@@ -70,6 +70,11 @@ class Notification
     protected $resqueJobDescription;
 
     /**
+     * @ORM\Column(name="broadcastTo", type="string", nullable=true)
+     */
+    protected $broadcastTo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="notifications")
      */
     protected $clientCto;
@@ -83,6 +88,11 @@ class Notification
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory")
      */
     protected $carJobCategory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser")
+     */
+    protected $userCto;
 
     /**
      * @return mixed
@@ -140,6 +150,25 @@ class Notification
     }
 
     /**
+     * @return CtoUser
+     */
+    public function getUserCto()
+    {
+        return $this->userCto;
+    }
+
+    /**
+     * @param CtoUser $userCto
+     * @return Notification
+     */
+    public function setUserCto(CtoUser $userCto)
+    {
+        $this->userCto = $userCto;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getType()
@@ -154,6 +183,25 @@ class Notification
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBroadcastTo()
+    {
+        return $this->broadcastTo;
+    }
+
+    /**
+     * @param mixed $broadcastTo
+     * @return Notification
+     */
+    public function setBroadcastTo($broadcastTo)
+    {
+        $this->broadcastTo = $broadcastTo;
 
         return $this;
     }

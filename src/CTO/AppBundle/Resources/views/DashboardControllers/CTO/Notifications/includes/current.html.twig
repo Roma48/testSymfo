@@ -37,10 +37,11 @@
                         <td style="vertical-align: middle;">
                             {% if current.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
                                 <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
+                                Розсилка
                             {% else %}
                                 <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
+                                <a href="{{ path('cto_client_show', {'slug': current.clientCto.slug}) }}">{{ current.clientCto.fullName }}</a>
                             {% endif %}
-                            <a href="{{ path('cto_client_show', {'slug': current.clientCto.slug}) }}">{{ current.clientCto.fullName }}</a>
                         </td>
                         <td style="vertical-align: middle;">
                             {{ current.whenSend | date('d.m.Y H:i') }}

@@ -13,8 +13,7 @@ class NotificationRepository extends EntityRepository
     {
         return $this->createQueryBuilder('j')
             ->select('count(j) as NotifCount')
-            ->join('j.clientCto', 'cl')
-            ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
             ->andWhere('j.whenSend >= :from')->setParameter('from', $from)
             ->andWhere('j.whenSend <= :to')->setParameter('to', $to)
             ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
@@ -25,8 +24,7 @@ class NotificationRepository extends EntityRepository
     public function getCurrents(CtoUser $user, $from, $to)
     {
         return $this->createQueryBuilder('j')
-            ->join('j.clientCto', 'cl')
-            ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
             ->andWhere('j.whenSend >= :from')->setParameter('from', $from)
             ->andWhere('j.whenSend <= :to')->setParameter('to', $to)
             ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
@@ -38,8 +36,7 @@ class NotificationRepository extends EntityRepository
     public function getPlanned(CtoUser $user, $from, $to)
     {
         return $this->createQueryBuilder('j')
-            ->join('j.clientCto', 'cl')
-            ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
             ->andWhere('j.whenSend < :from')->setParameter('from', $from)
             ->orWhere('j.whenSend > :to')->setParameter('to', $to)
             ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
@@ -51,8 +48,7 @@ class NotificationRepository extends EntityRepository
     public function getSentOut(CtoUser $user)
     {
         return $this->createQueryBuilder('j')
-            ->join('j.clientCto', 'cl')
-            ->andWhere('cl.cto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
             ->andWhere('j.status <> :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
             ->orderBy('j.whenSend', 'DESC')
             ->getQuery()

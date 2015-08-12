@@ -2,7 +2,6 @@
 
 namespace CTO\AppBundle\Form;
 
-use CTO\AppBundle\Entity\CtoUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,22 +9,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BroadcastType extends AbstractType
 {
-    private $user;
-
-    public function __construct(CtoUser $user)
-    {
-        $this->user = $user;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('clientCto', 'entity', [
-                'class' => 'CTO\AppBundle\Entity\CtoClient',
-                'property' => 'fullName',
-                'label' => 'Кому *',
+            ->add('broadcastTo', 'text', [
                 'attr' => ['class' => 'form-control'],
-                'choices' => $this->user->getClients()
+                'label' => 'Кому *',
+                'constraints' => [
+                    new NotBlank(['message' => "Це поле обов'язкове"])
+                ]
             ])
             ->add('description', 'textarea', [
                 'attr' => ['class' => 'form-control notification-description'],

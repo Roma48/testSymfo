@@ -8,8 +8,7 @@ use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Entity\DTO\Broadcast;
 use CTO\AppBundle\Entity\Notification;
-use CTO\AppBundle\Form\DTO\BroadcastType;
-use CTO\AppBundle\Form\BroadcastType as BroadcastEditType;
+use CTO\AppBundle\Form\BroadcastType;
 use CTO\AppBundle\Form\JobNotificationReminderType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -123,11 +122,11 @@ class NotificationsController extends Controller
                     $admin = $this->getUser();
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $carJob->getClient(), $admin);
+                        $senderSrv->sendNow($notification, $admin);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
-                            'clientId' => $carJob->getClient()->getId(),
+                            'broadcast' => false,
                             'adminId' => $admin->getId()
                         ], $this->getParameter('queue_name'), $notification->getWhenSend());
                         $notification->setResqueJobDescription($jobDescription);
@@ -156,6 +155,9 @@ class NotificationsController extends Controller
      */
     public function copyAction(Notification $notification, Request $request)
     {
+        /** @var CtoUser $admin */
+        $admin = $this->getUser();
+
         $newNotification = new Notification();
         $newNotification
             ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
@@ -166,6 +168,7 @@ class NotificationsController extends Controller
             ->setClientCto($notification->getClientCto())
             ->setWhenSend($notification->getWhenSend())
             ->setType(Notification::TYPE_NOTIFICATION)
+            ->setUserCto($admin)
             ->setDescription($notification->getDescription());
 
         /** @var CarJob $carJob */
@@ -183,15 +186,13 @@ class NotificationsController extends Controller
 
                 if ($newNotification->isAutoSending()) {
                     $senderSrv = $this->get('cto.sms.sender');
-                    /** @var CtoUser $admin */
-                    $admin = $this->getUser();
 
                     if ($newNotification->isSendNow()) {
-                        $senderSrv->sendNow($newNotification, $carJob->getClient(), $admin);
+                        $senderSrv->sendNow($newNotification, $admin);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $newNotification->getId(),
-                            'clientId' => $carJob->getClient()->getId(),
+                            'broadcast' => false,
                             'adminId' => $admin->getId()
                         ], $this->getParameter('queue_name'), $newNotification->getWhenSend());
                         $newNotification->setResqueJobDescription($jobDescription);
@@ -219,8 +220,16 @@ class NotificationsController extends Controller
      */
     public function broadcastAction(Request $request)
     {
-        $broadcastDto = new Broadcast();
-        $form = $this->createForm(new BroadcastType(), $broadcastDto);
+        /** @var CtoUser $admin */
+        $admin = $this->getUser();
+
+        $notification = new Notification();
+        $notification
+            ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
+            ->setUserCto($admin)
+            ->setType(Notification::TYPE_BROADCAST);
+
+        $form = $this->createForm(new BroadcastType(), $notification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
@@ -228,41 +237,22 @@ class NotificationsController extends Controller
 
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
-                $userIds = explode(',', $broadcastDto->getTo());
-                $users = $em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => $userIds]);
+                $em->persist($notification);
+                $em->flush();
 
-                /** @var CtoClient $client */
-                foreach ($users as $client) {
-                    $newNotification = new Notification();
-                    $newNotification
-                        ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
-                        ->setAdminCopy($broadcastDto->isAdminCopy())
-                        ->setAutoSending($broadcastDto->isAutoSending())
-                        ->setClientCto($client)
-                        ->setWhenSend($broadcastDto->getWhen())
-                        ->setType(Notification::TYPE_BROADCAST)
-                        ->setDescription($broadcastDto->getDescription());
-                    $em->persist($newNotification);
-                    $em->flush();
+                if ($notification->isAutoSending()) {
+                    $senderSrv = $this->get('cto.sms.sender');
 
-                    if ($newNotification->isAutoSending()) {
-                        $senderSrv = $this->get('cto.sms.sender');
-                        /** @var CtoUser $admin */
-                        $admin = $this->getUser();
-
-                        if ($newNotification->isSendNow()) {
-                            $senderSrv->sendNow($newNotification, $client, $admin);
-                        } else {
-                            $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
-                                'notificationId' => $newNotification->getId(),
-                                'clientId' => $client->getId(),
-                                'adminId' => $admin->getId()
-                            ], $this->getParameter('queue_name'), $newNotification->getWhenSend());
-                            $newNotification->setResqueJobDescription($jobDescription);
-                        }
+                    if ($notification->isSendNow()) {
+                        $senderSrv->sendNow($notification, $admin, true);
+                    } else {
+                        $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => true
+                        ], $this->getParameter('queue_name'), $notification->getWhenSend());
+                        $notification->setResqueJobDescription($jobDescription);
                     }
-                    $em->flush();
-                } // end foreach
+                }
 
                 $this->addFlash('success', 'Розсилка успішно створена.');
 
@@ -271,7 +261,8 @@ class NotificationsController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'method' => 'Створити'
         ];
     }
 
@@ -282,13 +273,13 @@ class NotificationsController extends Controller
      *
      * @Route("/broadcast/edit/{id}", name="cto_notification_broadcastEdit")
      * @Method({"GET", "POST"})
-     * @Template()
+     * @Template("@CTOApp/DashboardControllers/CTO/Notifications/broadcast.html.twig")
      */
     public function broadcastEditAction(Request $request, Notification $notification)
     {
         /** @var CtoUser $admin */
         $admin = $this->getUser();
-        $form = $this->createForm(new BroadcastEditType($admin), $notification);
+        $form = $this->createForm(new BroadcastType(), $notification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
@@ -296,22 +287,24 @@ class NotificationsController extends Controller
 
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
-                $this->get('cto.sms.sender')->stop($notification->getResqueJobDescription());
+                if ($notification->getResqueJobDescription()) {
+                    $this->get('cto.sms.sender')->stop($notification->getResqueJobDescription());
+                }
 
                 if ($notification->isAutoSending()) {
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $notification->getClientCto(), $admin);
+                        $senderSrv->sendNow($notification, $admin, true);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
-                            'clientId' => $notification->getClientCto()->getId(),
-                            'adminId' => $admin->getId()
+                            'broadcast' => true
                         ], $this->getParameter('queue_name'), $notification->getWhenSend());
                         $notification->setResqueJobDescription($jobDescription);
                     }
                 }
+
                 $em->flush();
                 $this->addFlash('success', 'Нагадування успішно відредаговано.');
 
@@ -320,7 +313,8 @@ class NotificationsController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'method' => 'Редагувати'
         ];
     }
 
@@ -331,23 +325,26 @@ class NotificationsController extends Controller
      *
      * @Route("/broadcast/copy/{id}", name="cto_notification_broadcastCopy")
      * @Method({"GET", "POST"})
-     * @Template("@CTOApp/DashboardControllers/CTO/Notifications/broadcastEdit.html.twig")
+     * @Template("@CTOApp/DashboardControllers/CTO/Notifications/broadcast.html.twig")
      */
     public function broadcastCopyAction(Request $request, Notification $notification)
     {
+        /** @var CtoUser $admin */
+        $admin = $this->getUser();
+
         $newNotification = new Notification();
         $newNotification
             ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
             ->setAdminCopy($notification->isAdminCopy())
             ->setAutoSending($notification->isAutoSending())
-            ->setClientCto($notification->getClientCto())
             ->setWhenSend($notification->getWhenSend())
+            ->setBroadcastTo($notification->getBroadcastTo())
             ->setType(Notification::TYPE_BROADCAST)
+            ->setUserCto($admin)
             ->setDescription($notification->getDescription());
 
-        /** @var CtoUser $admin */
-        $admin = $this->getUser();
-        $form = $this->createForm(new BroadcastEditType($admin), $newNotification);
+
+        $form = $this->createForm(new BroadcastType(), $newNotification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
@@ -358,20 +355,20 @@ class NotificationsController extends Controller
                 $em->persist($newNotification);
                 $em->flush();
 
-                if ($newNotification->isAutoSending()) {
+                if ($notification->isAutoSending()) {
                     $senderSrv = $this->get('cto.sms.sender');
 
-                    if ($newNotification->isSendNow()) {
-                        $senderSrv->sendNow($newNotification, $newNotification->getClientCto(), $admin);
+                    if ($notification->isSendNow()) {
+                        $senderSrv->sendNow($newNotification, $admin, true);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $newNotification->getId(),
-                            'clientId' => $newNotification->getClientCto()->getId(),
-                            'adminId' => $admin->getId()
+                            'broadcast' => true
                         ], $this->getParameter('queue_name'), $newNotification->getWhenSend());
                         $newNotification->setResqueJobDescription($jobDescription);
                     }
                 }
+
                 $em->flush();
                 $this->addFlash('success', 'Нагадування успішно створено.');
 
@@ -380,7 +377,8 @@ class NotificationsController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'method' => 'Копіювати'
         ];
     }
 

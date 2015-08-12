@@ -33,10 +33,11 @@
                     <td style="vertical-align: middle;">
                         {% if plannedItem.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
                             <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
+                            Розсилка
                         {% else %}
                             <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
+                            <a href="{{ path('cto_client_show', {'slug': plannedItem.clientCto.slug}) }}">{{ plannedItem.clientCto.fullName }}</a>
                         {% endif %}
-                        <a href="{{ path('cto_client_show', {'slug': plannedItem.clientCto.slug}) }}">{{ plannedItem.clientCto.fullName }}</a>
                     </td>
                     <td style="vertical-align: middle;">
                         {{ plannedItem.whenSend | date('d.m.Y H:i') }}
