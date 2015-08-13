@@ -146,6 +146,8 @@ class NotificationsController extends Controller
         }
 
         return [
+            'client' => $carJob->getClient()->getFullName(),
+            'auto' => $carJob->getCar()->getCarModel(),
             'form' => $form->createView()
         ];
     }
@@ -212,6 +214,8 @@ class NotificationsController extends Controller
         }
 
         return [
+            'client' => $carJob->getClient()->getFullName(),
+            'auto' => $carJob->getCar()->getCarModel(),
             'form' => $form->createView()
         ];
     }

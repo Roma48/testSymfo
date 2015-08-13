@@ -290,6 +290,8 @@ class JobsController extends JsonController
         }
 
         return [
+            'client' => $carJob->getClient()->getFullName(),
+            'auto' => $carJob->getCar()->getCarModel(),
             'jobId' => $carJob->getId(),
             'form' => $form->createView()
         ];

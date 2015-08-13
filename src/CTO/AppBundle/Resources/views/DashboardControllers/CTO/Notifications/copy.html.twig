@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3>
-                Створити нагадування:
+                Створити копію нагадування:
                 <div class="pull-right">
                     <a href="{{ path('cto_notification_home') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                 </div>
@@ -17,6 +17,11 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class=" well well-sm text-center">
+                Клієнт: <span class="font-bolder">{{ client }}</span>
+                &nbsp;&nbsp;Автомобіль: <span class="font-bolder">{{ auto }}</span>
+            </div>
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
