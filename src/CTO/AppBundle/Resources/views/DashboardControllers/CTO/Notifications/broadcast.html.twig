@@ -125,15 +125,12 @@
             // users To
             $.get(getUsersPath)
                 .done(function(response){
-                        var sendAll = {
-                            name: "Розіслати всім",
-                            id: -1
-                        };
+                    var sendAll = {
+                        name: "Розіслати всім",
+                        id: -1
+                    };
 
-                        console.dir("before " + response);
-                        response.users.push(sendAll);
-                        console.dir("after " + response);
-
+                    response.users.push(sendAll);
 
                     to.selectize(
                         {

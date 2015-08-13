@@ -32,7 +32,9 @@
 {% block javascripts %}
     <script>
         jQuery(function ($) {
-            $(".broadcast-tooltip").tooltip();
+            $(".broadcast-tooltip").tooltip({
+                html: true
+            });
         });
     </script>
 {% endblock javascripts %}

@@ -33,7 +33,7 @@
                     <td style="vertical-align: middle;">
                         {% if sentoutItem.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
                             <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
-                            <span data-toggle="tooltip" data-placement="bottom" title='rewrwe \n dsadsda' class="broadcast-tooltip">Розсилка</span>
+                            <span data-toggle="tooltip" data-placement="left" title="{{ sentoutItem.broadcastTo | userNames}}" class="broadcast-tooltip">Розсилка</span>
                         {% else %}
                             <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
                             <a href="{{ path('cto_client_show', {'slug': sentoutItem.clientCto.slug}) }}">{{ sentoutItem.clientCto.fullName }}</a>
