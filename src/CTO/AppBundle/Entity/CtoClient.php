@@ -97,7 +97,7 @@ class CtoClient implements \JsonSerializable
     function jsonSerialize()
     {
         return [
-            "id" => (string) $this->getId(),
+            "id" => $this->getId(),
             "name" => $this->getFullName()
         ];
     }

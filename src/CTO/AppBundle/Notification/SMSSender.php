@@ -56,7 +56,18 @@ class SMSSender implements WorkerInterface
     public function sendNow(Notification $notification, CtoUser $admin, $broadcast = false)
     {
         if ($broadcast) {
-            $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => explode(',', $notification->getBroadcastTo())]);
+
+            //   Broadcast
+
+            $iDs = explode(',', $notification->getBroadcastTo());
+
+            if (in_array('-1', $iDs)) {
+                $admin = $notification->getUserCto();
+                $users = $this->em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $admin);
+                $notification->setBroadcastTo(-1);
+            } else {
+                $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => $iDs]);
+            }
 
             /** @var CtoClient $user */
             foreach ($users as $user) {
@@ -73,6 +84,9 @@ class SMSSender implements WorkerInterface
                 }
             }
         } else {
+
+            //  Normal
+
             try {
                 $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$notification->getClientCto()->getPhone(), $notification->getDescription());
                 if ($notification->isAdminCopy()) {
@@ -110,7 +124,16 @@ class SMSSender implements WorkerInterface
         $admin = $notification->getUserCto();
 
         if ($broadcast) {
-            $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => explode(',', $notification->getBroadcastTo())]);
+
+            $iDs = explode(',', $notification->getBroadcastTo());
+
+            if (in_array('-1', $iDs)) {
+                $admin = $notification->getUserCto();
+                $users = $this->em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $admin);
+                $notification->setBroadcastTo(-1);
+            } else {
+                $users = $this->em->getRepository('CTOAppBundle:CtoClient')->findBy(['id' => $iDs]);
+            }
 
             /** @var CtoClient $user */
             foreach ($users as $user) {

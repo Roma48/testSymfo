@@ -98,4 +98,19 @@ class AjaxController extends Controller
 
         return new JsonResponse(['nitificationsCount' => (int)$notificationCount['NotifCount']]);
     }
+
+    /**
+     * @Route("/notifications/users", name="cto_notification_broadcastGetUsersAjax", options={"expose"=true})
+     * @Method("GET")
+     */
+    public function getUsersForBroadcastAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var CtoUser $user */
+        $user = $this->getUser();
+        $users = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $user);
+
+        return new JsonResponse(['users' => $users]);
+    }
 }

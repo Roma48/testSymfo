@@ -14,8 +14,9 @@
     </div>
 
     <ul class="nav nav-tabs" role="tablist" id="place-tab-sh">
-        <li class="{{ tabName == 'current' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'current' }) }}">Поточні</a></li>
-        <li class="{{ tabName == 'planned' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'planned' }) }}">Заплановані</a></li>
+        <li class="{{ tabName == 'current' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'current' }) }}">Сьогодні</a></li>
+        <li class="{{ tabName == 'planned' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'planned' }) }}">Майбутні</a></li>
+        <li class="{{ tabName == 'last' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'last' }) }}">Минулі</a></li>
         <li class="{{ tabName == 'sentout' ? 'active' }}"><a href="{{ path('cto_notification_home', { 'tabName' : 'sentout' }) }}">Виконані</a></li>
     </ul>
     <br>
@@ -43,6 +44,11 @@
 {% block planned %}
     {% include '@CTOApp/DashboardControllers/CTO/Notifications/includes/planned.html.twig' %}
 {% endblock planned %}
+
+{% block last %}
+    {% include '@CTOApp/DashboardControllers/CTO/Notifications/includes/last.html.twig' %}
+{% endblock last %}
+
 
 {% block sentout %}
     {% include '@CTOApp/DashboardControllers/CTO/Notifications/includes/sentout.html.twig' %}

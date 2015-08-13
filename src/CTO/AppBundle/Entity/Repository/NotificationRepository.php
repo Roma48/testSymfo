@@ -33,12 +33,11 @@ class NotificationRepository extends EntityRepository
             ->getResult();
     }
 
-    public function getPlanned(CtoUser $user, $from, $to)
+    public function getPlanned(CtoUser $user, $to)
     {
         return $this->createQueryBuilder('j')
             ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
-            ->andWhere('j.whenSend < :from')->setParameter('from', $from)
-            ->orWhere('j.whenSend > :to')->setParameter('to', $to)
+            ->andWhere('j.whenSend > :to')->setParameter('to', $to)
             ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
             ->orderBy('j.whenSend', 'ASC')
             ->getQuery()
@@ -50,6 +49,17 @@ class NotificationRepository extends EntityRepository
         return $this->createQueryBuilder('j')
             ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
             ->andWhere('j.status <> :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
+            ->orderBy('j.whenSend', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getLast(CtoUser $user, $from)
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.userCto = :cto')->setParameter('cto', $user)
+            ->andWhere('j.whenSend < :from')->setParameter('from', $from)
+            ->andWhere('j.status = :inprogress')->setParameter('inprogress', Notification::STATUS_SEND_IN_PROGRESS)
             ->orderBy('j.whenSend', 'DESC')
             ->getQuery()
             ->getResult();

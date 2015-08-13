@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
-use CTO\AppBundle\Entity\DTO\Broadcast;
 use CTO\AppBundle\Entity\Notification;
 use CTO\AppBundle\Form\BroadcastType;
 use CTO\AppBundle\Form\JobNotificationReminderType;
@@ -24,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 class NotificationsController extends Controller
 {
     /**
-     * @Route("/{tabName}", name="cto_notification_home", defaults={"tabName"="current"}, requirements={"tabName" = "current|planned|sentout"})
+     * @Route("/{tabName}", name="cto_notification_home", defaults={"tabName"="current"}, requirements={"tabName" = "current|planned|sentout|last"})
      * @Method("GET")
      * @Template()
      */
@@ -39,8 +38,9 @@ class NotificationsController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $currentsR = $em->getRepository('CTOAppBundle:Notification')->getCurrents($user, $from, $to);
-        $plannedR = $em->getRepository('CTOAppBundle:Notification')->getPlanned($user, $from, $to);
+        $plannedR = $em->getRepository('CTOAppBundle:Notification')->getPlanned($user, $to);
         $sentOutR = $em->getRepository('CTOAppBundle:Notification')->getSentOut($user);
+        $lastsR  = $em->getRepository('CTOAppBundle:Notification')->getLast($user, $from);
 
         $paginator = $this->get('knp_paginator');
 
@@ -59,11 +59,17 @@ class NotificationsController extends Controller
             $this->get('request')->query->get('page', 1),
             $this->container->getParameter('pagination')
         );
+        $lasts = $paginator->paginate(
+            $lastsR,
+            $this->get('request')->query->get('page', 1),
+            $this->container->getParameter('pagination')
+        );
 
         return [
             'tabName' => $tabName,
             'currents' => $currents,
             'planned' => $planned,
+            'lasts' => $lasts,
             'sentout' => $sentOut
         ];
     }
@@ -380,20 +386,5 @@ class NotificationsController extends Controller
             'form' => $form->createView(),
             'method' => 'Копіювати'
         ];
-    }
-
-    /**
-     * @Route("/users", name="cto_notification_broadcastGetUsersAjax", options={"expose"=true})
-     * @Method("GET")
-     */
-    public function getUsersForBroadcastAction()
-    {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-        /** @var CtoUser $user */
-        $user = $this->getUser();
-        $users = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $user);
-
-        return new JsonResponse(['users' => $users]);
     }
 }
