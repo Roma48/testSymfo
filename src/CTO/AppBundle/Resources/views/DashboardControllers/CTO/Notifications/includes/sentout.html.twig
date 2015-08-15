@@ -46,7 +46,7 @@
                         {{ sentoutItem.description }}
                     </td>
                     <td style="vertical-align: middle;">
-                        {% if sentoutItem.jobCategory is defined %}
+                        {% if sentoutItem.jobCategory.name is defined %}
                             {{ sentoutItem.jobCategory.name }}
                         {% endif %}
                     </td>

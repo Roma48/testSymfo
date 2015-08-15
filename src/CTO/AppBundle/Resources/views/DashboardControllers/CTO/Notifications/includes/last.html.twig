@@ -46,7 +46,7 @@
                         {{ last.description }}
                     </td>
                     <td style="vertical-align: middle;">
-                        {% if last.jobCategory is defined %}
+                        {% if last.jobCategory.name is defined %}
                             {{ last.jobCategory.name }}
                         {% endif %}
                     </td>
