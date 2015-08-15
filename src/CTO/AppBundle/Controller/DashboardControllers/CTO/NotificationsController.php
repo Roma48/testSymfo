@@ -4,7 +4,6 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarJob;
-use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
 use CTO\AppBundle\Entity\Notification;
 use CTO\AppBundle\Form\BroadcastType;
@@ -112,7 +111,7 @@ class NotificationsController extends Controller
     {
         /** @var CarJob $carJob */
         $carJob = $notification->getCarJob();
-        $form = $this->createForm(new JobNotificationReminderType($carJob), $notification);
+        $form = $this->createForm(new JobNotificationReminderType(), $notification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
@@ -172,7 +171,7 @@ class NotificationsController extends Controller
             ->setAdminCopy($notification->isAdminCopy())
             ->setAutoSending($notification->isAutoSending())
             ->setCarJob($notification->getCarJob())
-            ->setCarJobCategory($notification->getCarJobCategory())
+            ->setJobCategory($notification->getJobCategory())
             ->setClientCto($notification->getClientCto())
             ->setWhenSend($notification->getWhenSend())
             ->setType(Notification::TYPE_NOTIFICATION)
@@ -181,7 +180,7 @@ class NotificationsController extends Controller
 
         /** @var CarJob $carJob */
         $carJob = $notification->getCarJob();
-        $form = $this->createForm(new JobNotificationReminderType($carJob), $newNotification);
+        $form = $this->createForm(new JobNotificationReminderType(), $newNotification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);

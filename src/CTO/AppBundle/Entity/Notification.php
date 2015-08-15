@@ -85,9 +85,9 @@ class Notification
     protected $carJob;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CarCategory")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\JobCategory")
      */
-    protected $carJobCategory;
+    protected $jobCategory;
 
     /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser")
@@ -302,25 +302,6 @@ class Notification
     }
 
     /**
-     * @return CarCategory
-     */
-    public function getCarJobCategory()
-    {
-        return $this->carJobCategory;
-    }
-
-    /**
-     * @param CarCategory $carJobCategory
-     * @return Notification
-     */
-    public function setCarJobCategory(CarCategory $carJobCategory)
-    {
-        $this->carJobCategory = $carJobCategory;
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
     public function isAdminCopy()
@@ -354,6 +335,25 @@ class Notification
     public function setResqueJobDescription($resqueJobDescription)
     {
         $this->resqueJobDescription = $resqueJobDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return JobCategory
+     */
+    public function getJobCategory()
+    {
+        return $this->jobCategory;
+    }
+
+    /**
+     * @param JobCategory $jobCategory
+     * @return Notification
+     */
+    public function setJobCategory(JobCategory $jobCategory)
+    {
+        $this->jobCategory = $jobCategory;
 
         return $this;
     }

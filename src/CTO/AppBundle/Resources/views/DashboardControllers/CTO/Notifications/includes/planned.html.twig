@@ -46,8 +46,8 @@
                         {{ plannedItem.description }}
                     </td>
                     <td style="vertical-align: middle;">
-                        {% if plannedItem.carJobCategory.jobCategory.name is defined %}
-                            {{ plannedItem.carJobCategory.jobCategory.name }}
+                        {% if plannedItem.jobCategory is defined %}
+                            {{ plannedItem.jobCategory.name }}
                         {% endif %}
                     </td>
                     <td style="vertical-align: middle;">

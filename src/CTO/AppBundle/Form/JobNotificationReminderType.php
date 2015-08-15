@@ -10,22 +10,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class JobNotificationReminderType extends AbstractType
 {
-    /** @var  CarJob */
-    private $carJob;
-
-    public function __construct(CarJob $carJob)
-    {
-        $this->carJob = $carJob;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('carJobCategory', 'entity', [
-                'class' => 'CTO\AppBundle\Entity\CarCategory',
+            ->add('jobCategory', 'entity', [
+                'class' => 'CTO\AppBundle\Entity\JobCategory',
                 'label' => 'Категорія ремонту',
-                'attr' => ['class' => 'form-control'],
-                'choices' => $this->carJob->getCarCategories()
+                'property' => 'name',
+                'attr' => ['class' => 'form-control']
             ])
             ->add('description', 'textarea', [
                 'attr' => ['class' => 'form-control notification-description'],

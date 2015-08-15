@@ -256,7 +256,7 @@ class JobsController extends JsonController
             ->setUserCto($admin)
             ->setClientCto($carJob->getClient());
 
-        $form = $this->createForm(new JobNotificationReminderType($carJob), $notification);
+        $form = $this->createForm(new JobNotificationReminderType(), $notification);
 
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);

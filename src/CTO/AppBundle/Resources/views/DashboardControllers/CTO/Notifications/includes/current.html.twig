@@ -50,8 +50,8 @@
                             {{ current.description }}
                         </td>
                         <td style="vertical-align: middle;">
-                            {% if current.carJobCategory.jobCategory.name is defined %}
-                                {{ current.carJobCategory.jobCategory.name }}
+                            {% if current.jobCategory is defined %}
+                                {{ current.jobCategory.name }}
                             {% endif %}
                         </td>
                         <td style="vertical-align: middle;">
