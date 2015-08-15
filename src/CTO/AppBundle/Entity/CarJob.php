@@ -78,6 +78,11 @@ class CarJob implements \JsonSerializable
     protected $paidSalaryJob;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Recommendation", mappedBy="job", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $recommendations;
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -106,6 +111,7 @@ class CarJob implements \JsonSerializable
         $this->spendingJob = new ArrayCollection();
         $this->usedMaterialsJob = new ArrayCollection();
         $this->paidSalaryJob = new ArrayCollection();
+        $this->recommendations = new ArrayCollection();
         $this->totalCost = 0;
         $this->totalSpend = 0;
         $this->tmpHash = uniqid("", true);
@@ -360,5 +366,33 @@ class CarJob implements \JsonSerializable
         $this->tmpHash = $tmpHash;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getRecommendations()
+    {
+        return $this->recommendations;
+    }
+
+    /**
+     * @param Recommendation $recommendation
+     * @return CarJob
+     */
+    public function addRecommendation(Recommendation $recommendation)
+    {
+        $recommendation->setJob($this);
+        $this->recommendations->add($recommendation);
+
+        return $this;
+    }
+
+    /**
+     * @param Recommendation $recommendation
+     */
+    public function removeRecommendation(Recommendation $recommendation)
+    {
+        $this->recommendations->removeElement($recommendation);
     }
 }

@@ -17,7 +17,7 @@ class Notification
     use CreateUpdateTrait;
 
     const TYPE_NOTIFICATION = 'notification';
-    const TYPE_RECOMENDATION = 'recomendation';
+    const TYPE_RECOMMENDATION = 'recommendation';
     const TYPE_BROADCAST = 'broadcast';
     const STATUS_SEND_OK = 'ok';
     const STATUS_SEND_IN_PROGRESS = 'in-progress';
@@ -124,10 +124,14 @@ class Notification
 
     /**
      * @param mixed $description
+     * @return Notification
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+
+        return $this;
     }
 
     /**

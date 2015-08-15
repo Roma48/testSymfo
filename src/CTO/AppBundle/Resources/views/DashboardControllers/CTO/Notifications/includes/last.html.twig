@@ -34,8 +34,11 @@
                         {% if last.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_BROADCAST') %}
                             <span title="Розсилка"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;</span>
                             <span data-toggle="tooltip" data-placement="left" title="{{ last.broadcastTo | userNames }}" class="broadcast-tooltip">Розсилка</span>
-                        {% else %}
+                        {% elseif last.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_NOTIFICATION') %}
                             <span title="Нагадування">&nbsp;&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;</span>
+                            <a href="{{ path('cto_client_show', {'slug': last.clientCto.slug}) }}">{{ last.clientCto.fullName }}</a>
+                        {% elseif last.type == constant('CTO\\AppBundle\\Entity\\Notification::TYPE_RECOMMENDATION') %}
+                            <span title="Рекомендація">&nbsp;<i class="fa fa-pinterest-p"></i>&nbsp;&nbsp;</span>
                             <a href="{{ path('cto_client_show', {'slug': last.clientCto.slug}) }}">{{ last.clientCto.fullName }}</a>
                         {% endif %}
                     </td>

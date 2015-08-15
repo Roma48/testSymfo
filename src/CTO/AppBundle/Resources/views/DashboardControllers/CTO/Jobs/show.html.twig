@@ -1,13 +1,58 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+
+    <!-- Modal for create new client -->
+    <div class="modal fade" id="addRecommendationModal" tabindex="-1" role="dialog" aria-labelledby="addRecommendationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Додати рекомендації:</h4>
+                </div>
+                <div class="modal-body">
+
+                    {{ form_start(form, {'attr': {'id': 'addRecommendationForm'}}) }}
+                        <div id="recommendations_collection">
+                            <ul class="recommendations-ul" data-prototype="{{ form_widget(form.recommendations.vars.prototype)|e }}">
+                                {% for recommendation in form.recommendations %}
+                                    <li>
+                                        <div class="error-handling">
+                                            {{ form_label(recommendation.title) }}
+                                            {{ form_widget(recommendation.title) }}
+                                            {{ form_errors(recommendation.title) }}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <br>
+                        <div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-success" id="addRecommendationSubmit">Виконати</button>
+                            </div>
+                            <p id="addRecommendationForm_Errors" style="color: red; font-weight: bolder; margin-top: 10px;"></p>
+                        </div>
+                        <div class="hidden">
+                            {{ form_rest(form) }}
+                        </div>
+                    {{ form_end(form) }}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3>
                 Деталі завдання
                 <div class="pull-right">
                     <a href="{{ path('cto_jobs_print', {'id': job.id}) }}" target="_blank" class="btn btn-sm btn-info">Роздрукувати</a>
-                    <a href="#" class="btn btn-sm btn-success">Додати рекомендацію</a>
+                    <a href="#" class="btn btn-sm btn-success" id="addRecommendationButton">Додати рекомендацію</a>
                     <a href="{{ path('cto_jobs_addReminder', {'jobId': job.id}) }}" class="btn btn-sm btn-success">Додати нагадування</a>
                     <a href="{{ path('cto_jobs_list') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Назад</a>
                 </div>
@@ -88,5 +133,97 @@
                     </div>
                 {% endif %}
         </div>
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h4 class="text-center"><u>Рекомендації:</u></h4>
+            {% if job.recommendations | length > 0 %}
+                <div class="well well-sm">
+                    {% for recommendation in job.recommendations %}
+                        <div class="recommendation-item">
+                            {{ loop.index }}. {{ recommendation.title }}
+                            <div class="pull-right">
+                                <a href="{{ path('cto_jobs_addRecomendation', {'jobId': job.id, 'recommendId': recommendation.id}) }}">Створити нагадування</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
     </div>
 {% endblock %}
+
+{% block javascripts %}
+{#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
+{#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
+
+<script>
+    jQuery(function ($) {
+
+        var recommendationForm = $("#addRecommendationForm");
+//        recommendationForm.on('submit', function(e) {
+//            e.preventDefault();
+//        });
+
+        var addRecommendationsBtn = $("#addRecommendationButton");
+        var modal = $("#addRecommendationModal");
+        var recommendationForm_Errors = $("#addRecommendationForm_Errors");
+
+        var $collectionHolder;
+        var $addTagLink = $('<br><a href="#" class="bnt btn-sm btn-info">Додати рекомендацію</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        $collectionHolder = $('#recommendations_collection ul.recommendations-ul');
+        $collectionHolder.append($newLinkLi);
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        $collectionHolder.find('li').each(function() {
+            addCarFormDeleteLink($(this));
+        });
+        $addTagLink.on('click', function(e) {
+            e.preventDefault();
+            addCarForm($collectionHolder, $newLinkLi);
+        });
+
+        function addCarFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-xs btn-danger delete-except-date">Видалити</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                e.preventDefault();
+                $tagFormLi.remove();
+            });
+        }
+
+        function addCarForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+
+            addCarFormDeleteLink($newFormLi);
+        }
+
+        addRecommendationsBtn.click(function(e){
+            e.preventDefault();
+
+            modal.modal('show');
+        });
+
+        $("#addRecommendationSubmit").click(function(){
+
+            if (($collectionHolder.find('li').length - 1) == 0) {
+                recommendationForm_Errors.html('Необхідно додати мінімум одну рекомендацію');
+            } else {
+                recommendationForm_Errors.html('');
+
+                // OK and submit form
+                recommendationForm.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock javascripts %}

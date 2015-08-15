@@ -174,7 +174,7 @@ class NotificationsController extends Controller
             ->setJobCategory($notification->getJobCategory())
             ->setClientCto($notification->getClientCto())
             ->setWhenSend($notification->getWhenSend())
-            ->setType(Notification::TYPE_NOTIFICATION)
+            ->setType($notification->getType())
             ->setUserCto($admin)
             ->setDescription($notification->getDescription());
 

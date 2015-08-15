@@ -43,6 +43,14 @@
                 {{ balance | number_format(2, '.', ',') }} грн.
             </p>
 
+            <p>
+                Можна відправити приблизно:
+                <span class="font-bolder">
+                    {{ (balance / 0.2) | round(0, 'floor') }}
+                </span>
+                повідомлень
+            </p>
+
         </div>
     </div>
 

@@ -5,7 +5,9 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoUser;
+use CTO\AppBundle\Entity\JobsRecommendationsType;
 use CTO\AppBundle\Entity\Notification;
+use CTO\AppBundle\Entity\Recommendation;
 use CTO\AppBundle\Form\CarJobType;
 use CTO\AppBundle\Form\CtoCarJobFilterType;
 use CTO\AppBundle\Form\JobNotificationReminderType;
@@ -220,15 +222,32 @@ class JobsController extends JsonController
 
     /**
      * @Route("/show/{id}", name="cto_jobs_show", options={"expose" = true})
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      * @Template()
      * @param CarJob $carJob
      * @return array
      */
-    public function showAction(CarJob $carJob)
+    public function showAction(CarJob $carJob, Request $request)
     {
+        $form = $this->createForm(new JobsRecommendationsType(), $carJob);
+
+        if ($request->getMethod() == Request::METHOD_POST) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                return [
+                    'form' => $form->createView(),
+                    'job' => $carJob
+                ];
+            }
+        }
 
         return [
+            'form' => $form->createView(),
             'job' => $carJob
         ];
     }
@@ -238,7 +257,7 @@ class JobsController extends JsonController
      * @param Request $request
      * @return JsonResponse
      *
-     * @Route("/show/{jobId}/reminder", name="cto_jobs_addReminder")
+     * @Route("/{jobId}/reminder", name="cto_jobs_addReminder")
      * @Method({"GET", "POST"})
      * @ParamConverter("carJob", class="CTOAppBundle:CarJob", options={"id"="jobId"})
      * @Template()
@@ -293,6 +312,75 @@ class JobsController extends JsonController
             'client' => $carJob->getClient()->getFullName(),
             'auto' => $carJob->getCar()->getCarModel(),
             'jobId' => $carJob->getId(),
+            'type' => 'нагадування',
+            'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @param CarJob $carJob
+     * @param Recommendation $recommendation
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{jobId}/recommendation/{recommendId}", name="cto_jobs_addRecomendation")
+     * @Method({"GET", "POST"})
+     * @ParamConverter("carJob", class="CTOAppBundle:CarJob", options={"id"="jobId"})
+     * @ParamConverter("recommendation", class="CTOAppBundle:Recommendation", options={"id"="recommendId"})
+     * @Template("@CTOApp/DashboardControllers/CTO/Jobs/addReminder.html.twig")
+     */
+    public function addRecommendationAction(CarJob $carJob, Recommendation $recommendation, Request $request)
+    {
+        /** @var CtoUser $admin */
+        $admin = $this->getUser();
+
+        $notification = new Notification();
+        $notification
+            ->setType(Notification::TYPE_RECOMMENDATION)
+            ->setStatus(Notification::STATUS_SEND_IN_PROGRESS)
+            ->setDescription($recommendation->getTitle())
+            ->setCarJob($carJob)
+            ->setUserCto($admin)
+            ->setClientCto($carJob->getClient());
+
+        $form = $this->createForm(new JobNotificationReminderType(), $notification);
+
+        if ($request->getMethod() == Request::METHOD_POST) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($notification);
+                $em->flush();
+
+                if ($notification->isAutoSending()) {
+                    $senderSrv = $this->get('cto.sms.sender');
+
+                    if ($notification->isSendNow()) {
+                        $senderSrv->sendNow($notification, $admin);
+                    } else {
+                        $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => false
+                        ], $this->getParameter('queue_name'), $notification->getWhenSend());
+                        $notification->setResqueJobDescription($jobDescription);
+                    }
+                }
+
+                $em->flush();
+
+                $this->addFlash('success', 'Нагадування успішно створено.');
+
+                return $this->redirectToRoute('cto_jobs_show', ['id' => $carJob->getId()]);
+            }
+        }
+
+        return [
+            'client' => $carJob->getClient()->getFullName(),
+            'auto' => $carJob->getCar()->getCarModel(),
+            'jobId' => $carJob->getId(),
+            'type' => 'рекомендацію',
             'form' => $form->createView()
         ];
     }

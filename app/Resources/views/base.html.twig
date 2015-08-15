@@ -35,7 +35,7 @@
 
     {% block body %}
     {% endblock body %}
-
+    <br>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         {#<div class="footer-nav">#}
             {#<hr>#}
@@ -44,6 +44,7 @@
             {#</h4>#}
         {#</div>#}
     {% endif %}
+    <br>
 </div>
 
 <script src="{{ asset('js/vendors.min.js') }}"></script>
