@@ -2,8 +2,8 @@
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-md-3 col-md-offset-5 col-lg-3 col-lg-offset-5 col-sm-6 col-sm-offset-3">
+    <div class="row no-margin">
+        <div class="col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3">
             <div class="login-form text-center" style="margin-top: 200px;">
                 {{ form_start(form, { 'attr': {'id': 'login_form'} }) }}
 
@@ -15,17 +15,17 @@
                     </div>
                 {% endif %}
 
-                <h3>Login form </h3>
+                <h3>Моє СТО</h3>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                     {{ form_widget(form.email, {'attr': {'placeholder': 'Email', 'class': 'form-control' } } ) }}
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-                    {{ form_widget(form.password, {'attr': {'placeholder': 'Password', 'class': 'form-control'} } ) }}
+                    {{ form_widget(form.password, {'attr': {'placeholder': 'Пароль', 'class': 'form-control'} } ) }}
                 </div>
                 <br>
-                <button type="submit" class="btn btn-default"><i class="fa fa-sign-in"></i>&nbsp;&nbsp;Sign in</button>
+                <button type="submit" class="btn btn-default"><i class="fa fa-sign-in"></i>&nbsp;&nbsp;Увійти</button>
                 {{ form_end(form) }}
             </div>
         </div>
