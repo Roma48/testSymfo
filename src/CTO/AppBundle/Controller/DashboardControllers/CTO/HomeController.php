@@ -4,7 +4,9 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 
 use Carbon\Carbon;
 use CTO\AppBundle\Entity\CtoUser;
+use CTO\AppBundle\Entity\DTO\FinancialArchive;
 use CTO\AppBundle\Form\CtoUserType;
+use CTO\AppBundle\Form\DTO\FinancialArchiveYearType;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -69,31 +71,33 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/finance", name="ctoUser_financial_story")
-     * @Method("GET")
+     * @param $year
+     * @param Request $request
+     * @return array
+     *
+     * @Route("/finance/{year}", name="cto_finance_archive")
+     * @Method({"GET", "POST"})
      * @Template()
      */
-    public function financialArchiveAction()
+    public function financialReportByYearAction($year, Request $request)
     {
+        $yearObj = new FinancialArchive();
+        $yearObj->setYear($year);
+        $form = $this->createForm(new FinancialArchiveYearType(), $yearObj);
+        $result = [];
+
+        $form->handleRequest($request);
+
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         /** @var CtoUser $user */
         $user = $this->getUser();
 
-        $result = [];
-        $firstJob = $em->getRepository('CTOAppBundle:CarJob')->getOneJobByCTOUser($user, 'ASC');
-        $lastJob = $em->getRepository('CTOAppBundle:CarJob')->getOneJobByCTOUser($user, 'DESC');
+        $startYear = Carbon::createFromDate((int)$yearObj->getYear())->startOfYear();
+        $endYear = $startYear->copy()->endOfYear();
 
-        if (count($firstJob) == 0 and count($lastJob) == 0) {
-
-            return ['results' => $result];
-        }
-
-        $firstJobDate = Carbon::createFromFormat('Y-m-d', $firstJob[0]->getJobDate()->format('Y-m-d'));
-        $lastJobDate = Carbon::createFromFormat('Y-m-d', $lastJob[0]->getJobDate()->format('Y-m-d'));
-
-        while ($firstJobDate <= $lastJobDate ) {
-            $month = $this->getStartAndFinishMonth($firstJobDate);
+        while ($startYear <= $endYear) {
+            $month = $this->getStartAndFinishMonth($startYear);
             $finReport = $em->getRepository("CTOAppBundle:CarJob")->totalFinancialReportForMonth($month['start'], $month['finish'], $user);
 
             $result[] = [
@@ -103,10 +107,13 @@ class HomeController extends Controller
                 'money' => $finReport['money']
             ];
 
-            $firstJobDate->addMonth();
+            $startYear->addMonth();
         }
 
-        return ['results' => $result];
+        return [
+            'form' => $form->createView(),
+            'results' => $result
+        ];
     }
 
     /**

@@ -21,7 +21,7 @@
                 <p><span class="font-bolder">Відремонтовано автомобілів: </span>{{ repairCars }}</p>
                 <p><span class="font-bolder">Зароблено:</span> {{ money | number_format(2, '.', ',') }} грн.</p>
             </div>
-            <a href="{{ path('ctoUser_financial_story') }}">Фінансовий архів.</a>
+            <a href="{{ path('cto_finance_archive', {'year': 'now' | date('Y') }) }}">Фінансовий архів.</a>
 
         </div>
     </div>
