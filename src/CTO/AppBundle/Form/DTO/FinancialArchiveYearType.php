@@ -5,7 +5,6 @@ namespace CTO\AppBundle\Form\DTO;
 use Carbon\Carbon;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FinancialArchiveYearType extends AbstractType
 {
