@@ -16,7 +16,7 @@
 
             {% if app.user and is_granted('ROLE_ADMIN') %}
                 <a class="navbar-brand" href="{{ path('adminUser_home') }}">
-                    Admin menu
+                    Панель керування адміністратора
                 </a>
             {% endif %}
 
@@ -60,7 +60,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.firstName }} {{ app.user.lastName }}&nbsp;&nbsp;<span class="caret"></span>&nbsp;&nbsp;</a>
                     <ul class="dropdown-menu">
                         {% if app.user and is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path('cto_admin_settings_show') }}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування ADM</a></li>
+                            <li><a href="{{ path('cto_admin_settings_show') }}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування Адм</a></li>
                         {% endif %}
                         {% if app.user and is_granted('ROLE_CTO') %}
                             <li><a href="{{ path('ctoUser_settings_edit') }}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Налаштування CTO</a></li>

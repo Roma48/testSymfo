@@ -29,7 +29,7 @@ class CarsController extends Controller
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $cars = $em->getRepository('CTOAppBundle:Car')->findAll();
+        $cars = $em->getRepository('CTOAppBundle:Car')->findBy([], ['name' => 'ASC']);
 
         return [
             "cars" => $cars,
@@ -106,7 +106,11 @@ class CarsController extends Controller
      */
     public function getModelsByCarAction(Car $car)
     {
-        return new JsonResponse($car->getModels()->getValues());
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $models = $em->getRepository('CTOAppBundle:Model')->findBy(['car' => $car], ['name' => 'ASC']);
+
+        return new JsonResponse($models);
     }
 
     /**
