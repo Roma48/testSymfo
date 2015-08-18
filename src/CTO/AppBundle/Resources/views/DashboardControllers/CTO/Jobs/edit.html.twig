@@ -151,7 +151,8 @@
                                                 "properties": {
                                                     "description": {
                                                         "type": "string",
-                                                        "title": "Опис"
+                                                        "title": "Опис",
+                                                        "required": true
                                                     },
                                                     "price": {
                                                         "type": "number",
@@ -171,7 +172,8 @@
                                     "properties": {
                                         "description": {
                                             "type": "string",
-                                            "title": "Опис"
+                                            "title": "Опис",
+                                            "required": true
                                         },
                                         "price": {
                                             "type": "number",
@@ -188,7 +190,8 @@
                                     "properties": {
                                         "description": {
                                             "type": "string",
-                                            "title": "Опис"
+                                            "title": "Опис",
+                                            "required": true
                                         },
                                         "price": {
                                             "type": "number",
@@ -205,7 +208,8 @@
                                     "properties": {
                                         "description": {
                                             "type": "string",
-                                            "title": "Кому"
+                                            "title": "Кому",
+                                            "required": true
                                         },
                                         "price": {
                                             "type": "number",
@@ -379,8 +383,30 @@
                 ],
                 "value": {},
                 onSubmit: function(errors, values){
+
                     var submitUrl = Routing.generate('cto_jobs_edit_fromJSONFORM', {"id": jobId});
                     var returnUrl = Routing.generate('cto_jobs_show', {"id": jobId});
+
+                    /////////////////////////////////////////////////////////////////
+                    var checkEmptyCat = false;
+                    var doubleCheck = false;
+                    values.car_job.carCategories.forEach(function(el){
+
+                        if (el.jobDescriptions) {
+                            checkEmptyCat = true;
+                        } else {
+                            checkEmptyCat = false;
+                            doubleCheck = true;
+                        }
+                    });
+
+                    if (!checkEmptyCat || doubleCheck) {
+                        res.html('<div class="alert alert-danger" role="alert">Категорія завдання не повинна бути пустою.</div>');
+
+                        return;
+                    }
+                    /////////////////////////////////////////////////////////////////
+
 
                     if (errors) {
                         var subm = false;

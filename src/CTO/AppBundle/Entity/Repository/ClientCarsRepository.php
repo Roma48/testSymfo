@@ -41,13 +41,13 @@ class ClientCarsRepository extends EntityRepository
                 ->setParameter('model', $filterData['model']);
         }
         if (array_key_exists('dateFrom', $filterData)) {
-            $qb->join('c.ctoClient', 'cl')
-                ->andWhere('cl.lastVisitDate >= :dateFrom')
+            $qb->join('c.ctoClient', 'clq')
+                ->andWhere('clq.lastVisitDate >= :dateFrom')
                 ->setParameter('dateFrom', new DateTime($filterData['dateFrom']));
         }
         if (array_key_exists('dateTo', $filterData)) {
-            $qb->join('c.ctoClient', 'cl')
-                ->andWhere('cl.lastVisitDate <= :dateTo')
+            $qb->join('c.ctoClient', 'clz')
+                ->andWhere('clz.lastVisitDate <= :dateTo')
                 ->setParameter('dateTo', new DateTime($filterData['dateTo']));
         }
         $qb

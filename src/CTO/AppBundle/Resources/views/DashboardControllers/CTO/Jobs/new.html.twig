@@ -145,7 +145,8 @@
                                             "properties": {
                                                 "description": {
                                                     "type": "string",
-                                                    "title": "Опис"
+                                                    "title": "Опис",
+                                                    "required": true
                                                 },
                                                 "price": {
                                                     "type": "number",
@@ -165,7 +166,8 @@
                                 "properties": {
                                     "description": {
                                         "type": "string",
-                                        "title": "Опис"
+                                        "title": "Опис",
+                                        "required": true
                                     },
                                     "price": {
                                         "type": "number",
@@ -182,7 +184,8 @@
                                 "properties": {
                                     "description": {
                                         "type": "string",
-                                        "title": "Опис"
+                                        "title": "Опис",
+                                        "required": true
                                     },
                                     "price": {
                                         "type": "number",
@@ -199,7 +202,8 @@
                                 "properties": {
                                     "description": {
                                         "type": "string",
-                                        "title": "Кому"
+                                        "title": "Кому",
+                                        "required": true
                                     },
                                     "price": {
                                         "type": "number",
@@ -300,14 +304,7 @@
                             {
                                 "type": "array",
                                 "items": [
-//                                    {
-//                                        "key": "car_job.carCategories[].jobDescriptions[].description"
-//                                    },
                                     "car_job.carCategories[].jobDescriptions[]"
-//                                  {
-//                                      "key": "car_job.carCategories[].jobDescriptions[].price",
-//                                      "type": "number"
-//                                  }
                                 ]
                             }
                         ]
@@ -373,6 +370,27 @@
                 }
             ],
             onSubmit: function(errors, values){
+
+                /////////////////////////////////////////////////////////////////
+                var checkEmptyCat = false;
+                var doubleCheck = false;
+                values.car_job.carCategories.forEach(function(el){
+
+                    if (el.jobDescriptions) {
+                        checkEmptyCat = true;
+                    } else {
+                        checkEmptyCat = false;
+                        doubleCheck = true;
+                    }
+                });
+
+                if (!checkEmptyCat || doubleCheck) {
+                    res.html('<div class="alert alert-danger" role="alert">Категорія завдання не повинна бути пустою.</div>');
+
+                    return;
+                }
+                /////////////////////////////////////////////////////////////////
+
                 var submitUrl = Routing.generate('cto_jobs_new_fromJSONFORM');
 
                 if (errors) {

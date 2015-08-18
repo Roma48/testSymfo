@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ClientsController extends Controller
 {
     /**
-     * @Route("/", name="cto_clients_home")
+     * @Route("/", name="cto_client_home")
      * @Method("GET")
      * @Template()
      */
@@ -81,7 +81,7 @@ class ClientsController extends Controller
 
                 $this->addFlash('success', "Клієнт {$client->getFirstName()} {$client->getLastName()} успішно створено.");
 
-                return $this->redirect($this->generateUrl('cto_clients_home'));
+                return $this->redirect($this->generateUrl('cto_client_home'));
             }
         }
 
@@ -114,7 +114,7 @@ class ClientsController extends Controller
 
                 $this->addFlash('success', "Клієнт {$ctoClient->getFirstName()} {$ctoClient->getLastName()} успішно відредаговано.");
 
-                return $this->redirect($this->generateUrl('cto_clients_home'));
+                return $this->redirect($this->generateUrl('cto_client_home'));
             }
         }
 

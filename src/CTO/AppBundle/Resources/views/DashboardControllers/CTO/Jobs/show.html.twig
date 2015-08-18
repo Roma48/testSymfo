@@ -105,8 +105,8 @@
 
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <h4 class="text-center"><u>Витрати СТО:</u></h4>
-            <h5>&nbsp;&nbsp;&nbsp;Затрачено на деталі</h5>
-                {% if job.spendingJob | length > 0 %}
+            {% if job.spendingJob | length > 0 %}
+                <h5>&nbsp;&nbsp;&nbsp;Затрачено на деталі</h5>
                     <div class="well well-sm">
                         {% for spending in job.spendingJob %}
                             <p><span class="font-bolder">Опис: </span>{{ spending.description }}</p>
@@ -114,8 +114,8 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-            <h5>&nbsp;&nbsp;&nbsp;Затрачено на метеріали</h5>
                 {% if job.usedMaterialsJob | length > 0 %}
+                    <h5>&nbsp;&nbsp;&nbsp;Затрачено на метеріали</h5>
                     <div class="well well-sm">
                         {% for used in job.usedMaterialsJob %}
                             <p><span class="font-bolder">Опис: </span>{{ used.description }}</p>
@@ -123,8 +123,8 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-            <h5>&nbsp;&nbsp;&nbsp;Виплачена зарплата</h5>
                 {% if job.paidSalaryJob | length > 0 %}
+                    <h5>&nbsp;&nbsp;&nbsp;Виплачена зарплата</h5>
                     <div class="well well-sm">
                         {% for paid in job.paidSalaryJob %}
                             <p><span class="font-bolder">Кому: </span>{{ paid.description }}</p>
@@ -136,8 +136,8 @@
 
 
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <h4 class="text-center"><u>Рекомендації:</u></h4>
             {% if job.recommendations | length > 0 %}
+            <h4 class="text-center"><u>Рекомендації:</u></h4>
                 <div class="well well-sm">
                     {% for recommendation in job.recommendations %}
                         <div class="recommendation-item">

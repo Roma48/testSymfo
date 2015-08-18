@@ -37,12 +37,12 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="text-center">{{ knp_pagination_sortable(jobs, 'Id', 'j.id') }}</th>
-                    <th>{{ knp_pagination_sortable(jobs, 'First name', 'cc.firstName') }}</th>
-                    <th>{{ knp_pagination_sortable(jobs, 'Last name', 'cc.lastName') }}</th>
-                    <th>{{ knp_pagination_sortable(jobs, 'Car', 'm.name') }}</th>
-                    <th>{{ knp_pagination_sortable(jobs, 'Visited date', 'j.jobDate') }}</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">{{ knp_pagination_sortable(jobs, '#', 'j.id') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, "Ім'я", 'cc.firstName') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, 'Прізвище', 'cc.lastName') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, 'Модель авто', 'm.name') }}</th>
+                    <th>{{ knp_pagination_sortable(jobs, 'Дата візиту', 'j.jobDate') }}</th>
+                    <th class="text-center">Дії</th>
                 </tr>
                 </thead>
                 <tbody>

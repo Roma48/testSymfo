@@ -27,24 +27,24 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
+            <br>
             <table class="table table-hover">
                 <thead>
                 <tr>
                     {% if paginator %}
-                        <th class="text-center">{{ knp_pagination_sortable(cars, 'Id', 'car.id') }}</th>
-                        <th>{{ knp_pagination_sortable(cars, 'First name', 'cl.firstName') }}</th>
-                        <th>{{ knp_pagination_sortable(cars, 'Last name', 'cl.lastName') }}</th>
-                        <th>{{ knp_pagination_sortable(cars, 'Car model', 'mod.name') }}</th>
-                        <th>{{ knp_pagination_sortable(cars, 'Last visited', 'cl.lastVisitDate') }}</th>
-                        <th class="text-center">Actions</th>
+                        <th class="text-center">{{ knp_pagination_sortable(cars, '#', 'car.id') }}</th>
+                        <th>{{ knp_pagination_sortable(cars, 'Ім\'я', 'cl.firstName') }}</th>
+                        <th>{{ knp_pagination_sortable(cars, 'Прізвище', 'cl.lastName') }}</th>
+                        <th>{{ knp_pagination_sortable(cars, 'Модель авто', 'mod.name') }}</th>
+                        <th>{{ knp_pagination_sortable(cars, 'Дата візиту', 'cl.lastVisitDate') }}</th>
+                        <th class="text-center">Дії</th>
                     {% else %}
-                        <th class="text-center">Id</th>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>Car model</th>
-                        <th>Last visited</th>
-                        <th class="text-center">Actions</th>
+                        <th class="text-center">#</th>
+                        <th>Ім'я</th>
+                        <th>Прізвище</th>
+                        <th>Модель авто</th>
+                        <th>Дата візиту</th>
+                        <th class="text-center">Дії</th>
                     {% endif %}
                 </tr>
                 </thead>
