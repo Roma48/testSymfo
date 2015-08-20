@@ -26,7 +26,7 @@ class ClientCarsFilterType extends AbstractType
                 'choices' => $this->cars,
                 'attr'  => [
                     'class'         => 'selectpicker',
-                    'data-width'    => "15%",
+                    'data-width'    => "100%",
                     'data-size'     => "15",
                     'data-live-search' => true
                 ],

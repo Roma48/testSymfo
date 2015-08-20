@@ -9,15 +9,25 @@
             <br>
             <div class="text-center filter-form">
                 {{ form_start(filterForm, {'action': path('cto_clientcars_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
-                {{ form_widget(filterForm.fullName) }}
-                {{ form_widget(filterForm.model) }}
-                {{ form_widget(filterForm.dateFrom) }}
-                {{ form_widget(filterForm.dateTo) }}
+                <div class="display_block">
+                    {{ form_widget(filterForm.fullName) }}
+                </div>
+                <div class="display_block">
+                    {{ form_widget(filterForm.model) }}
+                </div>
+                <div class="display_block">
+                    {{ form_widget(filterForm.dateFrom) }}
+                </div>
+                <div class="display_block">
+                    {{ form_widget(filterForm.dateTo) }}
+                </div>
                 <div class="hidden">
                     {{ form_rest(filterForm) }}
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="submit" class="btn btn-default"><i class="fa fa-filter fa-fw"></i>&nbsp;Фільтрувати</button>
+                <div class="display_block">
+                    <button type="submit" class="btn btn-default" style="margin-bottom: 2px;"><i class="fa fa-filter fa-fw"></i>&nbsp;Фільтрувати</button>
+                </div>
                 {{ form_end(filterForm) }}
             </div>
         </div>
