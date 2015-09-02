@@ -14,6 +14,7 @@
     "bootstrap-datepicker": "~1.4.0",
     "jsonform": "*",
     "selectize": "0.12.1",
-    "eonasdan-bootstrap-datetimepicker": "~4.15.35"
+    "eonasdan-bootstrap-datetimepicker": "~4.15.35",
+    "fullcalendar": "~2.4.0"
   }
 }

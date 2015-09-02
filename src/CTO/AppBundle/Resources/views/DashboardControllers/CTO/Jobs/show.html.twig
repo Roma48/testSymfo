@@ -82,7 +82,7 @@
             </p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (клієнтом): </span>{{ job.totalCost | number_format(2, '.', ',') }} грн.</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (CTO): </span>{{ job.totalSpend | number_format(2, '.', ',') }} грн.</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прибуток CTO: </span>{{ (job.totalCost - job.totalSpend) | number_format(2, '.', ',') }} грн.</p>
+            <p style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Прибуток CTO: </span>{{ (job.totalCost - job.totalSpend) | number_format(2, '.', ',') }} грн.</p>
         </div>
     </div>
 

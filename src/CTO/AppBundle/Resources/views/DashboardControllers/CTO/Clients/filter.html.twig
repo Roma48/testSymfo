@@ -12,8 +12,9 @@
             <br>
             <div class="text-center filter-form">
                 {{ form_start(filterForm, {'action': path('cto_client_filter'), 'attr': {'novalidate': 'novalidate'}}) }}
-                {{ form_widget(filterForm.firstName) }}
-                {{ form_widget(filterForm.lastName) }}
+                {{ form_widget(filterForm.fullName) }}
+                {{ form_widget(filterForm.dateFrom) }}
+                {{ form_widget(filterForm.dateTo) }}
                 <div class="hidden">
                     {{ form_rest(filterForm) }}
                 </div>
@@ -78,8 +79,22 @@
     </div>
 
 {% endblock %}
-
 {% block javascripts %}
+    <script>
+        jQuery(function ($) {
+            $("#clientcars_filter_model").selectpicker();
 
-{% endblock %}
-
+            $('.date-picker-cto').datepicker({
+                format: "dd.mm.yyyy",
+                orientation: "top left",
+//            todayBtn: "linked",
+                todayBtn: true,
+                clearBtn: true,
+                language: "uk",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+{% endblock javascripts %}

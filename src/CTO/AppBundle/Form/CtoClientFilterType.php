@@ -11,11 +11,14 @@ class CtoClientFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', 'text', [
-                'attr' => ['placeholder' => 'Ім\'я', 'class' => 'form-control']
+            ->add('fullName', 'text', [
+                'attr' => ['placeholder' => 'Клієнт', 'class' => 'form-control']
             ])
-            ->add('lastName', 'text', [
-                'attr' => ['placeholder' => 'Прізвище', 'class' => 'form-control']
+            ->add('dateFrom', 'text', [
+                'attr' => ['placeholder' => 'Дата візиту З', 'class' => 'form-control date-picker-cto']
+            ])
+            ->add('dateTo', 'text', [
+                'attr' => ['placeholder' => 'Дата візиту ПО', 'class' => 'form-control date-picker-cto']
             ])
         ;
     }

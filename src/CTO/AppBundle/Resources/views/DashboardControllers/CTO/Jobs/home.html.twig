@@ -12,9 +12,9 @@
             <br>
         </div>
     </div>
-
+    <br>
     <div class="row">
-        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 
             <div class="well well-lg">
                 <p><span class="font-bolder">Виконано завдань: </span>{{ jobsCount }} </p>
@@ -24,15 +24,27 @@
             <a href="{{ path('cto_finance_archive', {'year': 'now' | date('Y') }) }}">Фінансовий архів.</a>
 
         </div>
+        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+            <div id="calendar"></div>
+        </div>
     </div>
-
-
 {% endblock body %}
 
 {% block javascripts %}
 <script>
     jQuery(function ($) {
-
+        $("#calendar").fullCalendar({
+            header: {
+                left:   '',
+                center: 'title',
+                right:  'today prev,next'
+            },
+            columnFormat: {
+                month: 'dddd'
+            },
+            lang: 'uk',
+            height: 470
+        });
     });
 </script>
 {% endblock javascripts %}

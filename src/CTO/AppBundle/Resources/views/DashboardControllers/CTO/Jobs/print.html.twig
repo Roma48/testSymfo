@@ -55,6 +55,19 @@
         </div>
     </div>
 
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        {% if job.recommendations | length > 0 %}
+            <h4 class="text-center"><u>Рекомендації:</u></h4>
+            <div class="well well-sm">
+                {% for recommendation in job.recommendations %}
+                    <div class="recommendation-item">
+                        {{ loop.index }}. {{ recommendation.title }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
 {% endblock %}
 
 {% block javascript %}
