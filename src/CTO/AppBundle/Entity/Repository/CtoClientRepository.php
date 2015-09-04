@@ -3,6 +3,7 @@
 namespace CTO\AppBundle\Entity\Repository;
 
 use CTO\AppBundle\Entity\CtoUser;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class CtoClientRepository extends EntityRepository
@@ -13,13 +14,17 @@ class CtoClientRepository extends EntityRepository
             ->andWhere('u.cto = :ctoUser')
             ->setParameter('ctoUser', $user);
 
-        if (array_key_exists('firstName', $filterData)) {
-            $qb->andWhere('u.firstName like :firstname')
-                ->setParameter('firstname', '%' . $filterData['firstName'] . '%');
+        if (array_key_exists('fullName', $filterData)) {
+            $qb->andWhere('u.fullName like :fullname')
+                ->setParameter('fullname', '%' . $filterData['fullName'] . '%');
         }
-        if (array_key_exists('lastName', $filterData)) {
-            $qb->andWhere('u.lastName like :lastname')
-                ->setParameter('lastname', '%' . $filterData['lastName'] . '%');
+        if (array_key_exists('dateFrom', $filterData)) {
+            $qb->andWhere('u.lastVisitDate >= :dateFrom')
+                ->setParameter('dateFrom', new DateTime($filterData['dateFrom']));
+        }
+        if (array_key_exists('dateTo', $filterData)) {
+            $qb->andWhere('u.lastVisitDate <= :dateTo')
+                ->setParameter('dateTo', new DateTime($filterData['dateTo']));
         }
         $qb
             ->orderBy('u.lastVisitDate', 'ASC');
