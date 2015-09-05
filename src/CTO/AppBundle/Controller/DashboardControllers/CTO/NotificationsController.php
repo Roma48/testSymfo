@@ -117,6 +117,12 @@ class NotificationsController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
 
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
+
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $this->get('cto.sms.sender')->stop($notification->getResqueJobDescription());
@@ -186,6 +192,12 @@ class NotificationsController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
 
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
+
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newNotification);
@@ -244,6 +256,12 @@ class NotificationsController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
 
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
+
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
@@ -293,6 +311,12 @@ class NotificationsController extends Controller
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
 
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
@@ -358,6 +382,12 @@ class NotificationsController extends Controller
         if ($request->getMethod() == Request::METHOD_POST) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
 
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();

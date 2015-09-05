@@ -281,6 +281,12 @@ class JobsController extends JsonController
             $form->handleRequest($request);
             if ($form->isValid()) {
 
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
+
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
@@ -349,6 +355,12 @@ class JobsController extends JsonController
             $form->handleRequest($request);
             if ($form->isValid()) {
 
+                $now = Carbon::now();
+
+                if ($notification->getWhenSend() < $now) {
+                    $notification->setAutoSending(false);
+                }
+
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
@@ -370,7 +382,7 @@ class JobsController extends JsonController
 
                 $em->flush();
 
-                $this->addFlash('success', 'Нагадування успішно створено.');
+                $this->addFlash('success', 'Рекомендація успішно створена.');
 
                 return $this->redirectToRoute('cto_jobs_show', ['id' => $carJob->getId()]);
             }
