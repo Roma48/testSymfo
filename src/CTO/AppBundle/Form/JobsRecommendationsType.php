@@ -1,8 +1,7 @@
 <?php
 
-namespace CTO\AppBundle\Entity;
+namespace CTO\AppBundle\Form;
 
-use CTO\AppBundle\Form\RecommendationsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

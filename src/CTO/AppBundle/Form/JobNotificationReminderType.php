@@ -2,7 +2,6 @@
 
 namespace CTO\AppBundle\Form;
 
-use CTO\AppBundle\Entity\CarJob;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

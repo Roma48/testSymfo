@@ -1,0 +1,65 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>
+                Список категорій:
+                <div class="pull-right">
+                    <a href="{{ path('cto_jobcategories_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Додати нову</a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th>Назва</th>
+                    <th class="text-center">нормо-години</th>
+                    <th class="text-center">Ціна нормо-години</th>
+                    <th class="text-center">Фіксована ціна</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>{{ category.name }}</td>
+                        <td class="text-center">
+                            {% if category.normHours %}
+                                Так
+                            {% else %}
+                                Ні
+                            {% endif %}
+                        </td>
+                        <td class="text-center">{{ category.normHoursPrice }}</td>
+                        <td class="text-center">{{ category.fixedPrice }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                {#<a class="btn btn-default btn-xs"#}
+                                   {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
+                                <a class="btn btn-warning btn-xs"
+                                   href="{{ path('cto_jobcategories_edit', { 'id': category.id }) }}"> Редагувати </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock body %}
+{% block javascripts %}
+    <script>
+        jQuery(function ($) {
+
+        });
+    </script>
+{% endblock javascripts %}

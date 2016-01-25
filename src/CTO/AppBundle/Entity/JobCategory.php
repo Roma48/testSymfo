@@ -24,11 +24,35 @@ class JobCategory implements \JsonSerializable
      * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
+    /**
+     * @Assert\Type(
+     *   type="numeric",
+     *   message="допустимо лише цифри та крапка"
+     * )
+     * @ORM\Column(name="normHoursPrice", type="float", nullable=true)
+     */
+    protected $normHoursPrice;
+    /**
+     * @Assert\Type(
+     *   type="numeric",
+     *   message="допустимо лише цифри та крапка"
+     * )
+     * @ORM\Column(name="fixedPrice", type="float", nullable=true)
+     */
+    protected $fixedPrice;
+    /**
+     * @ORM\Column(name="isNormHours", type="boolean", nullable=true)
+     */
+    protected $normHours;
 
     /**
      * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\CarCategory", mappedBy="jobCategory", cascade={"persist"})
      */
     protected $carJobs;
+    /**
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="jobCategories")
+     */
+    protected $cto;
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
@@ -41,7 +65,9 @@ class JobCategory implements \JsonSerializable
     {
         return [
             "id" => (string) $this->getId(),
-            "name" => $this->getName()
+            "name" => $this->getName(),
+            "isNormHours" => $this->isNormHours(),
+            "normHoursPrice" => $this->getNormHoursPrice()
         ];
     }
 
@@ -91,7 +117,7 @@ class JobCategory implements \JsonSerializable
      */
     public function addCarJob(CarJob $carJob)
     {
-        $carJob->setJobCategory($this);
+//        $carJob->setJobCategory($this);
         $this->carJobs->add($carJob);
 
         return $this;
@@ -100,5 +126,81 @@ class JobCategory implements \JsonSerializable
     public function removeCarJob(CarJob $carJob)
     {
         $this->carJobs->removeElement($carJob);
+    }
+
+    /**
+     * @return CtoUser
+     */
+    public function getCto()
+    {
+        return $this->cto;
+    }
+
+    /**
+     * @param CtoUser $cto
+     * @return JobCategory
+     */
+    public function setCto(CtoUser $cto)
+    {
+        $this->cto = $cto;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNormHoursPrice()
+    {
+        return $this->normHoursPrice;
+    }
+
+    /**
+     * @param mixed $normHoursPrice
+     * @return JobCategory
+     */
+    public function setNormHoursPrice($normHoursPrice)
+    {
+        $this->normHoursPrice = $normHoursPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFixedPrice()
+    {
+        return $this->fixedPrice;
+    }
+
+    /**
+     * @param mixed $fixedPrice
+     * @return JobCategory
+     */
+    public function setFixedPrice($fixedPrice)
+    {
+        $this->fixedPrice = $fixedPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNormHours()
+    {
+        return $this->normHours;
+    }
+
+    /**
+     * @param bool $normHours
+     * @return JobCategory
+     */
+    public function setNormHours($normHours)
+    {
+        $this->normHours = $normHours;
+
+        return $this;
     }
 }

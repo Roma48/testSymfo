@@ -56,12 +56,18 @@ class CtoUser extends BaseUser
      */
     protected $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\JobCategory", mappedBy="cto", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $jobCategories;
+
     public function __construct()
     {
         parent::__construct();
         $this->setRoles([self::ROLE_CTO_USER]);
         $this->setBlocked(false);
         $this->clients = new ArrayCollection();
+        $this->jobCategories = new ArrayCollection();
     }
 
     /**
@@ -167,14 +173,50 @@ class CtoUser extends BaseUser
         return $this->clients;
     }
 
+    /**
+     * @param CtoClient $client
+     */
     public function addClient(CtoClient $client)
     {
         $client->setCto($this);
         $this->clients->add($client);
     }
 
+    /**
+     * @param CtoClient $client
+     */
     public function removeClient(CtoClient $client)
     {
         $this->clients->removeElement($client);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getJobCategories()
+    {
+        return $this->jobCategories;
+    }
+
+    /**
+     * @param JobCategory $category
+     * @return CtoUser
+     */
+    public function addJobCategory(JobCategory $category)
+    {
+        if (!$this->getJobCategories()->contains($category)) {
+            $category->setCto($this);
+            $this->jobCategories->add($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param JobCategory $category
+     */
+    public function removeJobCategory(JobCategory $category)
+    {
+        $this->jobCategories->removeElement($category);
     }
 }

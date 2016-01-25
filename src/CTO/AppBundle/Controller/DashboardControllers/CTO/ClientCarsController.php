@@ -66,7 +66,7 @@ class ClientCarsController extends Controller
      */
     public function filterAction(Request $request)
     {
-        /** @var Array $filterFormData */
+        /** @var array $filterFormData */
         $filterFormData = $request->get('clientcars_filter', null);
         if ($filterFormData) {
             $filterFormData = array_filter($filterFormData);

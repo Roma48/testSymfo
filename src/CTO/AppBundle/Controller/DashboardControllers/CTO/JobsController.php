@@ -5,7 +5,7 @@ namespace CTO\AppBundle\Controller\DashboardControllers\CTO;
 use Carbon\Carbon;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoUser;
-use CTO\AppBundle\Entity\JobsRecommendationsType;
+use CTO\AppBundle\Form\JobsRecommendationsType;
 use CTO\AppBundle\Entity\Notification;
 use CTO\AppBundle\Entity\Recommendation;
 use CTO\AppBundle\Form\CarJobType;
@@ -89,7 +89,7 @@ class JobsController extends JsonController
      */
     public function jobsFilterAction(Request $request)
     {
-        /** @var Array $filterFormData */
+        /** @var array $filterFormData */
         $filterFormData = $request->get('job_filter', null);
         if ($filterFormData) {
             $filterFormData = array_filter($filterFormData);
