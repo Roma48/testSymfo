@@ -45,9 +45,11 @@ class AjaxController extends Controller
      */
     public function getAllJobCategoriesAction()
     {
+        /** @var CtoUser $user */
+        $user = $this->getUser();
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository("CTOAppBundle:JobCategory")->findAll();
+        $categories = $em->getRepository("CTOAppBundle:JobCategory")->findBy(['cto' => $user]);
 
         return new JsonResponse(["categories" => $categories]);
     }

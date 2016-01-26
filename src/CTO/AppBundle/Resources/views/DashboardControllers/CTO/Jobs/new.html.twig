@@ -217,6 +217,13 @@
                 }
             },
             "form": [
+//                {
+//                    "key": "carCategories.jobDescriptions.price",
+//                    "onChange": function(e) {
+//                        var value = $(evt.target).val();
+//                        console.info("dd" + value);
+//                    }
+//                },
                 {
                     "type": "button",
                     "title": "<i class='fa fa-plus'></i>&nbsp;&nbsp;<i class='fa fa-user'></i>",
@@ -417,21 +424,36 @@
                                 });
                     }
                 } else {
-                    $.post(submitUrl, JSON.stringify(values))
-                        .success(function(response){
-                            if (response.status == "ok") {
-                                var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
-                                window.location.replace(returnUrl);
-                            }
-                        })
-                        .error(function(error){
-                            console.log(error);
-                        });
+//                    $.post(submitUrl, JSON.stringify(values))
+//                        .success(function(response){
+//                            if (response.status == "ok") {
+//                                var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
+//                                window.location.replace(returnUrl);
+//                            }
+//                        })
+//                        .error(function(error){
+//                            console.log(error);
+//                        });
 //                alert('Values object:\n' + JSON.stringify(values, null, 2));
-//                console.log(values);
+                console.log(values);
                 }
             }
         };
+
+        $("#custom_form").on('change', "#jsonform-0-elt-counter-3 fieldset input[type='text']", function(e){
+//            console.log($(this).val());
+
+            var sel = $(this).closest("select");
+
+            var div = $(this).parent().parent();
+
+//            div.find("")
+
+            console.log($(e.target).val());
+            console.dir("sel = " + $(sel).text());
+
+
+        });
 
         var formObj = $("#custom_form form");
 
