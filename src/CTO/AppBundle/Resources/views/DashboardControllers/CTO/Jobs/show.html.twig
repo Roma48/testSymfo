@@ -91,13 +91,27 @@
             <h4 class="text-center"><u>По категоріям:</u></h4>
 
             {% for category in job.carCategories %}
-                <h5>&nbsp;&nbsp;&nbsp;{{ category.jobCategory.name }}</h5>
+                <h5>&nbsp;&nbsp;&nbsp;{{ category.jobCategory.name }}
+                    {% if category.jobCategory.normHours %}
+                        ({{ category.jobCategory.normHoursPrice | number_format(2, '.', ',') }} грн. - вартість 1 нормо-години)
+                    {% endif %}
+                </h5>
                 {% if category.jobDescriptions | length > 0 %}
                     <div class="well well-sm">
+                        {% set amountTotal = 0 %}
                         {% for description in category.jobDescriptions %}
                             <p><span class="font-bolder">Опис: </span>{{ description.description }}</p>
-                            <p><span class="font-bolder">Ціна: </span>{{ description.price | number_format(2, '.', ',') }} грн.</p>
+                            <p><span class="font-bolder">Ціна: </span>
+                                {% if category.jobCategory.normHours %}
+                                    {{ description.price }} н/г x {{ category.jobCategory.normHoursPrice }} = {{ description.price * category.jobCategory.normHoursPrice | number_format(2, '.', ',') }} грн.
+                                    {% set amountTotal = amountTotal + description.price * category.jobCategory.normHoursPrice %}
+                                {% else %}
+                                    {{ description.price | number_format(2, '.', ',') }} грн.
+                                    {% set amountTotal = amountTotal + description.price %}
+                                {% endif %}
+                            </p>
                         {% endfor %}
+                        <p class="text-center"><span class="font-bolder">Всього: </span>{{ amountTotal | number_format(2, '.', ',') }} грн.</p>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -108,28 +122,37 @@
             {% if job.spendingJob | length > 0 %}
                 <h5>&nbsp;&nbsp;&nbsp;Затрачено на деталі</h5>
                     <div class="well well-sm">
+                        {% set spendTotal = 0 %}
                         {% for spending in job.spendingJob %}
                             <p><span class="font-bolder">Опис: </span>{{ spending.description }}</p>
                             <p><span class="font-bolder">Ціна: </span>{{ spending.price | number_format(2, '.', ',') }} грн.</p>
+                            {% set spendTotal = spendTotal + spending.price %}
                         {% endfor %}
+                        <p class="text-center"><span class="font-bolder">Всього: </span>{{ spendTotal | number_format(2, '.', ',') }} грн.</p>
                     </div>
                 {% endif %}
                 {% if job.usedMaterialsJob | length > 0 %}
                     <h5>&nbsp;&nbsp;&nbsp;Затрачено на метеріали</h5>
                     <div class="well well-sm">
+                        {% set materialTotal = 0 %}
                         {% for used in job.usedMaterialsJob %}
                             <p><span class="font-bolder">Опис: </span>{{ used.description }}</p>
                             <p><span class="font-bolder">Ціна: </span>{{ used.price | number_format(2, '.', ',') }} грн.</p>
+                            {% set materialTotal = materialTotal + used.price %}
                         {% endfor %}
+                        <p class="text-center"><span class="font-bolder">Всього: </span>{{ materialTotal | number_format(2, '.', ',') }} грн.</p>
                     </div>
                 {% endif %}
                 {% if job.paidSalaryJob | length > 0 %}
                     <h5>&nbsp;&nbsp;&nbsp;Виплачена зарплата</h5>
                     <div class="well well-sm">
+                        {% set paidTotal = 0 %}
                         {% for paid in job.paidSalaryJob %}
                             <p><span class="font-bolder">Кому: </span>{{ paid.description }}</p>
                             <p><span class="font-bolder">Сума: </span>{{ paid.price | number_format(2, '.', ',') }} грн.</p>
+                            {% set paidTotal = paidTotal + paid.price %}
                         {% endfor %}
+                        <p class="text-center"><span class="font-bolder">Всього: </span>{{ paidTotal | number_format(2, '.', ',') }} грн.</p>
                     </div>
                 {% endif %}
         </div>
@@ -155,9 +178,6 @@
 {% endblock %}
 
 {% block javascripts %}
-{#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
-{#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
-
 <script>
     jQuery(function ($) {
 

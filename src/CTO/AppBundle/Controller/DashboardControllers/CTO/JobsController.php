@@ -229,6 +229,7 @@ class JobsController extends JsonController
      * @Method({"GET", "POST"})
      * @Template()
      * @param CarJob $carJob
+     * @param Request $request
      * @return array
      */
     public function showAction(CarJob $carJob, Request $request)
