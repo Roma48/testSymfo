@@ -59,12 +59,6 @@ class CategoriesController extends Controller
                     $formError = new FormError("Це поле не повинно бути пустим");
                     $form->get('normHoursPrice')->addError($formError);
                 }
-            } else {
-            // fixed price
-                if (!$jobCategory->getFixedPrice()) {
-                    $formError = new FormError("Це поле не повинно бути пустим");
-                    $form->get('fixedPrice')->addError($formError);
-                }
             }
 
             if ($form->isValid()) {
@@ -73,8 +67,7 @@ class CategoriesController extends Controller
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
 
-                $jobCategory
-                    ->setCto($user);
+                $jobCategory->setCto($user);
                 $jobCategory->isNormHours() ? $jobCategory->setFixedPrice(null) : $jobCategory->setNormHoursPrice(null);
                 $em->persist($jobCategory);
                 $em->flush();
@@ -111,12 +104,6 @@ class CategoriesController extends Controller
                     $formError = new FormError("Це поле не повинно бути пустим");
                     $form->get('normHoursPrice')->addError($formError);
                 }
-            } else {
-                // fixed price
-                if (!$category->getFixedPrice()) {
-                    $formError = new FormError("Це поле не повинно бути пустим");
-                    $form->get('fixedPrice')->addError($formError);
-                }
             }
 
             if ($form->isValid()) {
@@ -125,8 +112,7 @@ class CategoriesController extends Controller
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
 
-                $category
-                    ->setCto($user);
+                $category->setCto($user);
                 $category->isNormHours() ? $category->setFixedPrice(null) : $category->setNormHoursPrice(null);
                 $em->flush();
                 $this->addFlash("success", "Категорію успішно відредаговано");

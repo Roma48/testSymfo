@@ -128,6 +128,8 @@ class JobsController extends JsonController
     }
 
     /**
+     * @return array
+     *
      * @Route("/new", name="cto_jobs_new")
      * @Method("GET")
      * @Template()
@@ -142,10 +144,11 @@ class JobsController extends JsonController
     }
 
     /**
-     * @Route("/newFromJsonForm", name="cto_jobs_new_fromJSONFORM", options={"expose" = true})
-     * @Method("POST")
      * @param Request $request
      * @return JsonResponse
+     *
+     * @Route("/newFromJsonForm", name="cto_jobs_new_fromJSONFORM", options={"expose" = true})
+     * @Method("POST")
      */
     public function createNewFromJsonFormAction(Request $request)
     {
@@ -174,11 +177,12 @@ class JobsController extends JsonController
     }
 
     /**
-     * @Route("/edit/{id}", name="cto_jobs_edit", options={"expose" = true})
-     * @Method("GET")
      * @Template()
      * @param CarJob $carJob
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
+     *
+     * @Route("/edit/{id}", name="cto_jobs_edit", options={"expose" = true})
+     * @Method("GET")
      */
     public function editAction(CarJob $carJob)
     {

@@ -26,12 +26,6 @@ class JobCategoryType extends AbstractType
                 ],
                 "label" => "Вартість нормо-години"
             ])
-            ->add("fixedPrice", "text", [
-                "attr" => [
-                    "class" => "form-control"
-                ],
-                "label" => "Фіксована ціна"
-            ])
         ;
     }
 

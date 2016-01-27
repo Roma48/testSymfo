@@ -6,6 +6,7 @@ use CTO\AppBundle\Entity\CarCategory;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CategoryJobDescription;
 use CTO\AppBundle\Entity\CtoClient;
+use CTO\AppBundle\Entity\JobCategory;
 use CTO\AppBundle\Entity\PaidSalaryJob;
 use CTO\AppBundle\Entity\SpendingJob;
 use CTO\AppBundle\Entity\UsedMaterialsJob;
@@ -32,9 +33,15 @@ class DoctrineCTOClientSubscriber implements EventSubscriber
                 $totalCost = 0;
                 /** @var CarCategory $category */
                 foreach($entity->getCarCategories() as $category) {
+                    /** @var JobCategory $jobCategory */
+                    $jobCategory = $category->getJobCategory();
                     /** @var CategoryJobDescription $description */
                     foreach($category->getJobDescriptions() as $description) {
-                        $totalCost += $description->getPrice();
+                        if ($jobCategory->isNormHours()) {
+                            $totalCost += $description->getPrice() * $jobCategory->getNormHoursPrice();
+                        } else {
+                            $totalCost += $description->getPrice();
+                        }
                     }
                 }
                 $entity->setTotalCost($totalCost);
@@ -67,9 +74,15 @@ class DoctrineCTOClientSubscriber implements EventSubscriber
                 $totalCost = 0;
                 /** @var CarCategory $category */
                 foreach($entity->getCarCategories() as $category) {
+                    /** @var JobCategory $jobCategory */
+                    $jobCategory = $category->getJobCategory();
                     /** @var CategoryJobDescription $description */
                     foreach($category->getJobDescriptions() as $description) {
-                        $totalCost += $description->getPrice();
+                        if ($jobCategory->isNormHours()) {
+                            $totalCost += $description->getPrice() * $jobCategory->getNormHoursPrice();
+                        } else {
+                            $totalCost += $description->getPrice();
+                        }
                     }
                 }
                 $entity->setTotalCost($totalCost);
@@ -91,17 +104,14 @@ class DoctrineCTOClientSubscriber implements EventSubscriber
             }
         }
 
-        foreach ($uow->getScheduledEntityDeletions() as $entity) {
-
-        }
-
-        foreach ($uow->getScheduledCollectionDeletions() as $col) {
-
-        }
-
-        foreach ($uow->getScheduledCollectionUpdates() as $col) {
-
-        }
+//        foreach ($uow->getScheduledEntityDeletions() as $entity) {
+//        }
+//
+//        foreach ($uow->getScheduledCollectionDeletions() as $col) {
+//        }
+//
+//        foreach ($uow->getScheduledCollectionUpdates() as $col) {
+//        }
     }
 
     /**

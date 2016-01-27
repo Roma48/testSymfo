@@ -22,7 +22,6 @@
                     <th>Назва</th>
                     <th class="text-center">нормо-години</th>
                     <th class="text-center">Ціна нормо-години</th>
-                    <th class="text-center">Фіксована ціна</th>
                     <th class="text-center">Дії</th>
                 </tr>
                 </thead>
@@ -39,11 +38,8 @@
                             {% endif %}
                         </td>
                         <td class="text-center">{{ category.normHoursPrice }}</td>
-                        <td class="text-center">{{ category.fixedPrice }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                {#<a class="btn btn-default btn-xs"#}
-                                   {#href="{{ path('cto_client_show', { 'slug': client.slug }) }}"> Показати </a>#}
                                 <a class="btn btn-warning btn-xs"
                                    href="{{ path('cto_jobcategories_edit', { 'id': category.id }) }}"> Редагувати </a>
                             </div>

@@ -35,12 +35,6 @@
                     {{ form_errors(form.normHoursPrice) }}
                 </div>
                 <div style="margin-bottom: 5px;"></div>
-                <div class="error-handling" id="fixedPriceContainer">
-                    {{ form_label(form.fixedPrice) }}
-                    {{ form_widget(form.fixedPrice) }}
-                    {{ form_errors(form.fixedPrice) }}
-                </div>
-                <div style="margin-bottom: 5px;"></div>
                 <br>
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">Виконати</button>
@@ -59,17 +53,14 @@
         jQuery(function ($) {
             var checkbox = document.getElementById('job_category_normHours');
             var normPrice = $("#normHoursContainer");
-            var fixedPrice = $("#fixedPriceContainer");
 
             function check() {
                 if (checkbox.checked) {
                     // normHours price
-                    fixedPrice.hide();
                     normPrice.show();
                 } else {
                     //  fixed price
                     normPrice.hide();
-                    fixedPrice.show();
                 }
             }
 
