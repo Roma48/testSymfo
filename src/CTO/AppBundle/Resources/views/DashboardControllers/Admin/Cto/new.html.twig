@@ -44,9 +44,30 @@
                 {{ form_errors(form.phone) }}
             </div>
             <div class="error-handling margin-bottom-15">
+                {{ form_label(form.phone2) }}
+                <div class="input-group">
+                    <div class="input-group-addon">+38</div>
+                    {{ form_widget(form.phone2) }}
+                </div>
+                {{ form_errors(form.phone2) }}
+            </div>
+            <div class="error-handling margin-bottom-15">
+                {{ form_label(form.phone3) }}
+                <div class="input-group">
+                    <div class="input-group-addon">+38</div>
+                    {{ form_widget(form.phone3) }}
+                </div>
+                {{ form_errors(form.phone3) }}
+            </div>
+            <div class="error-handling margin-bottom-15">
                 {{ form_label(form.ctoName) }}
                 {{ form_widget(form.ctoName) }}
                 {{ form_errors(form.ctoName) }}
+            </div>
+            <div class="error-handling margin-bottom-15">
+                {{ form_label(form.addressCto) }}
+                {{ form_widget(form.addressCto) }}
+                {{ form_errors(form.addressCto) }}
             </div>
             <div class="error-handling margin-bottom-15 hide-password-label">
                 {{ form_label(form.plain_password) }}

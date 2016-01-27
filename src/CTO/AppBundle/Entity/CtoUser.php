@@ -25,6 +25,24 @@ class CtoUser extends BaseUser
     protected $slug;
 
     /**
+     * @Assert\Length(max=20, maxMessage="Не більше {{ limit }} символів")
+     * @Assert\Regex(pattern="/^[+]?[0-9+() -]+$/", message="Допустимі тільки цифри")
+     * @ORM\Column(name="phone2", type="string", nullable=true)
+     */
+    protected $phone2;
+    /**
+     * @Assert\Length(max=20, maxMessage="Не більше {{ limit }} символів")
+     * @Assert\Regex(pattern="/^[+]?[0-9+() -]+$/", message="Допустимі тільки цифри")
+     * @ORM\Column(name="phone3", type="string", nullable=true)
+     */
+    protected $phone3;
+    /**
+     * @Assert\NotBlank(message="Обов'язкове поле")
+     * @ORM\Column(name="addressCto", type="string", nullable=true)
+     */
+    protected $addressCto;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
@@ -218,5 +236,62 @@ class CtoUser extends BaseUser
     public function removeJobCategory(JobCategory $category)
     {
         $this->jobCategories->removeElement($category);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone2()
+    {
+        return $this->phone2;
+    }
+
+    /**
+     * @param mixed $phone2
+     * @return CtoUser
+     */
+    public function setPhone2($phone2)
+    {
+        $this->phone2 = $phone2;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone3()
+    {
+        return $this->phone3;
+    }
+
+    /**
+     * @param mixed $phone3
+     * @return CtoUser
+     */
+    public function setPhone3($phone3)
+    {
+        $this->phone3 = $phone3;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddressCto()
+    {
+        return $this->addressCto;
+    }
+
+    /**
+     * @param mixed $addressCto
+     * @return CtoUser
+     */
+    public function setAddressCto($addressCto)
+    {
+        $this->addressCto = $addressCto;
+
+        return $this;
     }
 }

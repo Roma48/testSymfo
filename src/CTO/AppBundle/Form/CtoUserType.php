@@ -49,8 +49,23 @@ class CtoUserType extends AbstractType
                 'attr' => ["class" => "form-control", 'placeholder' => '(050) 123-45-67'],
                 'required' => false
             ])
+            ->add('phone2', 'text', [
+                'label' => 'Телефон СТО: (додатковий)',
+                'attr' => ["class" => "form-control", 'placeholder' => '(050) 123-45-67'],
+                'required' => false
+            ])
+            ->add('phone3', 'text', [
+                'label' => 'Телефон СТО: (додатковий)',
+                'attr' => ["class" => "form-control", 'placeholder' => '(050) 123-45-67'],
+                'required' => false
+            ])
             ->add('ctoName', 'text', [
                 'label' => 'Назва СТО:*',
+                'attr' => ["class" => "form-control"],
+                'required' => false
+            ])
+            ->add('addressCto', 'text', [
+                'label' => 'Адреса СТО:*',
                 'attr' => ["class" => "form-control"],
                 'required' => false
             ])
