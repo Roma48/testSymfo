@@ -64,6 +64,26 @@ class AjaxController extends Controller
     }
 
     /**
+     * @Route("/cto/ajax/getcatinfo/{id}", name="ajax_cto_getCatInfoById", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getCategoryInfoById($id)
+    {
+        /** @var CtoUser $user */
+        $user = $this->getUser();
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository("CTOAppBundle:JobCategory")->findBy(['cto' => $user, 'id' => (int)$id]);
+
+
+
+        return new JsonResponse([
+            "status" => $category ? "ok" : "fail",
+            "category" => $category
+        ]);
+    }
+
+    /**
      * @Route("/getAllModels", name="cto_models_getAllListForModal", options={"expose"=true})
      * @Method("POST")
      */

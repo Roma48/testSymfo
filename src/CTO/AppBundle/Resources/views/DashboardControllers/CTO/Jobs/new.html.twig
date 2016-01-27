@@ -94,9 +94,6 @@
 {% endblock %}
 
 {% block javascripts %}
-{#<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
-{#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
-
 <script>
     jQuery(function ($) {
 
@@ -217,13 +214,6 @@
                 }
             },
             "form": [
-//                {
-//                    "key": "carCategories.jobDescriptions.price",
-//                    "onChange": function(e) {
-//                        var value = $(evt.target).val();
-//                        console.info("dd" + value);
-//                    }
-//                },
                 {
                     "type": "button",
                     "title": "<i class='fa fa-plus'></i>&nbsp;&nbsp;<i class='fa fa-user'></i>",
@@ -306,13 +296,82 @@
                         "items": [
                             {
                                 "key": "car_job.carCategories[].jobCategory",
-                                "titleMap": categoryObj
+                                "titleMap": categoryObj,
+                                "onChange": function(evt){
+                                    var selectField = $(evt.target);
+                                    var selectVal = $(evt.target).val();
+                                    var path = Routing.generate('ajax_cto_getCatInfoById', {"id": selectVal});
+                                    $.get(path)
+                                        .success(function(response){
+                                            if (response.status == "ok") {
+                                                var category = response.category[0];
+
+                                                if (category.isNormHours) {
+                                                    $.each(selectField.parent().parent().parent().find("[name*='price']"), function(ind, val){
+                                                        var label = $(val).parent().parent().find("label");
+                                                        var price = $(val).val();
+                                                        price = price != '' ? price : 0;
+
+                                                        label.html("Кількість нормо/годин");
+                                                        var newPr = price * category.normHoursPrice;
+                                                        $(val).parent().find(".normhoursprice").remove();
+                                                        $("<p class='normhoursprice'>"+price+" * "+category.normHoursPrice+" (варт 1 н/г) = "+newPr+" грн.</p>").insertAfter($(val));
+                                                    });
+                                                } else {
+
+                                                    $.each(selectField.parent().parent().parent().find("[name*='price']"), function(ind, val){
+                                                        var label = $(val).parent().parent().find("label");
+
+                                                        label.html("Ціна");
+                                                        $(val).parent().find(".normhoursprice").remove();
+                                                    });
+                                                }
+                                            }
+                                        })
+                                        .error(function(error){
+                                            console.log(error);
+                                        });
+                                }
                             },
                             {
                                 "type": "array",
-                                "items": [
-                                    "car_job.carCategories[].jobDescriptions[]"
-                                ]
+                                "items": {
+                                    "type": "section",
+                                    "items": [
+                                        {
+                                            "key": "car_job.carCategories[].jobDescriptions[].description"
+                                        },
+                                        {
+                                            "key": "car_job.carCategories[].jobDescriptions[].price",
+                                            "onChange": function(evt) {
+                                                var priceField = $(evt.target);
+                                                var price = $(evt.target).val();
+                                                var selectVal = $(evt.target).parents().find("[name*='jobCategory']").last().val();
+                                                var label = priceField.parent().parent().find("label");
+
+                                                var path = Routing.generate('ajax_cto_getCatInfoById', {"id": selectVal});
+                                                $.get(path)
+                                                    .success(function(response){
+                                                        if (response.status == "ok") {
+                                                            var category = response.category[0];
+                                                            if (category.isNormHours) {
+                                                                label.html("Кількість нормо/годин");
+                                                                var newPr = price * category.normHoursPrice;
+                                                                priceField.parent().find(".normhoursprice").remove();
+                                                                $("<p class='normhoursprice'>"+price+" * "+category.normHoursPrice+" (варт 1 н/г) = "+newPr+" грн.</p>").insertAfter(priceField);
+                                                            } else {
+                                                                label.html("Ціна");
+                                                                priceField.parent().find("#normhoursprice").remove();
+                                                            }
+                                                        }
+                                                    })
+                                                    .error(function(error){
+                                                        console.log(error);
+                                                    });
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         ]
                     }
@@ -424,36 +483,21 @@
                                 });
                     }
                 } else {
-//                    $.post(submitUrl, JSON.stringify(values))
-//                        .success(function(response){
-//                            if (response.status == "ok") {
-//                                var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
-//                                window.location.replace(returnUrl);
-//                            }
-//                        })
-//                        .error(function(error){
-//                            console.log(error);
-//                        });
+                    $.post(submitUrl, JSON.stringify(values))
+                        .success(function(response){
+                            if (response.status == "ok") {
+                                var returnUrl = Routing.generate('cto_jobs_show', {"id": response.jid});
+                                window.location.replace(returnUrl);
+                            }
+                        })
+                        .error(function(error){
+                            console.log(error);
+                        });
 //                alert('Values object:\n' + JSON.stringify(values, null, 2));
                 console.log(values);
                 }
             }
         };
-
-        $("#custom_form").on('change', "#jsonform-0-elt-counter-3 fieldset input[type='text']", function(e){
-//            console.log($(this).val());
-
-            var sel = $(this).closest("select");
-
-            var div = $(this).parent().parent();
-
-//            div.find("")
-
-            console.log($(e.target).val());
-            console.dir("sel = " + $(sel).text());
-
-
-        });
 
         var formObj = $("#custom_form form");
 
