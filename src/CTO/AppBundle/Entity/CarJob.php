@@ -27,6 +27,11 @@ class CarJob implements \JsonSerializable
     protected $jobDate;
 
     /**
+     * @ORM\Column(name="totalMileage", type="string", nullable=true)
+     */
+    protected $totalMileage;
+
+    /**
      * @ORM\Column(name="totalCost", type="float")
      */
     protected $totalCost;
@@ -94,6 +99,7 @@ class CarJob implements \JsonSerializable
         return [
             "car_job" => [
                 "jobDate" => $this->getJobDate()->format("d.m.Y"),
+                "totalMileage" => $this->getTotalMileage(),
                 "client" => (string) $this->getClient()->getId(),
                 "car" => $this->getCar() ? (string) $this->getCar()->getId() : '',
                 "carCategories" => $this->getCarCategories()->getValues(),
@@ -132,6 +138,25 @@ class CarJob implements \JsonSerializable
     public function setJobDate($jobDate)
     {
         $this->jobDate = $jobDate;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalMileage()
+    {
+        return $this->totalMileage;
+    }
+
+    /**
+     * @param mixed $totalMileage
+     * @return CarJob
+     */
+    public function setTotalMileage($totalMileage)
+    {
+        $this->totalMileage = $totalMileage;
 
         return $this;
     }

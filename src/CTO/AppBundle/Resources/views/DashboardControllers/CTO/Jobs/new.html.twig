@@ -124,6 +124,11 @@
                             "title": "Дата ремонту",
                             "default": moment().format("DD.MM.YYYY")
                         },
+                        "totalMileage": {
+                            "type": "string",
+                            "title": "Пробіг поточний (км.)",
+                            "required": false
+                        },
                         "carCategories": {
                             "type": "array",
                             "title": "Завдання",
@@ -286,6 +291,9 @@
                     "key": "car_job.jobDate",
                     "htmlClass": "clearfix",
                     "fieldHtmlClass": "jod-date-picker"
+                },
+                {
+                    "key": "car_job.totalMileage"
                 },
                 {
                     "type": "array",

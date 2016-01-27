@@ -35,6 +35,10 @@ class CarJobType extends AbstractType
                 'label' => 'Дата ремонту *',
                 'data' => new \DateTime('now')
             ])
+            ->add("totalMileage", "text", [
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Пробіг поточний',
+            ])
             ->add('carCategories', 'collection', [
                 'type' => new CarCategoryType(),
                 'allow_add' => true,
