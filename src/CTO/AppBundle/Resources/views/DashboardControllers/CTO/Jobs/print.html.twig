@@ -11,28 +11,36 @@
 {% block body %}
 
     <div class="row">
-        <div class="col-md-4 col-lg-4">
-            <div class="text-left">
-                <h4>{{ job.client.cto.ctoName }}</h4>
-            </div>
-            <div class="text-left">
-                {{ job.client.cto.addressCto }}
-            </div>
-        </div>
-        <div class="col-md-offset-4 col-lg-offset-4 col-md-4 col-lg-4">
-            <div class="text-right">
-               Тел: {{ job.client.cto.phone }}
-            </div>
-            {% if job.client.cto.phone2 != "" %}
-                <div class="text-right">
-                    Тел: {{ job.client.cto.phone2 }}
-                </div>
-            {% endif %}
-            {% if job.client.cto.phone3 != "" %}
-                <div class="text-right">
-                    Тел: {{ job.client.cto.phone3 }}
-                </div>
-            {% endif %}
+        <div class="col-md-12 col-lg-12">
+            <table width="100%">
+                <tr>
+                    <td width="40%" style="vertical-align: top;">
+                        <div>
+                            <h4>{{ job.client.cto.ctoName }}</h4>
+                        </div>
+                        <div>
+                            <b>Адреса СТО:</b><br>
+                            {{ job.client.cto.addressCto }}
+                        </div>
+                    </td>
+                    <td width="20%"></td>
+                    <td width="40%" style="vertical-align: top;">
+                        <div class="text-right">
+                            Тел: {{ job.client.cto.phone }}
+                        </div>
+                        {% if job.client.cto.phone2 != "" %}
+                            <div class="text-right">
+                                Тел: {{ job.client.cto.phone2 }}
+                            </div>
+                        {% endif %}
+                        {% if job.client.cto.phone3 != "" %}
+                            <div class="text-right">
+                                Тел: {{ job.client.cto.phone3 }}
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <div class="row">
@@ -77,8 +85,8 @@
                     <tr>
                         <th>#</th>
                         <th>Найменування робіт, запчастини</th>
-                        <th class="text-center">Ціна н/г</th>
-                        <th class="text-center">Кількість н/г</th>
+                        <th class="text-center">Ціна н/г, грн</th>
+                        <th class="text-center">Кількість н/г, шт</th>
                         <th class="text-center">Сумма, грн</th>
                     </tr>
                 </thead>
@@ -131,23 +139,24 @@
     </div>
 
     <div class="row">
-        <div class="col-md-5 col-lg-5">
-            <div>
-                Вищевказане підтверджую. Претензій до термінів виконання, якості та об`єму робіт і матеріалів,
-                стану автомобіля (іншого ДТЗ) не маю. Оригінал акту проведених робіт отримав:<br><br>
-                ___________ ______________________  (Підпис замовника)
-            </div>
-        </div>
-        <div class="col-md-offset-3 col-lg-offset-3 col-md-4 col-lg-4">
-            <div>
-                <span>
-                    ОПЛАТА:<br>
-                    (печатка, дата) _________________
-                    <br><br>
-                    ВИКОНАВЕЦЬ:<br>
-                    (печатка, підпис) _________________
-                </span>
-            </div>
+        <div class="col-md-12 col-lg-12">
+            <table width="100%">
+                <tr>
+                    <td width="40%" style="vertical-align: top;">
+                        Вищевказане підтверджую. Претензій до термінів виконання, якості та об`єму робіт і матеріалів,
+                        стану автомобіля (іншого ДТЗ) не маю. Оригінал акту проведених робіт отримав:<br><br>
+                        ___________ ______________________  (Підпис замовника)
+                    </td>
+                    <td width="20%"></td>
+                    <td width="40%" style="vertical-align: top;">
+                        ОПЛАТА:<br>
+                        (печатка, дата) _________________
+                        <br><br>
+                        ВИКОНАВЕЦЬ:<br>
+                        (печатка, підпис) _________________
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
