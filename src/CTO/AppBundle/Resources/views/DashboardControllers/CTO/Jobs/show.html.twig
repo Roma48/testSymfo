@@ -80,7 +80,11 @@
                 {{ job.car.model.name }}
             {% endif %}
             </p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Номер автомобіля: </span>{{ job.car.carNumber }}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Номер автомобіля: </span>
+                {% if job.car.carNumber is defined %}
+                    {{ job.car.carNumber }}
+                {% endif %}
+            </p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Поточний пробіг: </span>{{ job.totalMileage }} км.</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (клієнтом): </span>{{ job.totalCost | number_format(2, '.', ',') }} грн.</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-bolder">Витрачено на ремонт (CTO): </span>{{ job.totalSpend | number_format(2, '.', ',') }} грн.</p>
@@ -93,7 +97,7 @@
             <h4 class="text-center"><u>По категоріям:</u></h4>
 
             {% for category in job.carCategories %}
-                <h5>&nbsp;&nbsp;&nbsp;{{ category.jobCategory.name }}
+                <h5>&nbsp;&nbsp;&nbsp;<b>{{ category.jobCategory.name }}</b>
                     {% if category.jobCategory.normHours %}
                         ({{ category.jobCategory.normHoursPrice | number_format(2, '.', ',') }} грн. - вартість 1 нормо-години)
                     {% endif %}
@@ -122,7 +126,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <h4 class="text-center"><u>Витрати СТО:</u></h4>
             {% if job.spendingJob | length > 0 %}
-                <h5>&nbsp;&nbsp;&nbsp;Затрачено на деталі</h5>
+                <h5>&nbsp;&nbsp;&nbsp;<b>Затрачено на деталі</b></h5>
                     <div class="well well-sm">
                         {% set spendTotal = 0 %}
                         {% for spending in job.spendingJob %}
@@ -134,7 +138,7 @@
                     </div>
                 {% endif %}
                 {% if job.usedMaterialsJob | length > 0 %}
-                    <h5>&nbsp;&nbsp;&nbsp;Затрачено на метеріали</h5>
+                    <h5>&nbsp;&nbsp;&nbsp;<b>Затрачено на метеріали</b></h5>
                     <div class="well well-sm">
                         {% set materialTotal = 0 %}
                         {% for used in job.usedMaterialsJob %}
@@ -146,7 +150,7 @@
                     </div>
                 {% endif %}
                 {% if job.paidSalaryJob | length > 0 %}
-                    <h5>&nbsp;&nbsp;&nbsp;Виплачена зарплата</h5>
+                    <h5>&nbsp;&nbsp;&nbsp;<b>Виплачена зарплата</b></h5>
                     <div class="well well-sm">
                         {% set paidTotal = 0 %}
                         {% for paid in job.paidSalaryJob %}
