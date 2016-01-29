@@ -9,11 +9,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
-/web/css
-/web/js
-/web/fonts
 /node_modules
 /web_src/frontend-vendors
-web/img
 web/csv_files
 dump.rdb
