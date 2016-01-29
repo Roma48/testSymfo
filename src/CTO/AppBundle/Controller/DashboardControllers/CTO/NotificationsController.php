@@ -259,7 +259,11 @@ class NotificationsController extends Controller
                 $now = Carbon::now();
 
                 if ($notification->getWhenSend() < $now) {
-                    $notification->setAutoSending(false);
+                    if ($notification->isAutoSending() and $notification->isSendNow()) {
+                        $notification->setAutoSending(true);
+                    } else {
+                        $notification->setAutoSending(false);
+                    }
                 }
 
                 /** @var EntityManager $em */
@@ -278,6 +282,7 @@ class NotificationsController extends Controller
                             'broadcast' => true
                         ], $this->getParameter('queue_name'), $notification->getWhenSend());
                         $notification->setResqueJobDescription($jobDescription);
+                        $em->flush();
                     }
                 }
 
@@ -315,7 +320,11 @@ class NotificationsController extends Controller
                 $now = Carbon::now();
 
                 if ($notification->getWhenSend() < $now) {
-                    $notification->setAutoSending(false);
+                    if ($notification->isAutoSending() and $notification->isSendNow()) {
+                        $notification->setAutoSending(true);
+                    } else {
+                        $notification->setAutoSending(false);
+                    }
                 }
 
                 /** @var EntityManager $em */
@@ -386,7 +395,11 @@ class NotificationsController extends Controller
                 $now = Carbon::now();
 
                 if ($notification->getWhenSend() < $now) {
-                    $notification->setAutoSending(false);
+                    if ($notification->isAutoSending() and $notification->isSendNow()) {
+                        $notification->setAutoSending(true);
+                    } else {
+                        $notification->setAutoSending(false);
+                    }
                 }
 
                 /** @var EntityManager $em */

@@ -83,6 +83,7 @@ class SMSSender implements WorkerInterface
                     $notification->setStatus(Notification::STATUS_SEND_FAIL);
                 }
             }
+            $this->em->flush();
         } else {
 
             //  Normal
@@ -98,6 +99,7 @@ class SMSSender implements WorkerInterface
             } catch (\Exception $e) {
                 $notification->setStatus(Notification::STATUS_SEND_FAIL);
             }
+            $this->em->flush();
         }
     }
 
