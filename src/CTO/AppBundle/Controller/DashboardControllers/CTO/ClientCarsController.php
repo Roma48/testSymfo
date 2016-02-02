@@ -43,6 +43,7 @@ class ClientCarsController extends Controller
         }
 
         $paginator = $this->get('knp_paginator');
+        /** @var ClientCar[] $clientCars */
         $clientCars = $paginator->paginate(
             $clientCarsResult,
             $this->get('request')->query->get('page', 1),   /* page number */

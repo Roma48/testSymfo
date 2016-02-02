@@ -79,22 +79,22 @@
                 {{ form_widget(form.city) }}
                 {{ form_errors(form.city) }}
             </div>
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.blocked) }}
-                {{ form_widget(form.blocked) }}
-                {{ form_errors(form.blocked) }}
-            </div>
-            <div class="error-handling margin-bottom-15">
-                {{ form_label(form.publicProfile) }}
-                {{ form_widget(form.publicProfile) }}
-                {{ form_errors(form.publicProfile) }}
-            </div>
+            {#<div class="error-handling margin-bottom-15">#}
+                {#{{ form_label(form.blocked) }}#}
+                {#{{ form_widget(form.blocked) }}#}
+                {#{{ form_errors(form.blocked) }}#}
+            {#</div>#}
+            {#<div class="error-handling margin-bottom-15">#}
+                {#{{ form_label(form.publicProfile) }}#}
+                {#{{ form_widget(form.publicProfile) }}#}
+                {#{{ form_errors(form.publicProfile) }}#}
+            {#</div>#}
 
             <br/>
             <div class="text-center">
                 <input type="submit" value="{{ title }}" class="btn btn-success">
             </div>
-            <div>
+            <div class="hidden">
                 {{ form_rest(form) }}
             </div>
             {{ form_end(form) }}

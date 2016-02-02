@@ -16,6 +16,9 @@
                     {{ form_widget(filterForm.model) }}
                 </div>
                 <div class="display_block">
+                    {{ form_widget(filterForm.carNumber) }}
+                </div>
+                <div class="display_block">
                     {{ form_widget(filterForm.dateFrom) }}
                 </div>
                 <div class="display_block">
@@ -46,6 +49,7 @@
                         <th>{{ knp_pagination_sortable(cars, 'Ім\'я', 'cl.firstName') }}</th>
                         <th>{{ knp_pagination_sortable(cars, 'Прізвище', 'cl.lastName') }}</th>
                         <th>{{ knp_pagination_sortable(cars, 'Модель авто', 'mod.name') }}</th>
+                        <th>Номер авто</th>
                         <th>{{ knp_pagination_sortable(cars, 'Дата візиту', 'cl.lastVisitDate') }}</th>
                         <th class="text-center">Дії</th>
                     {% else %}
@@ -53,6 +57,7 @@
                         <th>Ім'я</th>
                         <th>Прізвище</th>
                         <th>Модель авто</th>
+                        <th>Номер авто</th>
                         <th>Дата візиту</th>
                         <th class="text-center">Дії</th>
                     {% endif %}
@@ -65,6 +70,7 @@
                         <td>{{ car.ctoClient.firstName }}</td>
                         <td>{{ car.ctoClient.lastName }}</td>
                         <td>{{ car.model.name }}</td>
+                        <td>{{ car.carNumber }}</td>
                         <td>{{ car.ctoClient.lastVisitDate | date("d.m.Y") }}</td>
                         <td class="text-center">
                             <div class="btn-group">

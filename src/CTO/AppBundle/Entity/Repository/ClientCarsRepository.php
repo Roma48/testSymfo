@@ -40,6 +40,10 @@ class ClientCarsRepository extends EntityRepository
                 ->andWhere('mo.id = :model')
                 ->setParameter('model', $filterData['model']);
         }
+        if (array_key_exists('carNumber', $filterData)) {
+            $qb->andWhere('c.carNumber like :carNumber')
+                ->setParameter('carNumber', '%' . $filterData['carNumber'] . '%');
+        }
         if (array_key_exists('dateFrom', $filterData)) {
             $qb->join('c.ctoClient', 'clq')
                 ->andWhere('clq.lastVisitDate >= :dateFrom')
