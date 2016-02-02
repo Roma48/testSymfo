@@ -36,10 +36,10 @@ class ClientCarsFilterType extends AbstractType
                 'attr' => ['placeholder' => 'Номер авто', 'class' => 'form-control']
             ])
             ->add('dateFrom', 'text', [
-                'attr' => ['placeholder' => 'Дата візиту З', 'class' => 'form-control date-picker-cto']
+                'attr' => ['placeholder' => 'Дата З', 'class' => 'form-control date-picker-cto']
             ])
             ->add('dateTo', 'text', [
-                'attr' => ['placeholder' => 'Дата візиту ПО', 'class' => 'form-control date-picker-cto']
+                'attr' => ['placeholder' => 'Дата ПО', 'class' => 'form-control date-picker-cto']
             ])
         ;
     }

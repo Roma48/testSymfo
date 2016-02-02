@@ -78,7 +78,7 @@ class ClientCar implements \JsonSerializable
     {
         return [
             'id' => $this->getId(),
-            'name' => $this->getModel()->getName()
+            'name' => $this->getCarNumber() ? $this->getModel()->getName() . ' (Номер авто: ' . $this->getCarNumber() . ')' : $this->getModel()->getName() . ' (Номер авто: відсутній)'
         ];
     }
 
