@@ -359,6 +359,9 @@
                                                 "onChange": function(evt) {
                                                     var priceField = $(evt.target);
                                                     var price = $(evt.target).val();
+                                                    price = price.replace(",", ".");
+                                                    price = parseFloat(price);
+                                                    $(evt.target).val(price);
                                                     var selectVal = $(evt.target).parents().find("[name*='jobCategory']").last().val();
                                                     var label = priceField.parent().parent().find("label");
 
@@ -371,7 +374,7 @@
                                                                         label.html("Кількість нормо/годин");
                                                                         var newPr = price * category.normHoursPrice;
                                                                         priceField.parent().find(".normhoursprice").remove();
-                                                                        $("<p class='normhoursprice'>"+price+" * "+category.normHoursPrice+" (варт 1 н/г) = "+newPr+" грн.</p>").insertAfter(priceField);
+                                                                        $("<p class='normhoursprice'>"+price+" * "+category.normHoursPrice+" (варт 1 н/г) = "+newPr.toFixed(2)+" грн.</p>").insertAfter(priceField);
                                                                     } else {
                                                                         label.html("Ціна");
                                                                         priceField.parent().find("#normhoursprice").remove();
