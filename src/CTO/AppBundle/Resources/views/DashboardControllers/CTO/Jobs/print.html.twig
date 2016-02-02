@@ -138,6 +138,27 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: -20px;">
+        <div class="col-md-12 col-lg-12">
+            <table width="100%" class="table">
+                <thead>
+                    <tr>
+                        <th width="1%">#</th>
+                        <th>Рекомендації</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recomendation in job.recommendations %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ recomendation.title }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12 col-lg-12">
             <table width="100%">
