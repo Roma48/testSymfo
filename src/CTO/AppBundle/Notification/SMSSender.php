@@ -73,16 +73,18 @@ class SMSSender implements WorkerInterface
             foreach ($users as $user) {
                 try {
                     $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$user->getPhone(), $notification->getDescription());
-                    if ($notification->isAdminCopy()) {
-                        try {
-                            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
-                        } catch (\Exception $e) {}
-                    }
                     $notification->setStatus(Notification::STATUS_SEND_OK);
                 } catch (\Exception $e) {
                     $notification->setStatus(Notification::STATUS_SEND_FAIL);
                 }
             }
+
+            if ($notification->isAdminCopy()) {
+                try {
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                } catch (\Exception $e) {}
+            }
+
             $this->em->flush();
         } else {
 
@@ -141,22 +143,18 @@ class SMSSender implements WorkerInterface
             foreach ($users as $user) {
                 try {
                     $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$user->getPhone(), $notification->getDescription());
-                    if ($notification->isAdminCopy()) {
-                        try {
-                            $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
-                        } catch (\Exception $e) {
-                            $notification->setStatus(Notification::STATUS_SEND_FAIL);
-                            $this->em->flush();
-
-                            continue;
-                        }
-                    }
                     $notification->setStatus(Notification::STATUS_SEND_OK);
                     $this->em->flush();
                 } catch (\Exception $e) {
                     $notification->setStatus(Notification::STATUS_SEND_FAIL);
                     $this->em->flush();
                 }
+            }
+
+            if ($notification->isAdminCopy()) {
+                try {
+                    $this->clientSMS->sendSMS($this->alfa_sms_name, '+38'.$admin->getPhone(), $notification->getDescription());
+                } catch (\Exception $e) {}
             }
 
             return;
