@@ -28,6 +28,55 @@
             <div id="calendar"></div>
         </div>
     </div>
+
+    <!-- Modal for add event -->
+    <div class="modal fade" id="addEventForm" tabindex="-1" role="dialog" aria-labelledby="addCarToClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Додати автомобіль поточному клієнту:</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="margin-bottom-15">
+                        <label for="carsForClientInModalForm">Модель автомобіля:</label>
+                        <select id="carsForClientInModalForm" name="carModels" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carNumber">Номер автомобіля:</label>
+                        <input type="text" id="client_carNumber" name="carNumber" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carColor">Колір автомобіля:</label>
+                        <input type="text" id="client_carColor" name="carColor" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carEngine">Об'єм двигуна (л.):</label>
+                        <input type="text" id="client_carEngine" name="carEngine" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carVinCode">VIN код:</label>
+                        <input type="text" id="client_carVinCode" name="carVinCode" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carYear">Рік випуску:</label>
+                        <input type="text" id="client_carYear" name="carYear" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15 text-center">
+                        <button class="btn btn-success" id="addCarToClientButtonSubmit">Додати автомобіль</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="#" id="addEvent">Add new event</a>
+
 {% endblock body %}
 
 {% block javascripts %}
@@ -35,12 +84,18 @@
     jQuery(function ($) {
         $("#calendar").fullCalendar({
             header: {
-                left:   '',
-                center: 'title',
-                right:  'today prev,next'
+                left:   'title',
+                center: '',
+                right:  'month, basicWeek, basicDay, prev,next'
             },
             views: {
                 month: { // name of view
+                    titleFormat: 'MMMM YYYY'
+                },
+                basicWeek: { // name of view
+                    titleFormat: 'MMMM YYYY'
+                },
+                basicDay: { // name of view
                     titleFormat: 'MMMM YYYY'
                 }
             },
@@ -48,7 +103,69 @@
                 month: 'dddd'
             },
             lang: 'uk',
-            height: 470
+            height: 470,
+            events: [
+                {
+                    title  : 'event1',
+                    start  : '2016-03-03T09:10:00',
+                    end    : '2016-03-03T10:00:00'
+                },
+                {
+                    title  : 'event2',
+                    start  : '2016-03-03T10:10:00',
+                    end    : '2016-03-03T10:00:00'
+                },
+                {
+                    title  : 'event3',
+                    start  : '2016-03-03T11:10:00',
+                    end    : '2016-03-03T10:00:00'
+                },
+                {
+                    title  : 'event4',
+                    start  : '2016-03-03T12:10:00',
+                    end    : '2016-03-03T10:00:00'
+                },
+                {
+                    title  : 'event5',
+                    start  : '2016-03-03T13:10:00',
+                    end    : '2016-03-03T10:00:00'
+                },
+                {
+                    title  : 'event6',
+                    start  : '2016-03-03T14:10:00',
+                    end    : '2016-03-03T10:00:00'
+                }
+            ],
+            eventClick: function(calEvent, jsEvent, view) {
+
+                alert('Event: ' + calEvent.title);
+                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                alert('View: ' + view.name);
+
+                // change the border color just for fun
+                $(this).css('border-color', 'red');
+
+            },
+            dayClick: function(date, jsEvent, view) {
+
+//                alert('Clicked on: ' + date.format());
+//
+//                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+//
+//                alert('Current view: ' + view.name);
+
+                $('#addEventForm').modal('show');
+
+                // change the day's background color just for fun
+                $(this).css('background-color', 'red');
+
+            }
+        });
+
+        $('#addEvent').on('click', function(event){
+            event.preventDefault();
+
+            $('#addEventForm').modal('show');
         });
     });
 </script>

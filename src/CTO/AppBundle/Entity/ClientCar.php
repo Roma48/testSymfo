@@ -68,6 +68,11 @@ class ClientCar implements \JsonSerializable
     protected $carJobs;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="car")
+     */
+    protected $events;
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -86,6 +91,7 @@ class ClientCar implements \JsonSerializable
     public function __construct()
     {
         $this->carJobs = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -269,6 +275,36 @@ class ClientCar implements \JsonSerializable
     public function setCreateYear($createYear)
     {
         $this->createYear = $createYear;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param Event $event
+     * @return $this
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events->add($event);
+
+        return $this;
+    }
+
+    /**
+     * @param Event $event
+     * @return $this
+     */
+    public function removeEvent(Event $event)
+    {
+        $this->events->remove($event);
 
         return $this;
     }

@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Нова подія</h1>
+
+    {{ form_start(form) }}
+    <p>
+        {{ form_widget(form) }}
+    </p>
+    <p>
+        <input type="submit" value="Створити" class="btn btn-success center-block">
+    </p>
+    {{ form_end(form) }}
+
+
+{% endblock body %}
+
+{% block javascripts %}
+    <script>
+        jQuery(function($){
+            $("input[type=text].event-date-picker").on("click", function(){
+                $(this).datepicker({
+                    format: "dd.mm.yyyy",
+                    orientation: "top left",
+                    todayBtn: true,
+                    clearBtn: true,
+                    language: "uk",
+                    calendarWeeks: true,
+                    autoclose: true,
+                    todayHighlight: true
+                });
+                $(this).datepicker('show');
+            });
+        });
+    </script>
+{% endblock javascripts %}

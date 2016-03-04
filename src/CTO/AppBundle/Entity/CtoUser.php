@@ -79,6 +79,11 @@ class CtoUser extends BaseUser
      */
     protected $jobCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="cto")
+     */
+    protected $events;
+
     public function __construct()
     {
         parent::__construct();
@@ -86,6 +91,7 @@ class CtoUser extends BaseUser
         $this->setBlocked(false);
         $this->clients = new ArrayCollection();
         $this->jobCategories = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -291,6 +297,36 @@ class CtoUser extends BaseUser
     public function setAddressCto($addressCto)
     {
         $this->addressCto = $addressCto;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param Event $event
+     * @return $this
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events->add($event);
+
+        return $this;
+    }
+
+    /**
+     * @param Event $event
+     * @return $this
+     */
+    public function removeEvent(Event $event)
+    {
+        $this->events->remove($event);
 
         return $this;
     }

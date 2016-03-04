@@ -88,6 +88,11 @@ class CtoClient implements \JsonSerializable
     protected $notifications;
 
     /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="client")
+     */
+    protected $events;
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -107,6 +112,7 @@ class CtoClient implements \JsonSerializable
         $this->cars = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->carJobs = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -351,5 +357,31 @@ class CtoClient implements \JsonSerializable
     public function __toString()
     {
         return $this->getSlug();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param Event $event
+     * @return $this
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events->add($event);
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event)
+    {
+        $this->events->remove($event);
+
+        return $this;
     }
 }
