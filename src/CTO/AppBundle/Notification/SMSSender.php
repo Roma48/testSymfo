@@ -124,6 +124,10 @@ class SMSSender implements WorkerInterface
         $broadcast = $options['broadcast'];
 
         $notification = $this->em->getRepository('CTOAppBundle:Notification')->find($notificationId);
+        if (!$notification) {
+
+            return;
+        }
         $ctoClient = $notification->getClientCto();
         $admin = $notification->getUserCto();
 

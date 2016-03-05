@@ -133,7 +133,11 @@ class NotificationsController extends Controller
                     $admin = $this->getUser();
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $admin);
+//                        $senderSrv->sendNow($notification, $admin);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => false
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
@@ -207,7 +211,11 @@ class NotificationsController extends Controller
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($newNotification->isSendNow()) {
-                        $senderSrv->sendNow($newNotification, $admin);
+//                        $senderSrv->sendNow($newNotification, $admin);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $newNotification->getId(),
+                            'broadcast' => false
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $newNotification->getId(),
@@ -275,7 +283,10 @@ class NotificationsController extends Controller
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $admin, true);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => true
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
@@ -337,7 +348,10 @@ class NotificationsController extends Controller
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $admin, true);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => true
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
@@ -411,7 +425,10 @@ class NotificationsController extends Controller
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($newNotification, $admin, true);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $newNotification->getId(),
+                            'broadcast' => true
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $newNotification->getId(),

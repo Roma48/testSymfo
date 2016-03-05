@@ -301,7 +301,11 @@ class JobsController extends JsonController
                     $senderSrv = $this->get('cto.sms.sender');
 
                     if ($notification->isSendNow()) {
-                        $senderSrv->sendNow($notification, $admin);
+//                        $senderSrv->sendNow($notification, $admin);
+                        $senderSrv->getResqueManager()->put('cto.sms.sender', [
+                            'notificationId' => $notification->getId(),
+                            'broadcast' => false
+                        ]);
                     } else {
                         $jobDescription = $senderSrv->getResqueManager()->put('cto.sms.sender', [
                             'notificationId' => $notification->getId(),
