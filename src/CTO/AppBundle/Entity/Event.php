@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="events")
  * @ORM\Entity(repositoryClass="CTO\AppBundle\Entity\Repository\EventRepository")
  */
-class Event
+class Event implements \JsonSerializable
 {
     use CreateUpdateTrait;
 
@@ -64,6 +64,26 @@ class Event
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="events", cascade={"persist"})
      */
     protected $cto;
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return [
+            "id" => $this->getId(),
+            "title" => $this->getTitle(),
+            "client" => $this->getClient(),
+            "car" => $this->getCar(),
+            "message" => $this->getMessage(),
+            "start" => $this->getStartAt(),
+            "end" => $this->getEndAt()
+        ];
+    }
 
     /**
      * @return string

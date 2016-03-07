@@ -7,6 +7,7 @@
                 Поточний місяць: {{ now | date('F, Y') | monthTranslate }}
                 <div class="pull-right">
                     <a href="{{ path('cto_jobs_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нове завдання</a>
+                    <a href="#" class="btn btn-sm btn-success" id="addEvent"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нова подія</a>
                 </div>
             </h3>
             <br>
@@ -35,36 +36,37 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Додати автомобіль поточному клієнту:</h4>
+                    <h4 class="modal-title" id="myModalLabel">Додати нову подію:</h4>
                 </div>
                 <div class="modal-body">
                     <div class="margin-bottom-15">
-                        <label for="carsForClientInModalForm">Модель автомобіля:</label>
-                        <select id="carsForClientInModalForm" name="carModels" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        <label for="event_title">Назва:</label>
+                        <input type="text" id="event_title" name="eventTitle" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="event_client">Клієнт:</label>
+                        <select id="event_client" name="eventClient" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
                         </select>
                     </div>
                     <div class="margin-bottom-15">
-                        <label for="client_carNumber">Номер автомобіля:</label>
-                        <input type="text" id="client_carNumber" name="carNumber" class="form-control">
+                        <label for="event_client_car">Автомобіль:</label>
+                        <select id="event_client_car" name="eventClientCar" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
                     </div>
                     <div class="margin-bottom-15">
-                        <label for="client_carColor">Колір автомобіля:</label>
-                        <input type="text" id="client_carColor" name="carColor" class="form-control">
+                        <label for="event_message">Повідомлення:</label>
+                        <textarea id="event_message" name="eventMessage" class="form-control"></textarea>
                     </div>
                     <div class="margin-bottom-15">
-                        <label for="client_carEngine">Об'єм двигуна (л.):</label>
-                        <input type="text" id="client_carEngine" name="carEngine" class="form-control">
+                        <label for="client_carEngine">Початок:</label>
+                        <input type="text" id="event_start" name="eventStart" class="form-control event-date-picker">
                     </div>
                     <div class="margin-bottom-15">
-                        <label for="client_carVinCode">VIN код:</label>
-                        <input type="text" id="client_carVinCode" name="carVinCode" class="form-control">
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="client_carYear">Рік випуску:</label>
-                        <input type="text" id="client_carYear" name="carYear" class="form-control">
+                        <label for="event_end">Кінець:</label>
+                        <input type="text" id="event_end" name="eventEnd" class="form-control event-date-picker">
                     </div>
                     <div class="margin-bottom-15 text-center">
-                        <button class="btn btn-success" id="addCarToClientButtonSubmit">Додати автомобіль</button>
+                        <button class="btn btn-success" id="addEventButtonSubmit">Додати подію</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -74,92 +76,138 @@
         </div>
     </div>
 
-
-    <a href="#" id="addEvent">Add new event</a>
+    <!-- Modal for show event info -->
+    <div class="modal fade" id="showEventInfo" tabindex="-1" role="dialog" aria-labelledby="showEventInfo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Заголовок івента</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="margin-bottom-15">
+                        <label for="event_title">Назва:</label>
+                        <input type="text" id="event_title" name="eventTitle" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="event_client">Клієнт:</label>
+                        <select id="event_client" name="eventClient" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="event_client_car">Автомобіль:</label>
+                        <select id="event_client_car" name="eventClientCar" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="event_message">Повідомлення:</label>
+                        <textarea id="event_message" name="eventMessage" class="form-control"></textarea>
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="client_carEngine">Початок:</label>
+                        <input type="text" id="event_start" name="eventStart" class="form-control event-date-picker">
+                    </div>
+                    <div class="margin-bottom-15">
+                        <label for="event_end">Кінець:</label>
+                        <input type="text" id="event_end" name="eventEnd" class="form-control event-date-picker">
+                    </div>
+                    <div class="margin-bottom-15 text-center">
+                        <button class="btn btn-success" id="addEventButtonSubmit">Додати подію</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock body %}
 
 {% block javascripts %}
 <script>
     jQuery(function ($) {
-        $("#calendar").fullCalendar({
-            header: {
-                left:   'title',
-                center: '',
-                right:  'month, basicWeek, basicDay, prev,next'
-            },
-            views: {
-                month: { // name of view
-                    titleFormat: 'MMMM YYYY'
-                },
-                basicWeek: { // name of view
-                    titleFormat: 'MMMM YYYY'
-                },
-                basicDay: { // name of view
-                    titleFormat: 'MMMM YYYY'
+
+        var addEventTitleFormModal = $('#event_title');
+        var addEventClientFormModal = $('#event_client');
+        var addEventClientCarFormModal = $('#event_client_car');
+        var addEventMessageFormModal = $('#event_message');
+        var addEventStartFormModal = $('#event_start');
+        var addEventEndFormModal = $('#event_end');
+
+        var addEventSubmitBtnModalForm = $('#addEventButtonSubmit');
+
+        var getClientsUrl = Routing.generate('ajax_cto_get_clients');
+        var getEventsUrl = Routing.generate('ajax_cto_get_events');
+
+        var events = [];
+
+        var returnUrl = Routing.generate('cto_jobs_home', {}, true);
+
+        addEventSubmitBtnModalForm.click(function(){
+            var url = Routing.generate("cto_new_event_fromJSONFORM");
+            var values = {
+                "event": {
+                    "title": addEventTitleFormModal.val(),
+                    "client": addEventClientFormModal.val(),
+                    "car": addEventClientCarFormModal.val(),
+                    "message": addEventMessageFormModal.val(),
+                    "startAt": addEventStartFormModal.val(),
+                    "endAt": addEventEndFormModal.val()
                 }
-            },
-            columnFormat: {
-                month: 'dddd'
-            },
-            lang: 'uk',
-            height: 470,
-            events: [
-                {
-                    title  : 'event1',
-                    start  : '2016-03-03T09:10:00',
-                    end    : '2016-03-03T10:00:00'
-                },
-                {
-                    title  : 'event2',
-                    start  : '2016-03-03T10:10:00',
-                    end    : '2016-03-03T10:00:00'
-                },
-                {
-                    title  : 'event3',
-                    start  : '2016-03-03T11:10:00',
-                    end    : '2016-03-03T10:00:00'
-                },
-                {
-                    title  : 'event4',
-                    start  : '2016-03-03T12:10:00',
-                    end    : '2016-03-03T10:00:00'
-                },
-                {
-                    title  : 'event5',
-                    start  : '2016-03-03T13:10:00',
-                    end    : '2016-03-03T10:00:00'
-                },
-                {
-                    title  : 'event6',
-                    start  : '2016-03-03T14:10:00',
-                    end    : '2016-03-03T10:00:00'
-                }
-            ],
-            eventClick: function(calEvent, jsEvent, view) {
+            };
 
-                alert('Event: ' + calEvent.title);
-                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                alert('View: ' + view.name);
+            $.post(url, JSON.stringify(values))
+                    .success(function (response) {
+                        window.location.replace(returnUrl);
+                    })
+                    .error(function(error){
+                        console.log(error);
+                    });
+        });
 
-                // change the border color just for fun
-                $(this).css('border-color', 'red');
+        function getClientCars(clientId)
+        {
+            var carPath = Routing.generate('ajax_cto_cars_from_client', { "id": clientId });
+            $.get(carPath)
+                    .success(function(response){
+                        addEventClientCarFormModal.html('');
+                        if (response.cars.length > 0) {
+                            $.each(response.cars, function(key, value){
+                                addEventClientCarFormModal.append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                        } else {
+                            addEventClientCarFormModal.append('<option value="" disabled="disabled">Клієнт не має автомобілів.</option>');
+                        }
+                        addEventClientCarFormModal.selectpicker('refresh');
+                    })
+                    .error(function(error){
+                        console.log(error);
+                    })
+            ;
+        }
 
-            },
-            dayClick: function(date, jsEvent, view) {
+        $.get(getClientsUrl)
+                .success(function(responseClient){
+                    addEventClientFormModal.html('');
+                    if (responseClient.clients.length > 0) {
+                        $.each(responseClient.clients, function(key, value){
+                            addEventClientFormModal.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        getClientCars(responseClient.clients[0].id);
+                    } else {
+                        addEventClientFormModal.append('<option value="" disabled="disabled">Клієнтів не знайдено.</option>');
+                    }
+                    addEventClientFormModal.selectpicker('refresh');
+                })
+                .error(function(error){
+                        console.log(error);
+                })
+            ;
 
-//                alert('Clicked on: ' + date.format());
-//
-//                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-//
-//                alert('Current view: ' + view.name);
-
-                $('#addEventForm').modal('show');
-
-                // change the day's background color just for fun
-                $(this).css('background-color', 'red');
-
-            }
+        addEventClientFormModal.change(function(){
+            var val = $(this).val();
+            getClientCars(val);
         });
 
         $('#addEvent').on('click', function(event){
@@ -167,6 +215,53 @@
 
             $('#addEventForm').modal('show');
         });
+
+        $("input[type=text].event-date-picker").datetimepicker();
+
+        $.get(getEventsUrl)
+                .success(function(response){
+                    response.events.forEach(function(event){
+                        events.push({
+                            "title": event.title,
+                            "start": parseDate(event.start),
+                            "end":  parseDate(event.end),
+                            "url":  Routing.generate('cto_show_event', {id: event.id}, true)
+                        });
+                    });
+
+                    $("#calendar").fullCalendar({
+                        header: {
+                            left:   'title',
+                            center: '',
+                            right:  'month, basicWeek, basicDay, prev,next'
+                        },
+                        views: {
+                            month: { // name of view
+                                titleFormat: 'MMMM YYYY'
+                            },
+                            basicWeek: { // name of view
+                                titleFormat: 'MMMM YYYY'
+                            },
+                            basicDay: { // name of view
+                                titleFormat: 'MMMM YYYY'
+                            }
+                        },
+                        columnFormat: {
+                            month: 'dddd'
+                        },
+                        lang: 'uk',
+                        height: 470,
+                        events: events
+                    });
+                })
+                .error(function(error){
+                    console.log(error);
+                })
+        ;
+
+        function parseDate(date){
+            return moment(date).format('YYYY-DD-MM HH:mm:ss').replace(' ', 'T');
+        }
     });
 </script>
 {% endblock javascripts %}

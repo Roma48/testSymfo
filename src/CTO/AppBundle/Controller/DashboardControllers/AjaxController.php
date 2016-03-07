@@ -7,6 +7,7 @@ use CTO\AppBundle\Entity\AdminUser;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
+use CTO\AppBundle\Entity\Event;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -134,5 +135,18 @@ class AjaxController extends Controller
         $users = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $user);
 
         return new JsonResponse(['users' => $users]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoevents", name="ajax_cto_get_events", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getAllCtoEventsAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvents = $em->getRepository('CTOAppBundle:Event')->findBy(['cto' => $this->getUser()]);
+
+        return new JsonResponse(["events" => $ctoEvents]);
     }
 }

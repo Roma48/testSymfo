@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 class JobsController extends JsonController
 {
     /**
-     * @Route("/", name="cto_jobs_home")
+     * @Route("/", name="cto_jobs_home", options={"expose" = true})
      * @Method("GET")
      * @Template()
      */

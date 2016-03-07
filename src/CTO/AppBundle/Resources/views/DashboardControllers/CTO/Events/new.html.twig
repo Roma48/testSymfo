@@ -4,9 +4,9 @@
     <h1>Нова подія</h1>
 
     {{ form_start(form) }}
-    <p>
+    <div style="position: relative">
         {{ form_widget(form) }}
-    </p>
+    </div>
     <p>
         <input type="submit" value="Створити" class="btn btn-success center-block">
     </p>
@@ -18,19 +18,23 @@
 {% block javascripts %}
     <script>
         jQuery(function($){
-            $("input[type=text].event-date-picker").on("click", function(){
-                $(this).datepicker({
-                    format: "dd.mm.yyyy",
-                    orientation: "top left",
-                    todayBtn: true,
-                    clearBtn: true,
-                    language: "uk",
-                    calendarWeeks: true,
-                    autoclose: true,
-                    todayHighlight: true
-                });
-                $(this).datepicker('show');
+            $("input[type=text].event-date-picker").datetimepicker({
+                format: 'mm/dd/yyyy'
             });
+//            $("input[type=text].event-date-picker").on("click", function(){
+//                $(this).datepicker({
+//                    format: "dd.mm.yyyy",
+//                    orientation: "top left",
+//                    todayBtn: true,
+//                    clearBtn: true,
+//                    language: "uk",
+//                    calendarWeeks: true,
+//                    autoclose: true,
+//                    todayHighlight: true
+//                });
+//                $(this).datepicker('show');
+//                $(this).datetimepicker();
+//            });
         });
     </script>
 {% endblock javascripts %}
