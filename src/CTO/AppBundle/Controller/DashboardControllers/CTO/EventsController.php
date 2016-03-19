@@ -15,6 +15,7 @@ use CTO\AppBundle\Entity\CtoUser;
 use Doctrine\ORM\EntityManager;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\Constraints\Date;
 
 
 /**
@@ -80,6 +81,9 @@ class EventsController extends JsonController
 
             $user = $this->getUser();
             $event->setCto($user);
+
+            $event->setStartAt(new DateTime($event->getStartAt()));
+            $event->setEndAt(new DateTime($event->getEndAt()));
 
             $em->persist($event);
             $em->flush();

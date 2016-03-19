@@ -17,14 +17,6 @@ class Event implements \JsonSerializable
     use CreateUpdateTrait;
 
     /**
-     * @var string
-     *
-     * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="title", type="string", length=255)
-     */
-    protected $title;
-
-    /**
      * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="events", cascade={"persist"})
      */
     protected $client;
@@ -38,23 +30,23 @@ class Event implements \JsonSerializable
      * @var string
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="message", type="text")
+     * @ORM\Column(name="description", type="text")
      */
-    protected $message;
+    protected $description;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="start_at", type="text")
+     * @ORM\Column(name="start_at", type="datetime")
      */
     protected $startAt;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @Assert\NotBlank(message="Обов'язкове поле")
-     * @ORM\Column(name="end_at", type="text")
+     * @ORM\Column(name="end_at", type="datetime")
      */
     protected $endAt;
 
@@ -76,29 +68,12 @@ class Event implements \JsonSerializable
     {
         return [
             "id" => $this->getId(),
-            "title" => $this->getTitle(),
             "client" => $this->getClient(),
             "car" => $this->getCar(),
-            "message" => $this->getMessage(),
+            "description" => $this->getDescription(),
             "start" => $this->getStartAt(),
             "end" => $this->getEndAt()
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
     }
 
     /**
@@ -140,19 +115,19 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getMessage()
+    public function getDescription()
     {
-        return $this->message;
+        return $this->description;
     }
 
     /**
-     * @param string $message
+     * @param mixed $description
      */
-    public function setMessage($message)
+    public function setDescription($description)
     {
-        $this->message = $message;
+        $this->description = $description;
     }
 
     /**

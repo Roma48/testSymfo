@@ -7,11 +7,11 @@ use CTO\AppBundle\Entity\AdminUser;
 use CTO\AppBundle\Entity\CarJob;
 use CTO\AppBundle\Entity\CtoClient;
 use CTO\AppBundle\Entity\CtoUser;
-use CTO\AppBundle\Entity\Event;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
@@ -146,6 +146,19 @@ class AjaxController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $ctoEvents = $em->getRepository('CTOAppBundle:Event')->findBy(['cto' => $this->getUser()]);
+
+        return new JsonResponse(["events" => $ctoEvents]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoeventsbydate/{date}", name="ajax_cto_get_events_by_date", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getCtoEventsByDateAction($date)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvents = $em->getRepository('CTOAppBundle:Event')->findByDate($date, $this->getUser());
 
         return new JsonResponse(["events" => $ctoEvents]);
     }

@@ -15,11 +15,6 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('title', 'text', [
-                'label' => 'Заголовок: *',
-                'attr' => ["class" => "form-control"],
-                'required' => false
-            ])
             ->add('client', EntityType::class, [
                 'label' => 'Клієнт: *',
                 'choice_label' => 'fullName',
@@ -34,8 +29,8 @@ class EventType extends AbstractType
                 'required' => false,
                 'class' => 'CTO\AppBundle\Entity\ClientCar'
             ])
-            ->add('message', TextareaType::class, [
-                'label' => 'Повідомлення: *',
+            ->add('description', TextareaType::class, [
+                'label' => 'Опис: *',
                 'attr' => ["class" => "form-control"],
                 'required' => false
             ])

@@ -40,10 +40,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="margin-bottom-15">
-                        <label for="event_title">Назва:</label>
-                        <input type="text" id="event_title" name="eventTitle" class="form-control">
-                    </div>
-                    <div class="margin-bottom-15">
                         <label for="event_client">Клієнт:</label>
                         <select id="event_client" name="eventClient" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
                         </select>
@@ -54,7 +50,7 @@
                         </select>
                     </div>
                     <div class="margin-bottom-15">
-                        <label for="event_message">Повідомлення:</label>
+                        <label for="event_message">Опис:</label>
                         <textarea id="event_message" name="eventMessage" class="form-control"></textarea>
                     </div>
                     <div class="margin-bottom-15">
@@ -76,44 +72,29 @@
         </div>
     </div>
 
-    <!-- Modal for show event info -->
-    <div class="modal fade" id="showEventInfo" tabindex="-1" role="dialog" aria-labelledby="showEventInfo" aria-hidden="true">
+    <!-- Modal for show DAY POPUP info -->
+    <div class="modal fade" id="showDayInfo" tabindex="-1" role="dialog" aria-labelledby="showEventInfo" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Заголовок івента</h4>
+                    <h4 class="modal-title" id="myModalLabel">Дата</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="margin-bottom-15">
-                        <label for="event_title">Назва:</label>
-                        <input type="text" id="event_title" name="eventTitle" class="form-control">
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="event_client">Клієнт:</label>
-                        <select id="event_client" name="eventClient" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
-                        </select>
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="event_client_car">Автомобіль:</label>
-                        <select id="event_client_car" name="eventClientCar" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
-                        </select>
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="event_message">Повідомлення:</label>
-                        <textarea id="event_message" name="eventMessage" class="form-control"></textarea>
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="client_carEngine">Початок:</label>
-                        <input type="text" id="event_start" name="eventStart" class="form-control event-date-picker">
-                    </div>
-                    <div class="margin-bottom-15">
-                        <label for="event_end">Кінець:</label>
-                        <input type="text" id="event_end" name="eventEnd" class="form-control event-date-picker">
-                    </div>
-                    <div class="margin-bottom-15 text-center">
-                        <button class="btn btn-success" id="addEventButtonSubmit">Додати подію</button>
-                    </div>
+                    <table class="table day-info">
+                        <thead>
+                            <th>Час</th>
+                            <th>Ремонт</th>
+                            <th>Покраска</th>
+                        </thead>
+                        <tbody>
+                            <tr data-time="7">
+                                <td>07.00</td>
+                                <td>fgfdgfdfdg s gsfg sg sdf gdsfg gsgf</td>
+                                <td>gh  sdf gsdfg sfg sgg sdfg </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
@@ -128,7 +109,6 @@
 <script>
     jQuery(function ($) {
 
-        var addEventTitleFormModal = $('#event_title');
         var addEventClientFormModal = $('#event_client');
         var addEventClientCarFormModal = $('#event_client_car');
         var addEventMessageFormModal = $('#event_message');
@@ -146,13 +126,13 @@
 
         addEventSubmitBtnModalForm.click(function(){
             var url = Routing.generate("cto_new_event_fromJSONFORM");
+
             var values = {
                 "event": {
-                    "title": addEventTitleFormModal.val(),
                     "client": addEventClientFormModal.val(),
                     "car": addEventClientCarFormModal.val(),
-                    "message": addEventMessageFormModal.val(),
-                    "startAt": addEventStartFormModal.val(),
+                    "description": addEventMessageFormModal.val(),
+                    "startAt": addEventStartFormModal.val() ,
                     "endAt": addEventEndFormModal.val()
                 }
             };
@@ -222,9 +202,9 @@
                 .success(function(response){
                     response.events.forEach(function(event){
                         events.push({
-                            "title": event.title,
-                            "start": parseDate(event.start),
-                            "end":  parseDate(event.end),
+                            "title": event.description,
+                            "start": event.start.date,
+                            "end":  event.end.date,
                             "url":  Routing.generate('cto_show_event', {id: event.id}, true)
                         });
                     });
@@ -233,7 +213,7 @@
                         header: {
                             left:   'title',
                             center: '',
-                            right:  'month, basicWeek, basicDay, prev,next'
+                            right:  'month, basicWeek, agendaDay, dayView, prev,next'
                         },
                         views: {
                             month: { // name of view
@@ -243,7 +223,7 @@
                                 titleFormat: 'MMMM YYYY'
                             },
                             basicDay: { // name of view
-                                titleFormat: 'MMMM YYYY'
+                                titleFormat: 'MMMM YYYY',
                             }
                         },
                         columnFormat: {
@@ -251,6 +231,22 @@
                         },
                         lang: 'uk',
                         height: 470,
+                        dayClick: function(date, jsEvent, view) {
+                            $('#showDayInfo').modal('show');
+                            var getEventsByDateUrl = Routing.generate('ajax_cto_get_events_by_date', { date: date.format('DD-MM-YYYY') });
+                            $.get(getEventsByDateUrl)
+                                    .success(function(response){
+                                        console.log(response);
+                                    })
+                                    .error(function(error){
+                                        console.log(error);
+                                    })
+                            ;
+                        },
+                        dayRender: function(date, cell){
+//                            console.log('day ' + date);
+//                            console.log('cell ' + date);
+                        },
                         events: events
                     });
                 })
@@ -258,10 +254,6 @@
                     console.log(error);
                 })
         ;
-
-        function parseDate(date){
-            return moment(date).format('YYYY-DD-MM HH:mm:ss').replace(' ', 'T');
-        }
     });
 </script>
 {% endblock javascripts %}
