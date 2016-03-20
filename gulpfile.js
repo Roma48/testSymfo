@@ -50,7 +50,8 @@ gulp.task('vendors-js', function() {
         'web_src/frontend-vendors/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
         'web_src/frontend-vendors/selectize/dist/js/standalone/selectize.js',
         'web_src/frontend-vendors/fullcalendar/dist/fullcalendar.js',
-        'web_src/frontend-vendors/fullcalendar/dist/lang-all.js'
+        'web_src/frontend-vendors/fullcalendar/dist/lang-all.js',
+        'web_src/frontend-vendors/fu',
     ])
         .pipe(concat('vendors-js.min.js'))
         .pipe(minifyJs())
@@ -59,11 +60,12 @@ gulp.task('vendors-js', function() {
 });
 
 gulp.task('custom-js', function() {
-    gulp.src('web/js/**/*.js')
-        .pipe(concat('app.min.js'))
-        .pipe(minifyJs())
-        .pipe(rename("custom.min.js"))
-        .pipe(gulp.dest('web/js/'));
+    gulp.src('web_src/js/**/*.js')
+        //.pipe(concat('app.js'))
+        .pipe(gulp.dest('web/js/'))
+        //.pipe(minifyJs())
+        //.pipe(rename("custom.min.js"))
+        //.pipe(gulp.dest('web/js/'));
         //.pipe(notify("Gulp watch: custom-js task completed."));
 });
 
