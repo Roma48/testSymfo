@@ -84,6 +84,11 @@ class CtoUser extends BaseUser
      */
     protected $events;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Workplace", mappedBy="cto")
+     */
+    protected $workplaces;
+
     public function __construct()
     {
         parent::__construct();
@@ -92,6 +97,7 @@ class CtoUser extends BaseUser
         $this->clients = new ArrayCollection();
         $this->jobCategories = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->workplaces = new ArrayCollection();
     }
 
     /**
@@ -327,6 +333,36 @@ class CtoUser extends BaseUser
     public function removeEvent(Event $event)
     {
         $this->events->remove($event);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkplaces()
+    {
+        return $this->workplaces;
+    }
+
+    /**
+     * @param Workplace $workplace
+     * @return $this
+     */
+    public function addWorkplace(Workplace $workplace)
+    {
+        $this->workplaces->add($workplace);
+
+        return $this;
+    }
+
+    /**
+     * @param Workplace $workplace
+     * @return $this
+     */
+    public function removeWorkplace(Workplace $workplace)
+    {
+        $this->workplaces->remove($workplace);
 
         return $this;
     }

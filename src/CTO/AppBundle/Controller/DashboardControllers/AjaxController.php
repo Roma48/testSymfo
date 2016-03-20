@@ -151,6 +151,19 @@ class AjaxController extends Controller
     }
 
     /**
+     * @Route("/cto/ajax/getctoworkplaces", name="ajax_cto_get_workplaces", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getAllCtoWorkplacesAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoWorkplaces = $em->getRepository('CTOAppBundle:Workplace')->findBy(['cto' => $this->getUser()]);
+
+        return new JsonResponse(["workplaces" => $ctoWorkplaces]);
+    }
+
+    /**
      * @Route("/cto/ajax/getctoeventsbydate/{date}", name="ajax_cto_get_events_by_date", options={"expose" = true})
      * @Method("GET")
      */

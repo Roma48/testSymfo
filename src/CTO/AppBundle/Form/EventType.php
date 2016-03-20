@@ -18,16 +18,31 @@ class EventType extends AbstractType
             ->add('client', EntityType::class, [
                 'label' => 'Клієнт: *',
                 'choice_label' => 'fullName',
-                'attr' => ["class" => "form-control"],
+                'attr' => [
+                    "class" => "form-control selectpicker",
+                    "data-live-search" => "true"
+                ],
                 'required' => false,
                 'class' => 'CTO\AppBundle\Entity\CtoClient'
             ])
             ->add('car', EntityType::class, [
                 'label' => 'Автомобіль: *',
                 'choice_label' => 'carModel',
-                'attr' => ["class" => "form-control"],
+                'attr' => [
+                    "class" => "form-control selectpicker",
+                    "data-live-search" => "true"
+                ],
                 'required' => false,
                 'class' => 'CTO\AppBundle\Entity\ClientCar'
+            ])
+            ->add('workplace', EntityType::class, [
+                'label' => 'Робоче місце: *',
+                'choice_label' => 'title',
+                'attr' => [
+                    "class" => "form-control selectpicker",
+                    "data-live-search" => "true"
+                ],
+                'class' => 'CTO\AppBundle\Entity\Workplace'
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Опис: *',

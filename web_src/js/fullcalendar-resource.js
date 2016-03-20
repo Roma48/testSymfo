@@ -40,6 +40,7 @@
 			this.timeGrid.updateCells = function() {
 				var view = this.view;
 				var colData = [];
+				var colDataNew = [];
 				var date;
 				date = this.start.clone();
 				while (date.isBefore(this.end)) {
@@ -49,14 +50,17 @@
 					date.add(1, 'day');
 					date = view.skipHiddenDays(date);
 				}
+				console.log(colData);
 				if (this.isRTL) {
 					colData.reverse();
 				}
+
 				// Only add resource object when colData.length = 1 (day view)
 				// TODO: what if day = 1 but not resource day? ie, every monday
 				if (colData.length === 1 && typeof(this.view.resources) === "object" && this.view.resources !== null && this.view.resources instanceof Array) { // CUSTOM
 					// TODO: check for duplicate ID?
 					colData[0].resource = null; // Unknown
+					console.log(colData);
 					this.view.resources.forEach(function(r) {
 						var cd = {
 							day: colData[0].day,
@@ -65,11 +69,12 @@
 								name: r.name
 							}
 						};
-						colData.push(cd);
+						//colData.push(cd);
+						colDataNew.push(cd); //remove first col with Unknown column
 					});
 				}
-				this.colData = colData;
-				this.colCnt = colData.length;
+				this.colData = colDataNew;
+				this.colCnt = colDataNew.length;
 				this.rowCnt = Math.ceil((this.maxTime - this.minTime) / this.snapDuration); // # of vertical snaps
 			};
 			// Used by the `headHtml` method, via RowRenderer, for rendering the HTML of a day-of-week header cell
@@ -79,10 +84,12 @@
 				var date = cell.start;
 				if (typeof(cell.resource) === "object") {
 					if (cell.resource === null) { // unknown
-						return '' +
-							'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + this.dayIDs[date.day()] + ' fc-' + view.widgetResourceHeaderClass + ' fc-' + view.widgetUnknownResourceHeaderClass + '">' +
-							fc.htmlEscape(view.unknownResourceTitle) +
-							' </th>';
+						console.log('unknown');
+						return '';
+						//return '' +
+						//	'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + this.dayIDs[date.day()] + ' fc-' + view.widgetResourceHeaderClass + ' fc-' + view.widgetUnknownResourceHeaderClass + '">' +
+						//	fc.htmlEscape(view.unknownResourceTitle) +
+						//	' </th>';
 					}
 					return '' +
 						'<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-' + this.dayIDs[date.day()] + ' fc-' + view.widgetResourceHeaderClass + '">' +
@@ -113,7 +120,7 @@
 				for (col = 0; col < colCnt; col++) {
 					if (typeof(this.colData[col].resource) === "object") {
 						if (this.colData[col].resource === null) {
-							unknownsCols.push(col);
+							//unknownsCols.push(col);
 						} else if (typeof(this.colData[col].resource.id) === "number" || typeof(this.colData[col].resource.id) === "string") {
 							colResMap[this.colData[col].resource.id] = col;
 						}

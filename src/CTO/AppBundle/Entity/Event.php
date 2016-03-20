@@ -58,6 +58,13 @@ class Event implements \JsonSerializable
     protected $cto;
 
     /**
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Workplace", inversedBy="events")
+     */
+    protected $workplace;
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -72,7 +79,8 @@ class Event implements \JsonSerializable
             "car" => $this->getCar(),
             "description" => $this->getDescription(),
             "start" => $this->getStartAt(),
-            "end" => $this->getEndAt()
+            "end" => $this->getEndAt(),
+            "workplace" => $this->getWorkplace()
         ];
     }
 
@@ -179,5 +187,21 @@ class Event implements \JsonSerializable
         $this->cto = $cto;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkplace()
+    {
+        return $this->workplace;
+    }
+
+    /**
+     * @param mixed $workplace
+     */
+    public function setWorkplace($workplace)
+    {
+        $this->workplace = $workplace;
     }
 }

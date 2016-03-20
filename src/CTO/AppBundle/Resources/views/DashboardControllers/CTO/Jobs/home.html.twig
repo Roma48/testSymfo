@@ -7,6 +7,7 @@
                 Поточний місяць: {{ now | date('F, Y') | monthTranslate }}
                 <div class="pull-right">
                     <a href="{{ path('cto_jobs_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нове завдання</a>
+                    <a href="#" class="btn btn-sm btn-success" id="addWorkplace"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нове робоче місце</a>
                     <a href="#" class="btn btn-sm btn-success" id="addEvent"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Нова подія</a>
                 </div>
             </h3>
@@ -50,6 +51,11 @@
                         </select>
                     </div>
                     <div class="margin-bottom-15">
+                        <label for="event_workplace">Робоче місце:</label>
+                        <select id="event_workplace" name="workPlace" class="selectpicker" data-width="100%" data-size="15" data-live-search="true">
+                        </select>
+                    </div>
+                    <div class="margin-bottom-15">
                         <label for="event_message">Опис:</label>
                         <textarea id="event_message" name="eventMessage" class="form-control"></textarea>
                     </div>
@@ -63,6 +69,30 @@
                     </div>
                     <div class="margin-bottom-15 text-center">
                         <button class="btn btn-success" id="addEventButtonSubmit">Додати подію</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for add workplace -->
+    <div class="modal fade" id="addWorkplaceForm" tabindex="-1" role="dialog" aria-labelledby="addCarToClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Додати нове робоче місце:</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="margin-bottom-15">
+                        <label for="event_workplace_title">Назва:</label>
+                        <input type="text" id="event_workplace_title" name="workPlace_title" class="form-control">
+                    </div>
+                    <div class="margin-bottom-15 text-center">
+                        <button class="btn btn-success" id="addWorkplaceButtonSubmit">Додати</button>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -2,16 +2,22 @@ jQuery(function ($) {
 
     var addEventClientFormModal = $('#event_client');
     var addEventClientCarFormModal = $('#event_client_car');
+    var addEventWorkplace = $('#event_workplace');
     var addEventMessageFormModal = $('#event_message');
     var addEventStartFormModal = $('#event_start');
     var addEventEndFormModal = $('#event_end');
 
+    var addWorkplaceTitle = $('#event_workplace_title');
+
     var addEventSubmitBtnModalForm = $('#addEventButtonSubmit');
+    var addWorkplaceSubmitBtnModalForm = $('#addWorkplaceButtonSubmit');
 
     var getClientsUrl = Routing.generate('ajax_cto_get_clients');
     var getEventsUrl = Routing.generate('ajax_cto_get_events');
+    var workplacePath = Routing.generate('ajax_cto_get_workplaces');
 
     var events = [];
+    var resources = [];
 
     var returnUrl = Routing.generate('cto_jobs_home', {}, true);
 
@@ -22,6 +28,7 @@ jQuery(function ($) {
             "event": {
                 "client": addEventClientFormModal.val(),
                 "car": addEventClientCarFormModal.val(),
+                "workplace": addEventWorkplace.val(),
                 "description": addEventMessageFormModal.val(),
                 "startAt": addEventStartFormModal.val(),
                 "endAt": addEventEndFormModal.val()
@@ -36,6 +43,46 @@ jQuery(function ($) {
                 console.log(error);
             });
     });
+
+    addWorkplaceSubmitBtnModalForm.click(function () {
+        var url = Routing.generate("cto_new_workplace_fromJSONFORM");
+
+        var values = {
+            "workplace": {
+                "title": addWorkplaceTitle.val()
+            }
+        };
+
+        $.post(url, JSON.stringify(values))
+            .success(function (response) {
+                window.location.replace(returnUrl);
+            })
+            .error(function (error) {
+                console.log(error);
+            });
+    });
+
+        $.get(workplacePath)
+            .success(function (response) {
+                console.log(response);
+                addEventWorkplace.html('');
+                if (response.workplaces.length > 0) {
+                    $.each(response.workplaces, function (key, value) {
+                        addEventWorkplace.append('<option value="' + value.id + '">' + value.title + '</option>');
+                        resources.push({
+                            "id": value.id,
+                            "name": value.title
+                        });
+                    });
+                } else {
+                    addEventWorkplace.append('<option value="" disabled="disabled">Робочих місць не знайдено.</option>');
+                }
+                addEventWorkplace.selectpicker('refresh');
+            })
+            .error(function (error) {
+                console.log(error);
+            })
+        ;
 
     function getClientCars(clientId) {
         var carPath = Routing.generate('ajax_cto_cars_from_client', {"id": clientId});
@@ -57,24 +104,6 @@ jQuery(function ($) {
         ;
     }
 
-    $.get(getClientsUrl)
-        .success(function (responseClient) {
-            addEventClientFormModal.html('');
-            if (responseClient.clients.length > 0) {
-                $.each(responseClient.clients, function (key, value) {
-                    addEventClientFormModal.append('<option value="' + value.id + '">' + value.name + '</option>');
-                });
-                getClientCars(responseClient.clients[0].id);
-            } else {
-                addEventClientFormModal.append('<option value="" disabled="disabled">Клієнтів не знайдено.</option>');
-            }
-            addEventClientFormModal.selectpicker('refresh');
-        })
-        .error(function (error) {
-            console.log(error);
-        })
-    ;
-
     addEventClientFormModal.change(function () {
         var val = $(this).val();
         getClientCars(val);
@@ -82,8 +111,32 @@ jQuery(function ($) {
 
     $('#addEvent').on('click', function (event) {
         event.preventDefault();
+        $.get(getClientsUrl)
+            .success(function (responseClient) {
+                console.log(responseClient);
+                addEventClientFormModal.html('');
+                if (responseClient.clients.length > 0) {
+                    $.each(responseClient.clients, function (key, value) {
+                        addEventClientFormModal.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    getClientCars(responseClient.clients[0].id);
+                } else {
+                    addEventClientFormModal.append('<option value="" disabled="disabled">Клієнтів не знайдено.</option>');
+                }
+                addEventClientFormModal.selectpicker('refresh');
+            })
+            .error(function (error) {
+                console.log(error);
+            })
+        ;
 
         $('#addEventForm').modal('show');
+    });
+
+    $('#addWorkplace').on('click', function (event) {
+        event.preventDefault();
+
+        $('#addWorkplaceForm').modal('show');
     });
 
     $("input[type=text].event-date-picker").datetimepicker();
@@ -92,7 +145,9 @@ jQuery(function ($) {
         .success(function (response) {
             response.events.forEach(function (event) {
                 events.push({
+                    "id": event.id,
                     "title": event.description,
+                    "resource": event.workplace.id,
                     "start": event.start.date,
                     "end": event.end.date,
                     "url": Routing.generate('cto_show_event', {id: event.id}, true)
@@ -123,27 +178,13 @@ jQuery(function ($) {
                         buttonText: "День"
                     }
                 },
-                resources: [
-                    {id: "room101", name: "Room 101"},
-                    {id: "room102", name: "Room 102"}
-                ],
+                resources: resources,
+                unknownResourceTitle: null,
                 columnFormat: {
                     month: 'dddd'
                 },
                 lang: 'uk',
                 height: 470,
-                dayClick: function (date, jsEvent, view) {
-                    $('#showDayInfo').modal('show');
-                    var getEventsByDateUrl = Routing.generate('ajax_cto_get_events_by_date', {date: date.format('DD-MM-YYYY')});
-                    $.get(getEventsByDateUrl)
-                        .success(function (response) {
-                            console.log(response);
-                        })
-                        .error(function (error) {
-                            console.log(error);
-                        })
-                    ;
-                },
                 events: events
             });
         })
