@@ -150,7 +150,7 @@ jQuery(function ($) {
                     "resource": event.workplace.id,
                     "start": event.start.date,
                     "end": event.end.date,
-                    "url": Routing.generate('cto_show_event', {id: event.id}, true)
+                    //"url": Routing.generate('cto_show_event', {id: event.id}, true)
                 });
             });
 
@@ -185,7 +185,25 @@ jQuery(function ($) {
                 },
                 lang: 'uk',
                 height: 470,
-                events: events
+                events: events,
+                eventClick: function(calEvent, jsEvent, view) {
+                    console.log(calEvent);
+                    $.get(Routing.generate('ajax_cto_get_event', {"id": calEvent.id}))
+                        .success(function(response){
+                            console.log(response);
+                            var event = response.event;
+
+                            $('#client_name').html(event.client.name);
+
+                            $('#event_start_date').html(moment(event.start.date).format('DD.MM.YYYY HH:mm'));
+                            $('#event_end_date').html(moment(event.end.date).format('DD.MM.YYYY HH:mm'));
+                            $('#event_car').html(event.car.name);
+                            $('#event_description').html(event.description);
+
+                            $('#showEventInfo').modal('show');
+                        })
+                    ;
+                }
             });
         })
         .error(function (error) {

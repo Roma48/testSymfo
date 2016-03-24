@@ -175,4 +175,17 @@ class AjaxController extends Controller
 
         return new JsonResponse(["events" => $ctoEvents]);
     }
+
+    /**
+     * @Route("/cto/ajax/getctoevent/{id}", name="ajax_cto_get_event", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getCtoEventAction($id)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvent = $em->getRepository('CTOAppBundle:Event')->findOneBy(['id' => $id]);
+
+        return new JsonResponse(["event" => $ctoEvent]);
+    }
 }
