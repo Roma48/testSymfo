@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
@@ -134,5 +135,57 @@ class AjaxController extends Controller
         $users = $em->getRepository('CTOAppBundle:CtoClient')->clientFilter([], $user);
 
         return new JsonResponse(['users' => $users]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoevents", name="ajax_cto_get_events", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getAllCtoEventsAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvents = $em->getRepository('CTOAppBundle:Event')->findBy(['cto' => $this->getUser()]);
+
+        return new JsonResponse(["events" => $ctoEvents]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoworkplaces", name="ajax_cto_get_workplaces", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getAllCtoWorkplacesAction()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoWorkplaces = $em->getRepository('CTOAppBundle:Workplace')->findBy(['cto' => $this->getUser()]);
+
+        return new JsonResponse(["workplaces" => $ctoWorkplaces]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoeventsbydate/{date}", name="ajax_cto_get_events_by_date", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getCtoEventsByDateAction($date)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvents = $em->getRepository('CTOAppBundle:Event')->findByDate($date, $this->getUser());
+
+        return new JsonResponse(["events" => $ctoEvents]);
+    }
+
+    /**
+     * @Route("/cto/ajax/getctoevent/{id}", name="ajax_cto_get_event", options={"expose" = true})
+     * @Method("GET")
+     */
+    public function getCtoEventAction($id)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $ctoEvent = $em->getRepository('CTOAppBundle:Event')->findOneBy(['id' => $id]);
+
+        return new JsonResponse(["event" => $ctoEvent]);
     }
 }

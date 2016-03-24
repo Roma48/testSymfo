@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Нова подія</h1>
+
+    {{ form_start(form) }}
+    <div style="position: relative">
+        {{ form_widget(form) }}
+    </div>
+    <p>
+        <input type="submit" value="Створити" class="btn btn-success center-block">
+    </p>
+    {{ form_end(form) }}
+
+
+{% endblock body %}
+
+{% block javascripts %}
+    <script>
+        jQuery(function($){
+            $("input[type=text].event-date-picker").datetimepicker({
+                format: 'mm/dd/yyyy'
+            });
+        });
+    </script>
+{% endblock javascripts %}

@@ -15,6 +15,6 @@
     "jsonform": "*",
     "selectize": "0.12.1",
     "eonasdan-bootstrap-datetimepicker": "~4.15.35",
-    "fullcalendar": "~2.4.0"
+    "fullcalendar": "git://github.com/arshaw/fullcalendar.git#2.3.0"
   }
 }
