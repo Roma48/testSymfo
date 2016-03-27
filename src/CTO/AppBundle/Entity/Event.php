@@ -45,7 +45,6 @@ class Event implements \JsonSerializable
     /**
      * @var \DateTime
      *
-     * @Assert\NotBlank(message="Обов'язкове поле")
      * @ORM\Column(name="end_at", type="datetime")
      */
     protected $endAt;

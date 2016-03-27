@@ -99,6 +99,42 @@ class EventsController extends JsonController
     /**
      * @param Request $request
      * @param Event $event
+     * @return JsonResponse
+     *
+     * @Route("/edit/{id}/FromJsonForm", name="cto_edit_event_fromJSONFORM", options={"expose" = true})
+     * @ParamConverter("event", class="CTOAppBundle:Event", options={"id" = "id"})
+     * @Method("POST")
+     */
+    public function editFromJsonFormAction(Request $request, Event $event)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new EventType($em), $event);
+
+        if ($request->getMethod() == "POST") {
+
+            $this->handleJsonForm($form, $request);
+
+            $user = $this->getUser();
+            $event->setCto($user);
+
+            $event->setStartAt(new DateTime($event->getStartAt()));
+            $event->setEndAt(new DateTime($event->getEndAt()));
+
+            $em->persist($event);
+            $em->flush();
+
+            $this->addFlash('success', "Подію успішно створено.");
+
+            return new JsonResponse(["status" => "ok", "eid" => $event->getId()]);
+        }
+
+        return new JsonResponse(["status" => "fail"]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Event $event
      *
      * @Route("/show/{id}", name="cto_show_event", options={"expose" = true})
      * @ParamConverter("event", class="CTOAppBundle:Event", options={"id" = "id"})
