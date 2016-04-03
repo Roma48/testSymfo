@@ -24,7 +24,7 @@ jQuery(function ($) {
     addEventSubmitBtnModalForm.click(function () {
         var url = Routing.generate("cto_new_event_fromJSONFORM");
         var errors = [];
-        var requiredFields = [addEventMessageFormModal, addEventStartFormModal];
+        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal];
 
         var values = {
             "event": {
@@ -39,7 +39,8 @@ jQuery(function ($) {
 
         requiredFields.forEach(function(field){
             field.parent().find(".alert.alert-danger").remove();
-            if (field.val() == ''){
+
+            if (field.val() == '' || field.val() == null){
                 field.addClass('error').parent().append('<p class="alert alert-danger">Обовязкове поле *</p>');
                 errors.push(field);
             }
