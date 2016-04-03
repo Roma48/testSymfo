@@ -168,7 +168,7 @@ class ClientsController extends Controller
     }
 
     /**
-     * @Route("/show/{slug}/{tabName}", name="cto_client_show", defaults={"tabName" = "info"}, requirements={"tabName" = "info|cars|jobs"})
+     * @Route("/show/{slug}/{tabName}", name="cto_client_show", defaults={"tabName" = "info"}, requirements={"tabName" = "info|cars|jobs"},  options={"expose"=true})
      * @Method({"GET", "POST"})
      * @ParamConverter("ctoClient", class="CTOAppBundle:CtoClient", options={"slug" = "slug"})
      * @Template()

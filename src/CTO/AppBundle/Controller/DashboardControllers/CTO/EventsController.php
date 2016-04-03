@@ -99,6 +99,76 @@ class EventsController extends JsonController
     /**
      * @param Request $request
      * @param Event $event
+     * @return JsonResponse
+     *
+     * @Route("/{id}/edit/FromJsonForm", name="cto_edit_event_fromJSONFORM", options={"expose" = true})
+     * @ParamConverter("event", class="CTOAppBundle:Event", options={"id" = "id"})
+     * @Method({"POST", "GET"})
+     */
+    public function editFromJsonFormAction(Request $request, Event $event)
+    {
+        if ($request->getMethod() == "GET"){
+            return new JsonResponse([
+                'event' => $event
+            ]);
+        }
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new EventType($em), $event);
+
+        if ($request->getMethod() == "POST") {
+
+            $this->handleJsonForm($form, $request);
+
+            $user = $this->getUser();
+            $event->setCto($user);
+
+            $event->setStartAt(new DateTime($event->getStartAt()));
+            $event->setEndAt(new DateTime($event->getEndAt()));
+
+            $em->persist($event);
+            $em->flush();
+
+            $this->addFlash('success', "Подію успішно відредаговано.");
+
+            return new JsonResponse(["status" => "ok", "eid" => $event->getId()]);
+        }
+
+        return new JsonResponse(["status" => "fail"]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Event $event
+     * @return JsonResponse
+     *
+     * @Route("/{id}/delete/FromJsonForm", name="cto_delete_event_fromJSONFORM", options={"expose" = true})
+     * @ParamConverter("event", class="CTOAppBundle:Event", options={"id" = "id"})
+     * @Method("POST")
+     */
+    public function deleteFromJsonFormAction(Request $request, Event $event)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        if ($request->getMethod() == "POST") {
+
+            $em->remove($event);
+            $em->flush();
+
+            $this->addFlash('success', "Подію успішно видалено.");
+
+            return new JsonResponse(["status" => "ok", "eid" => $event->getId()]);
+        }
+
+        return new JsonResponse(["status" => "fail"]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param Event $event
      *
      * @Route("/show/{id}", name="cto_show_event", options={"expose" = true})
      * @ParamConverter("event", class="CTOAppBundle:Event", options={"id" = "id"})
