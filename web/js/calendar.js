@@ -23,6 +23,8 @@ jQuery(function ($) {
 
     addEventSubmitBtnModalForm.click(function () {
         var url = Routing.generate("cto_new_event_fromJSONFORM");
+        var errors = [];
+        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal, addEventEndFormModal];
 
         var values = {
             "event": {
@@ -35,17 +37,30 @@ jQuery(function ($) {
             }
         };
 
-        $.post(url, JSON.stringify(values))
-            .success(function (response) {
-                window.location.replace(returnUrl);
-            })
-            .error(function (error) {
-                console.log(error);
-            });
+        requiredFields.forEach(function(field){
+            field.parent().find(".alert.alert-danger").remove();
+
+            if (field.val() == '' || field.val() == null){
+                field.addClass('error').parent().append('<p class="alert alert-danger">Обовязкове поле *</p>');
+                errors.push(field);
+            }
+        });
+
+        if (errors.length == 0){
+            $.post(url, JSON.stringify(values))
+                .success(function (response) {
+                    window.location.replace(returnUrl);
+                })
+                .error(function (error) {
+                    console.log(error);
+                });
+        }
     });
 
     addWorkplaceSubmitBtnModalForm.click(function () {
         var url = Routing.generate("cto_new_workplace_fromJSONFORM");
+
+        addWorkplaceTitle.parent().find('.alert.alert-danger').remove();
 
         var values = {
             "workplace": {
@@ -53,13 +68,17 @@ jQuery(function ($) {
             }
         };
 
-        $.post(url, JSON.stringify(values))
-            .success(function (response) {
-                window.location.replace(returnUrl);
-            })
-            .error(function (error) {
-                console.log(error);
-            });
+        if (values.workplace.title != ''){
+            $.post(url, JSON.stringify(values))
+                .success(function (response) {
+                    window.location.replace(returnUrl);
+                })
+                .error(function (error) {
+                    console.log(error);
+                });
+        } else {
+            addWorkplaceTitle.parent().append('<p class="alert alert-danger">Обовязкове поле *</p>');
+        }
     });
 
         $.get(workplacePath)
@@ -193,7 +212,10 @@ jQuery(function ($) {
                             console.log(response);
                             var event = response.event;
 
+                            console.log(event);
+
                             $('#client_name').html(event.client.name);
+                            $('#client_profile').attr('href', Routing.generate('cto_client_show', { "slug" : event.client.slug }));
 
                             $('#event_start_date').html(moment(event.start.date).format('DD.MM.YYYY HH:mm'));
                             $('#event_end_date').html(moment(event.end.date).format('DD.MM.YYYY HH:mm'));
@@ -203,6 +225,37 @@ jQuery(function ($) {
                             $('#showEventInfo').modal('show');
                         })
                     ;
+                },
+                dayClick: function ()
+                {
+                    $.get(getClientsUrl)
+                        .success(function (responseClient) {
+                            //console.log(responseClient);
+                            addEventClientFormModal.html('');
+                            if (responseClient.clients.length > 0) {
+                                $.each(responseClient.clients, function (key, value) {
+                                    addEventClientFormModal.append('<option value="' + value.id + '">' + value.name + '</option>');
+                                });
+                                getClientCars(responseClient.clients[0].id);
+                            } else {
+                                addEventClientFormModal.append('<option value="" disabled="disabled">Клієнтів не знайдено.</option>');
+                            }
+                            addEventClientFormModal.selectpicker('refresh');
+                        })
+                        .error(function (error) {
+                            console.log(error);
+                        })
+                    ;
+
+                    $('#addEventForm').modal('show');
+                },
+                eventMouseover: function( event, jsEvent, view ) {
+                    //console.log(event);
+                },
+                eventRender: function (event, element) {
+                    element.hover(function(){
+                        $(this).css({"cursor" : "pointer"});
+                    });
                 }
             });
         })
