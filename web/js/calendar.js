@@ -159,7 +159,7 @@ jQuery(function ($) {
 
     editEventBtnModalForm.click(function(){
         var errors = [];
-        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal];
+        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal, addEventEndFormModal];
 
         var values = {
             "event": {
@@ -359,8 +359,10 @@ jQuery(function ($) {
                 resources: resources,
                 unknownResourceTitle: null,
                 columnFormat: {
-                    month: 'dddd'
+                    month: 'dddd',
+                    week: 'ddd DD/MM'
                 },
+                timeFormat: 'H:mm',
                 lang: 'uk',
                 height: 470,
                 events: events,
