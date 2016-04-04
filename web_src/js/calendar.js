@@ -24,7 +24,7 @@ jQuery(function ($) {
     addEventSubmitBtnModalForm.click(function () {
         var url = Routing.generate("cto_new_event_fromJSONFORM");
         var errors = [];
-        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal];
+        var requiredFields = [addEventClientFormModal, addEventClientCarFormModal, addEventWorkplace, addEventMessageFormModal, addEventStartFormModal, addEventEndFormModal];
 
         var values = {
             "event": {
