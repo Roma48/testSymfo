@@ -37,6 +37,9 @@
                     <li class="{{ 'cto_cto_jobcategories_' in app.request.get('_route') ? 'active' : '' }}">
                         <a href="{{path('cto_jobcategories_home')}}"><i class="fa fa-list-ul"></i>&nbsp;Категорії</a>
                     </li>
+                    <li class="{{ 'cto_workplaces_' in app.request.get('_route') ? 'active' : '' }}">
+                        <a href="{{path('cto_workplaces_home')}}"><i class="fa fa-list-ul"></i>&nbsp;Робочі місця</a>
+                    </li>
                     <li class="{{ 'cto_notification_' in app.request.get('_route') ? 'active' : '' }}">
                         <a href="{{path('cto_notification_home')}}" ><i class="fa fa-bell"></i>&nbsp;Сповіщення&nbsp;&nbsp;<span id="badge"></span></a>
                     </li>

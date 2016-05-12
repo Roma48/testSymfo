@@ -1,0 +1,53 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>
+                Список робочих місць:
+                <div class="pull-right">
+                    <a href="{{ path('cto_workplaces_new') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Додати робоче місце</a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th>Назва</th>
+                    <th class="text-center">Дії</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for workplace in workplaces %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>{{ workplace.title }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a class="btn btn-warning btn-xs"
+                                   href="{{ path("cto_workplaces_edit", {"id" : workplace.id}) }}"> Редагувати </a>
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path("cto_workplaces_delete", {"id" : workplace.id}) }}"> Видалити </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock body %}
+{% block javascripts %}
+    <script>
+        jQuery(function ($) {
+
+        });
+    </script>
+{% endblock javascripts %}

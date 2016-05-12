@@ -27,7 +27,7 @@ class Workplace implements \JsonSerializable
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="workplace")
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="workplace", cascade={"remove"})
      */
     protected $events;
 

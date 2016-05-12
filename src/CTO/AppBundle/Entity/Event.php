@@ -53,14 +53,14 @@ class Event implements \JsonSerializable
     /**
      * @var CtoUser
      *
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="events")
      */
     protected $cto;
 
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Workplace", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\Workplace", inversedBy="events", cascade={"persist"})
      */
     protected $workplace;
 
