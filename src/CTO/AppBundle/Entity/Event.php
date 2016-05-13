@@ -17,12 +17,12 @@ class Event implements \JsonSerializable
     use CreateUpdateTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoClient", inversedBy="events")
      */
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\ClientCar", inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\ClientCar", inversedBy="events")
      */
     protected $car;
 

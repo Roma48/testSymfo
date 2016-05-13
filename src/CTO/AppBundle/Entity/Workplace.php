@@ -27,14 +27,14 @@ class Workplace implements \JsonSerializable
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="workplace", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CTO\AppBundle\Entity\Event", mappedBy="workplace", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $events;
 
     /**
      * @var CtoUser
      *
-     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="workplaces", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CTO\AppBundle\Entity\CtoUser", inversedBy="workplaces")
      */
     protected $cto;
 
@@ -88,7 +88,10 @@ class Workplace implements \JsonSerializable
      */
     public function addEvent(Event $event)
     {
-        $this->events->add($event);
+        if (!$this->events->contains($event)){
+            $event->setWorkplace($this);
+            $this->events->add($event);
+        }
 
         return $this;
     }
